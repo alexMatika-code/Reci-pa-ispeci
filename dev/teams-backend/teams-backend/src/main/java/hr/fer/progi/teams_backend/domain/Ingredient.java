@@ -6,17 +6,29 @@ import jakarta.persistence.Id;
 @Entity
 public class Ingredient {
     @Id
-    private Long id;
+    private long id;
 
     private String name;
 
     private String description;
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

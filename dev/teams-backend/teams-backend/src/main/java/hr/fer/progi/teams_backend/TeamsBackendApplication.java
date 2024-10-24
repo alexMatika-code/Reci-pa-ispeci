@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TeamsBackendApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(TeamsBackendApplication.class, args);
+
 	}
 
 }

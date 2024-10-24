@@ -9,7 +9,7 @@ import jakarta.persistence.OneToOne;
 public class Rating {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     private String comment;
 
@@ -25,7 +25,7 @@ public class Rating {
         this.id = id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

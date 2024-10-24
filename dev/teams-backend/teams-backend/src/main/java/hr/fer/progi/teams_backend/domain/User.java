@@ -10,7 +10,7 @@ public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     private String authority;
 
@@ -31,7 +31,7 @@ public class User {
         this.id = id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
