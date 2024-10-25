@@ -16,7 +16,7 @@ public class Rating {
     private int rating;
 
     @OneToOne
-    private User user;
+    private Person person;
 
     @OneToOne
     private Recipe recipe;
@@ -45,12 +45,12 @@ public class Rating {
         this.rating = rating;
     }
 
-    public User getUser() {
-        return user;
+    public Person getUser() {
+        return person;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Person user) {
+        this.person = user;
     }
 
     public Recipe getRecipe() {
