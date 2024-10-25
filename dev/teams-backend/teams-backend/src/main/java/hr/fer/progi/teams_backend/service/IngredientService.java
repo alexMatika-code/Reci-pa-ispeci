@@ -7,4 +7,6 @@ import java.util.List;
 public interface IngredientService {
 
     List<Ingredient> listAll();
+
+    Ingredient createIngredient(Ingredient ingredient);
 }

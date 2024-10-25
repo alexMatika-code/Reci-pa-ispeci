@@ -7,4 +7,6 @@ import java.util.List;
 public interface RatingService {
 
     List<Rating> listAll();
+
+    Rating createRating(Rating rating);
 }

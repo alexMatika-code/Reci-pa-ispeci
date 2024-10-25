@@ -7,4 +7,6 @@ import java.util.List;
 public interface RecipeService {
 
     List<Recipe> listAll();
+
+    Recipe createRecipe(Recipe recipe);
 }
