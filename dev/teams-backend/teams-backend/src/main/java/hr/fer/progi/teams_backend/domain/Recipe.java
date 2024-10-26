@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Recipe {
-
     @Id
     @GeneratedValue
     private long id;

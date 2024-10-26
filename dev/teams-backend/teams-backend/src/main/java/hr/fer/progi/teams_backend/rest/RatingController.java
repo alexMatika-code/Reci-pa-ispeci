@@ -12,11 +12,26 @@ import java.util.List;
 public class RatingController {
 
     @Autowired
-    RatingService ratingService;
+    private RatingService ratingService;
 
     @GetMapping
     public List<Rating> getRatings() {
         return ratingService.listAll();
+    }
+
+    @GetMapping("/{id}")
+    public Rating getRating(@PathVariable Long id) {
+        return ratingService.fetchRating(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRating(@PathVariable Long id) {
+        ratingService.deleteRating(id);
+    }
+
+    @PutMapping("/{id}")
+    public Rating updateRating(@PathVariable Long id, @RequestBody Rating rating) {
+        return ratingService.updateRating(id, rating);
     }
 
     @PostMapping

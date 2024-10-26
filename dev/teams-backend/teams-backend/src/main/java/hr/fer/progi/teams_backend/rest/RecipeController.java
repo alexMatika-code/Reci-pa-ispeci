@@ -1,6 +1,5 @@
 package hr.fer.progi.teams_backend.rest;
 
-import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,23 @@ public class RecipeController {
         return recipeService.listAll();
     }
 
+    @GetMapping("/{id}")
+    public Recipe getRecipe(@PathVariable Long id) {
+        return recipeService.fetchRecipe(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRecipe(@PathVariable Long id) {
+        recipeService.deleteRecipe(id);
+    }
+
+    @PutMapping("/{id}")
+    public Recipe updateRecipe(@PathVariable Long id, @RequestBody Recipe recipe) {
+        return recipeService.updateRecipe(id, recipe);
+    }
+
     @PostMapping
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return recipeService.createRecipe(recipe);
     }
-
 }

@@ -8,5 +8,11 @@ public interface PersonService {
 
     List<Person> listAll();
 
+    Person fetchPerson(Long id);
+
+    void deletePerson(Long id);
+
+    Person updatePerson(Long id, Person person);
+
     Person createPerson(Person person);
 }

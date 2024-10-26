@@ -8,5 +8,11 @@ public interface IngredientService {
 
     List<Ingredient> listAll();
 
+    Ingredient fetchIngredient(Long id);
+
+    void deleteIngredient(Long id);
+
+    Ingredient updateIngredient(Long id, Ingredient ingredient);
+
     Ingredient createIngredient(Ingredient ingredient);
 }

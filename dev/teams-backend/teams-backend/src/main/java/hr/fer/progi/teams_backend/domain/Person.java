@@ -10,8 +10,6 @@ import java.util.Set;
 @Setter
 @Entity
 public class Person {
-
-
     @Id
     @GeneratedValue
     private long id;
@@ -30,5 +28,4 @@ public class Person {
 
     @OneToMany
     private Set<Recipe> recipes;
-
 }
