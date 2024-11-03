@@ -1,24 +1,22 @@
-import { useState } from 'react'
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import './App.css'
-import Button from  'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import NotFoundPage from './pages/NotFoundPage';
+import HomePage from './pages/HomePage';
+import RecipePage from './pages/RecipePage';
 
-function App() {
-    const [count, setCount] = useState(0)
-
-    return (
-    <>
-        <div className={'card w-50 mx-auto p-0'}>
-            <h1 className={'card-header'}>Reci pa ispeci</h1>
-            <h3 className={'py-2'}>Interaktivna stranica za recepte</h3>
-            <Button
-                className={'btn-success w-25 mx-auto my-2'}
-                onClick={() => setCount((count) => count + 1)}>
-                Count is {count}
-            </Button>
-        </div>
-    </>
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <>
+            <Route index element={<HomePage />} />
+            <Route path='/recipe/:id' element={<RecipePage />} />
+            <Route path='*' element={<NotFoundPage />} />
+        </>
     )
+);
+
+const App = () => {
+    return <RouterProvider router={router} />
 }
 
 export default App
