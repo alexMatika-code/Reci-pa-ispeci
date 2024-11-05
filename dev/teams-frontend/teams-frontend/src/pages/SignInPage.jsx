@@ -20,10 +20,10 @@ const SignInPage = ({signInSubmit}) => {
         return navigate('/');
     }
     const googleLogin = () => {
-        window.location.href = 'http://localhost:8080/oauth2/authorization/google'
+        window.location.href = 'api/oauth2/authorization/google'
     }
     const githubLogin = () => {
-        window.location.href = 'http://localhost:8080/oauth2/authorization/github'
+        window.location.href = 'api/oauth2/authorization/github'
     }
     return (
         <div className={"d-flex justify-content-center align-items-center"} style={{height : "100vh", backgroundColor: "whitesmoke"}}>
