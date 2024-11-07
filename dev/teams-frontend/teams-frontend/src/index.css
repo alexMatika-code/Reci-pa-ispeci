@@ -17,3 +17,8 @@
     border: white 3px solid; !important;
     outline: gray 3px solid;
 }
+
+.ingredientEntry:hover{
+    background-color: red !important;
+    cursor: pointer;
+}

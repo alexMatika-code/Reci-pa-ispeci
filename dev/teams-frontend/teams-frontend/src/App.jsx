@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import RecipePage from './pages/RecipePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
+import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
 
 const App = () => {
@@ -32,6 +33,14 @@ const App = () => {
         return res.json();
     }
 
+    const addRecipe = async (formData) => {
+        const res = await fetch('/api/recipes', {
+            method: 'POST',
+            body: formData
+        });
+        return res.json();
+    }
+
     const router = createBrowserRouter(
         createRoutesFromElements(
             <>
@@ -39,6 +48,7 @@ const App = () => {
                 <Route path='/recipe/:id' element={<RecipePage />} />
                 <Route path='sign-in' element={<SignInPage signInSubmit={signIn} />} />
                 <Route path='sign-up' element={<SignUpPage signUpSubmit={signUp} />} />
+                <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
                 <Route path='*' element={<NotFoundPage />} />
                 <Route path='/card' element={<RecipeCard />} />
             </>
