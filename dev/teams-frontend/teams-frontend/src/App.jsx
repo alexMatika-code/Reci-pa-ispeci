@@ -6,9 +6,10 @@ import HomePage from './pages/HomePage';
 import RecipePage from './pages/RecipePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
-
+import RecipeCard from "./components/RecipeCard.jsx";
 
 const App = () => {
+
     const signUp = async (user) => {
         const res = await fetch('/api/register', {
             method: 'POST',
@@ -39,11 +40,13 @@ const App = () => {
                 <Route path='sign-in' element={<SignInPage signInSubmit={signIn} />} />
                 <Route path='sign-up' element={<SignUpPage signUpSubmit={signUp} />} />
                 <Route path='*' element={<NotFoundPage />} />
+                <Route path='/card' element={<RecipeCard />} />
             </>
         )
     );
 
     return <RouterProvider router={router} />
+
 }
 
 export default App

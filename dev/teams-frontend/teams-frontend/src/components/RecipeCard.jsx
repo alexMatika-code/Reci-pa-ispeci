@@ -1,14 +1,43 @@
-import placeholder from '../assets/placeholder.png'
+import placeholder from "../assets/placeholder.png"
 
-const RecipeCard = () => {
+const RecipeCard = ({image, name, description}) => {
     return (
-        <div className={'card recipeCard border-0 rounded-0 m-5 p-1 '} style={{maxWidth: '18rem'}}>
-            <img src={placeholder} className={'card-img'}/>
-            <div className={'card-img-overlay p-0'}>
-                <div className={'card-text position-absolute bottom-0 py-2 px-4 bg-white text-align-left'}>placeholder</div>
+        <div className="recipe-card">
+            {
+                image != null  && (
+                    <img src={image} alt={name} className="recipe-card-image"/>
+                )
+            }
+            {
+                image == null && (
+                    <img src={placeholder} alt={name} className="recipe-card-image"/>
+                )
+            }
+            <div className="recipe-card-overlay">
+                {
+                    name != null && (
+                        <div className="recipe-name">{name}</div>
+                    )
+                }
+                {
+                    name == null && (
+                        <div className="recipe-name">Naziv jela</div>
+                    )
+                }
+                {
+                    description != null && (
+                        <div className="hover-text">{description}</div>
+                    )
+                }
+                {
+                    description == null && (
+                        <div className="hover-text">Procedura pripeme recepta</div>
+                    )
+                }
             </div>
         </div>
     );
 };
+
 
 export default RecipeCard;
