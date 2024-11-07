@@ -21,6 +21,13 @@ const SignUpPage = ({signUpSubmit}) => {
         return navigate('/');
     }
 
+    const googleLogin = () => {
+        window.location.href = 'api/oauth2/authorization/google'
+    }
+    const githubLogin = () => {
+        window.location.href = 'api/oauth2/authorization/github'
+    }
+
     return (
         <div className={"d-flex justify-content-center align-items-center"}
              style={{height: "100vh", backgroundColor: "whitesmoke"}}>
@@ -66,11 +73,11 @@ const SignUpPage = ({signUpSubmit}) => {
 
                     <p>or sign up with:</p>
 
-                    <button type="button" className="btn btn-link btn-floating mx-1">
+                    <button type="button" onClick={googleLogin} className="btn btn-link btn-floating mx-1">
                         <BsGoogle size={35}/>
                     </button>
 
-                    <button type="button" className="btn btn-link btn-floating mx-1">
+                    <button type="button" onClick={githubLogin} className="btn btn-link btn-floating mx-1">
                         <BsGithub size={35}/>
                     </button>
                 </div>
