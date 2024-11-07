@@ -1,7 +1,5 @@
 import styles from './Navbar.module.css';
-import "bootstrap-icons/font/bootstrap-icons.css";
 import logo from "../assets/logo.png";
-// import {BsPersonCircle} from "react-icons/bs";
 
 function Navbar() {
 

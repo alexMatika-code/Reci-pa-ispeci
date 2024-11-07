@@ -5,6 +5,8 @@ import RecipeAddIngredients from '../components/RecipeAddIngredients';
 import {Form, Row, Button, InputGroup} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditRecipePage = ({addRecipeSubmit}) => {
     const [title, setTitle] = useState("");
@@ -24,7 +26,7 @@ const EditRecipePage = ({addRecipeSubmit}) => {
 
         if (fileInput.files && fileInput.files[0]) {
             const reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 selectedImage.src = e.target.result;
             };
             reader.readAsDataURL(fileInput.files[0]);
@@ -38,11 +40,13 @@ const EditRecipePage = ({addRecipeSubmit}) => {
 
         console.log(ingredients.count);
         console.log(ingredients);
-        if (ingredients.length === 0) {
+        if(ingredients.length === 0){
+            toast.warn("Minimalan broj sastojaka je 1");
             return;
         }
 
         if (hasImage === false) {
+            toast.warn("Priložite sliku jela");
             return;
         }
 
@@ -62,7 +66,7 @@ const EditRecipePage = ({addRecipeSubmit}) => {
 
     return (
         <div className={"d-flex justify-content-center align-items-center"}
-             style={{height: "100vh", backgroundColor: "whitesmoke", paddingTop: "25px"}}>
+             style={{height: "100vh", backgroundColor: "whitesmoke", paddingTop: "25px"}} >
             <Form className={'w-75 form-group'} onSubmit={submitForm}>
                 <h5 className={"mb-4"}>Unesite podatke o jelu</h5>
 
@@ -97,17 +101,17 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                             <div className="form-outline mb-4 col-md-12 col-lg-8">
                                 <Form.Control type="name"
                                               placeholder="Naziv jela"
-                                              required
-                                              value={title}
-                                              onChange={(e) => setTitle(e.target.value)}/>
+                                       required
+                                       value={title}
+                                       onChange={(e) => setTitle(e.target.value)}/>
                             </div>
                             <div className={'form-outline mb-4 col-md-12 col-lg-4'}>
                                 <InputGroup>
                                     <Form.Control type="number"
-                                                  placeholder="Vrijeme pripreme"
-                                                  required
-                                                  value={timeToCook}
-                                                  onChange={(e) => setTimeToCook(e.target.value)}/>
+                                           placeholder="Vrijeme pripreme"
+                                           required
+                                           value={timeToCook}
+                                           onChange={(e) => setTimeToCook(e.target.value)}/>
                                     <InputGroupText>minuta</InputGroupText>
                                 </InputGroup>
                             </div>
@@ -115,12 +119,12 @@ const EditRecipePage = ({addRecipeSubmit}) => {
 
                         <div className="form-outline mb-4">
                             <Form.Control
-                                as="textarea"
-                                placeholder="Opis"
-                                rows={'3'}
-                                required
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}/>
+                            as="textarea"
+                            placeholder="Opis"
+                            rows={'3'}
+                            required
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}/>
                         </div>
                         <div className="form-outline mb-4">
                             <Form.Control
@@ -138,7 +142,21 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                         </div>
                     </div>
                 </Row>
-            </Form>        </div>
+            </Form>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={false}
+                theme="colored"
+                transition: Slide
+            />
+        </div>
     );
 };
 
