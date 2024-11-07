@@ -5,8 +5,6 @@ import RecipeAddIngredients from '../components/RecipeAddIngredients';
 import {Form, Row, Button, InputGroup} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const EditRecipePage = ({addRecipeSubmit}) => {
     const [title, setTitle] = useState("");
