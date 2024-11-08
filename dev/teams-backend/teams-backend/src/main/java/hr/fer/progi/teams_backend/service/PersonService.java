@@ -1,14 +1,15 @@
 package hr.fer.progi.teams_backend.service;
 
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 
 import java.util.List;
 
 public interface PersonService {
 
-    List<Person> listAll();
+    List<PersonDTO> listAll();
 
-    Person fetchPerson(Long id);
+    PersonDTO fetchPerson(Long id);
 
     void deletePerson(Long id);
 

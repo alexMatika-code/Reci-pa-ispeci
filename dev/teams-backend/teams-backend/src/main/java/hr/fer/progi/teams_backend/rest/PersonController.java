@@ -1,6 +1,7 @@
 package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,12 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping
-    public List<Person> getPeople() {
+    public List<PersonDTO> getPeople() {
         return personService.listAll();
     }
 
     @GetMapping("/{id}")
-    public Person getPerson(@PathVariable Long id) {
+    public PersonDTO getPerson(@PathVariable Long id) {
         return personService.fetchPerson(id);
     }
 

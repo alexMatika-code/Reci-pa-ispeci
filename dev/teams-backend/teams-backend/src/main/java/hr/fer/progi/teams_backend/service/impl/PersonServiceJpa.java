@@ -2,12 +2,17 @@ package hr.fer.progi.teams_backend.service.impl;
 
 import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
 import hr.fer.progi.teams_backend.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @Service
 public class PersonServiceJpa implements PersonService {
@@ -16,13 +21,16 @@ public class PersonServiceJpa implements PersonService {
     private PersonRepository personRepository;
 
     @Override
-    public List<Person> listAll() {
-        return personRepository.findAll();
+    public List<PersonDTO> listAll() {
+        return personRepository.findAll().stream()
+                .map(PersonMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Person fetchPerson(Long id) {
-        return personRepository.findById(id).orElse(null);
+    public PersonDTO fetchPerson(Long id) {
+        Person person = personRepository.findById(id).orElse(null);
+        return person != null ? PersonMapper.toDTO(person) : null;
     }
 
     @Override
@@ -37,13 +45,18 @@ public class PersonServiceJpa implements PersonService {
         Person updatePerson = personRepository.findById(id).orElse(null);
         Assert.notNull(updatePerson, "Person by the ID of " + id + " does not exist");
 
-        updatePerson.setAuthority(person.getAuthority());
         updatePerson.setFirstName(person.getFirstName());
         updatePerson.setLastName(person.getLastName());
         updatePerson.setEmail(person.getEmail());
-        updatePerson.setFavouriteIngredients(person.getFavouriteIngredients());
         updatePerson.setAbout(person.getAbout());
-        updatePerson.setRecipes(person.getRecipes());
+        updatePerson.setUsername(person.getUsername());
+        updatePerson.setPassword(person.getPassword());
+
+        updatePerson.setRole(person.getRole());
+        updatePerson.setRatings(person.getRatings());
+        updatePerson.setFavoriteRecipes(person.getFavoriteRecipes());
+        updatePerson.setChefRecipes(person.getChefRecipes());
+        updatePerson.setUserRecipes(person.getUserRecipes());
 
         return personRepository.save(updatePerson);
     }

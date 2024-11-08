@@ -1,29 +1,41 @@
 package hr.fer.progi.teams_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
+@Data
 @Getter
 @Setter
 @Entity
+@Table(name = "RECIPE")
 public class Recipe {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long recipeId;
 
-    private String ingredients;
+    protected String procedure;
+    protected boolean publicity;
+    protected int timeToCook;
+    protected String title;
+    protected String description;
+    protected boolean waitingApproval;
 
-    private String procedure;
+    @ManyToOne
+    @JoinColumn(name = "chefId", nullable = true)
+    protected Person chef;
 
-    private String type;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    protected Person user;
 
-    private String timeToCook;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    protected List<Rating> ratings;
 
-    private String name;
-
-    private double averageRating;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    protected List<RecipeIngredient> ingredients;
 
 }

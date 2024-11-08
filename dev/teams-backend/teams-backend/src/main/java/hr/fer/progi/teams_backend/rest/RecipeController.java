@@ -1,6 +1,7 @@
 package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Recipe;
+import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,12 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @GetMapping("")
-    public List<Recipe> listRecipes() {
+    public List<RecipeDTO> listRecipes() {
         return recipeService.listAll();
     }
 
     @GetMapping("/{id}")
-    public Recipe getRecipe(@PathVariable Long id) {
+    public RecipeDTO getRecipe(@PathVariable Long id) {
         return recipeService.fetchRecipe(id);
     }
 

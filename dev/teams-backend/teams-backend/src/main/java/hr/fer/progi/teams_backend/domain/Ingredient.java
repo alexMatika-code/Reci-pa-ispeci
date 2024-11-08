@@ -1,20 +1,22 @@
 package hr.fer.progi.teams_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 public class Ingredient {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long ingredientId;
 
-    private String name;
+    protected String name;
+    protected String description;
 
-    private String description;
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
+    protected List<RecipeIngredient> recipes;
 }

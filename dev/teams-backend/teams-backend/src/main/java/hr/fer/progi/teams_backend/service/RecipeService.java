@@ -1,14 +1,15 @@
 package hr.fer.progi.teams_backend.service;
 
 import hr.fer.progi.teams_backend.domain.Recipe;
+import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 
 import java.util.List;
 
 public interface RecipeService {
 
-    List<Recipe> listAll();
+    List<RecipeDTO> listAll();
 
-    Recipe fetchRecipe(Long id);
+    RecipeDTO fetchRecipe(Long id);
 
     void deleteRecipe(Long id);
 
