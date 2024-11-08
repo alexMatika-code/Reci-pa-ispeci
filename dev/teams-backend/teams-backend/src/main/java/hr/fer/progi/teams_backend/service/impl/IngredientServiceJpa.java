@@ -44,7 +44,6 @@ public class IngredientServiceJpa implements IngredientService {
         Assert.notNull(updateIngredient, "Ingredient by the ID of " + id + " does not exist");
 
         updateIngredient.setName(ingredient.getName());
-        updateIngredient.setDescription(ingredient.getDescription());
 
         return ingredientRepository.save(updateIngredient);
     }

@@ -6,5 +6,4 @@ import lombok.Data;
 public class IngredientDTO {
     private Long ingredientId;
     private String name;
-    private String description;
 }
