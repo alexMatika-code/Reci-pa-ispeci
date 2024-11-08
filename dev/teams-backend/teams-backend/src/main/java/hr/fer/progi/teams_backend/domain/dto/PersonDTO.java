@@ -3,6 +3,7 @@ package hr.fer.progi.teams_backend.domain.dto;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class PersonDTO {
@@ -14,7 +15,6 @@ public class PersonDTO {
 
     private List<RatingDTO> ratings;
     private List<RecipeDTO> recipes;
-    private List<Long> favoriteRecipeIds;
-
+    private Set<IngredientDTO> favoriteIngredients;
 
 }

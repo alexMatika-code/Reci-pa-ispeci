@@ -21,16 +21,17 @@ public class PersonMapper {
         dto.setUsername(person.getUsername());
         dto.setEmail(person.getEmail());
 
-        // Map recipes to RecipeDTOs
         dto.setRecipes(person.getChefRecipes().stream()
                 .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList()));
 
-        // Map ratings to RatingDTOs
         dto.setRatings(person.getRatings().stream()
                 .map(RatingMapper::toDTO)
                 .collect(Collectors.toList()));
 
+        dto.setFavoriteIngredients(person.getFavoriteIngredients().stream()
+                .map(IngredientMapper::toDTO)
+                .collect(Collectors.toSet()));
         return dto;
     }
 }

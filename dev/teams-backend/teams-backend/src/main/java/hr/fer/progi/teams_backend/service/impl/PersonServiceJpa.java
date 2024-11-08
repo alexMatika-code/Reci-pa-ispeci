@@ -1,10 +1,13 @@
 package hr.fer.progi.teams_backend.service.impl;
 
+import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.dao.PersonRepository;
+import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
 import hr.fer.progi.teams_backend.service.PersonService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -19,6 +22,9 @@ public class PersonServiceJpa implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @Override
     public List<PersonDTO> listAll() {
@@ -54,7 +60,6 @@ public class PersonServiceJpa implements PersonService {
 
         updatePerson.setRole(person.getRole());
         updatePerson.setRatings(person.getRatings());
-        updatePerson.setFavoriteRecipes(person.getFavoriteRecipes());
         updatePerson.setChefRecipes(person.getChefRecipes());
         updatePerson.setUserRecipes(person.getUserRecipes());
 
@@ -65,5 +70,29 @@ public class PersonServiceJpa implements PersonService {
     public Person createPerson(Person person) {
         Assert.notNull(person, "Person object must be given");
         return personRepository.save(person);
+    }
+
+    @Override
+    @Transactional
+    public void addFavoriteIngredient(Long personId, Long ingredientId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found with id: " + personId));
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + ingredientId));
+
+        person.getFavoriteIngredients().add(ingredient);
+        personRepository.save(person);
+    }
+
+    @Override
+    @Transactional
+    public void removeFavoriteIngredient(Long personId, Long ingredientId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found with id: " + personId));
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + ingredientId));
+
+        person.getFavoriteIngredients().remove(ingredient);
+        personRepository.save(person);
     }
 }

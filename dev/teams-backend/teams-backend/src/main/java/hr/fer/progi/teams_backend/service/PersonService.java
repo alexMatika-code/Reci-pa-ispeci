@@ -16,4 +16,8 @@ public interface PersonService {
     Person updatePerson(Long id, Person person);
 
     Person createPerson(Person person);
+
+    void addFavoriteIngredient(Long personId, Long ingredientId);
+
+    void removeFavoriteIngredient(Long personId, Long ingredientId);
 }
