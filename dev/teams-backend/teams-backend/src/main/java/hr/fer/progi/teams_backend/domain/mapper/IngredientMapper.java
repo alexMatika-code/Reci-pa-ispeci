@@ -15,7 +15,6 @@ public class IngredientMapper {
         IngredientDTO dto = new IngredientDTO();
         dto.setIngredientId(ingredient.getIngredientId());
         dto.setName(ingredient.getName());
-        dto.setDescription(ingredient.getDescription());
         return dto;
     }
 

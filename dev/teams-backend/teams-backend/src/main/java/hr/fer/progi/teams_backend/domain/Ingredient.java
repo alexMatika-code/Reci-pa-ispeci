@@ -15,7 +15,6 @@ public class Ingredient {
     protected Long ingredientId;
 
     protected String name;
-    protected String description;
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     protected List<RecipeIngredient> recipes;
