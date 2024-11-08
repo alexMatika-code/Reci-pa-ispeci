@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import {BsGithub, BsGoogle} from "react-icons/bs";
+import RecipeCard from "../components/RecipeCard.jsx";
 
 
 // eslint-disable-next-line react/prop-types

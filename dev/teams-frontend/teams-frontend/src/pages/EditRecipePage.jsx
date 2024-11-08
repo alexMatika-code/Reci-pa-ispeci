@@ -157,6 +157,7 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                 transition: Slide
             />
         </div>
+
     );
 };
 

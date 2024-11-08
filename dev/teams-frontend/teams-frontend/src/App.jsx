@@ -8,6 +8,7 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
+import EditProfile from "./pages/EditProfilePage.jsx";
 
 const App = () => {
 
@@ -51,6 +52,7 @@ const App = () => {
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
                 <Route path='*' element={<NotFoundPage />} />
                 <Route path='/card' element={<RecipeCard />} />
+                <Route path='/profile/edit' element={<EditProfile />} />
             </>
         )
     );

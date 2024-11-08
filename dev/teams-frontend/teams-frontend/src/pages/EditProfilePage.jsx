@@ -1,7 +1,7 @@
 const EditProfilePage = () => {
     return (
         <div>
-
+            Edit profilc
         </div>
     );
 };

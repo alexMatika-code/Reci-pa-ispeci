@@ -9,6 +9,7 @@ const SearchBar = ({query, setQuery}) => {
                 borderRadius: "12px",
                 border: "1px solid #ccc",
                 width: "40%",
+                height: "4%",
                 display: "flex",
                 justifyContent: "start",
                 gap: "0.5em",
