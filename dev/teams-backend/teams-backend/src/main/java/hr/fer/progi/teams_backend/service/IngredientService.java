@@ -1,14 +1,15 @@
 package hr.fer.progi.teams_backend.service;
 
 import hr.fer.progi.teams_backend.domain.Ingredient;
+import hr.fer.progi.teams_backend.domain.dto.IngredientDTO;
 
 import java.util.List;
 
 public interface IngredientService {
 
-    List<Ingredient> listAll();
+    List<IngredientDTO> listAll();
 
-    Ingredient fetchIngredient(Long id);
+    IngredientDTO fetchIngredient(Long id);
 
     void deleteIngredient(Long id);
 

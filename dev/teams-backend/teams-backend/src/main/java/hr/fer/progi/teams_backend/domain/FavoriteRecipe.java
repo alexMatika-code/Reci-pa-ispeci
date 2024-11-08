@@ -9,15 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-
-@Table(name = "RATING")
-public class Rating {
+@Table(name = "FAVORITE_RECIPE")
+public class FavoriteRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long ratingId;
-
-    protected int grade;
-    protected String comment;
+    protected Long favoriteRecipeId;
 
     @ManyToOne
     @JoinColumn(name = "personId")

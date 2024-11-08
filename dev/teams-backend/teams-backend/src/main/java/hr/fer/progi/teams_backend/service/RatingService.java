@@ -1,14 +1,15 @@
 package hr.fer.progi.teams_backend.service;
 
 import hr.fer.progi.teams_backend.domain.Rating;
+import hr.fer.progi.teams_backend.domain.dto.RatingDTO;
 
 import java.util.List;
 
 public interface RatingService {
 
-    List<Rating> listAll();
+    List<RatingDTO> listAll();
 
-    Rating fetchRating(Long id);
+    RatingDTO fetchRating(Long id);
 
     void deleteRating(Long id);
 

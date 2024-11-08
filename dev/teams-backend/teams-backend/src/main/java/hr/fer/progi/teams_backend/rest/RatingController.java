@@ -1,6 +1,7 @@
 package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Rating;
+import hr.fer.progi.teams_backend.domain.dto.RatingDTO;
 import hr.fer.progi.teams_backend.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,12 @@ public class RatingController {
     private RatingService ratingService;
 
     @GetMapping
-    public List<Rating> getRatings() {
+    public List<RatingDTO> getRatings() {
         return ratingService.listAll();
     }
 
     @GetMapping("/{id}")
-    public Rating getRating(@PathVariable Long id) {
+    public RatingDTO getRating(@PathVariable Long id) {
         return ratingService.fetchRating(id);
     }
 
