@@ -26,6 +26,12 @@ public class RecipeMapper {
                 .map(RatingMapper::toDTO)
                 .collect(Collectors.toList()));
 
+        dto.setIngredients(
+                recipe.getIngredients().stream()
+                        .map(IngredientMapper::toDTO)
+                        .collect(Collectors.toSet())
+        );
+
         return dto;
     }
 }

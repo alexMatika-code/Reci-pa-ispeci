@@ -4,6 +4,7 @@ import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,5 +39,17 @@ public class RecipeController {
     @PostMapping
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return recipeService.createRecipe(recipe);
+    }
+
+    @PostMapping("/{recipeId}/addIngredient/{ingredientId}")
+    public ResponseEntity<?> addIngredientToRecipe(@PathVariable Long recipeId, @PathVariable Long ingredientId) {
+        recipeService.addIngredientToRecipe(recipeId, ingredientId);
+        return ResponseEntity.ok("Ingredient added to recipe.");
+    }
+
+    @DeleteMapping("/{recipeId}/removeIngredient/{ingredientId}")
+    public ResponseEntity<?> removeIngredientFromRecipe(@PathVariable Long recipeId, @PathVariable Long ingredientId) {
+        recipeService.removeIngredientFromRecipe(recipeId, ingredientId);
+        return ResponseEntity.ok("Ingredient removed from recipe.");
     }
 }

@@ -4,6 +4,7 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,4 +40,17 @@ public class PersonController {
     public Person createPerson(@RequestBody Person person) {
         return personService.createPerson(person);
     }
+
+    @PostMapping("/{personId}/favoriteIngredient/{ingredientId}")
+    public ResponseEntity<?> addFavoriteIngredient(@PathVariable Long personId, @PathVariable Long ingredientId) {
+        personService.addFavoriteIngredient(personId, ingredientId);
+        return ResponseEntity.ok("Ingredient added to favorites.");
+    }
+
+    @DeleteMapping("/{personId}/favoriteIngredient/{ingredientId}")
+    public ResponseEntity<?> removeFavoriteIngredient(@PathVariable Long personId, @PathVariable Long ingredientId) {
+        personService.removeFavoriteIngredient(personId, ingredientId);
+        return ResponseEntity.ok("Ingredient removed from favorites.");
+    }
+
 }

@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Getter
 @Setter
 @Entity
-
 @Table(name = "PERSON")
 public class Person {
     @Id
@@ -34,12 +35,17 @@ public class Person {
     @JsonBackReference
     protected List<Rating> ratings;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
-    protected List<FavoriteRecipe> favoriteRecipes;
-
     @OneToMany(mappedBy = "chef", cascade = CascadeType.ALL)
     protected List<Recipe> chefRecipes;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     protected List<Recipe> userRecipes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "favorite_ingredients",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> favoriteIngredients = new HashSet<>();
 }

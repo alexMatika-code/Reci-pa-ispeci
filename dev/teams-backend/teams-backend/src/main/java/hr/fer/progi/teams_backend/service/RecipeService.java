@@ -16,4 +16,8 @@ public interface RecipeService {
     Recipe updateRecipe(Long id, Recipe recipe);
 
     Recipe createRecipe(Recipe recipe);
+
+    void addIngredientToRecipe(Long recipeId, Long ingredientId);
+
+    void removeIngredientFromRecipe(Long recipeId, Long ingredientId);
 }

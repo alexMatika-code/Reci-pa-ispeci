@@ -3,8 +3,8 @@ package hr.fer.progi.teams_backend.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,6 +16,9 @@ public class Ingredient {
 
     protected String name;
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
-    protected List<RecipeIngredient> recipes;
+    @ManyToMany(mappedBy = "ingredients")
+    private Set<Recipe> recipes = new HashSet<>();
+
+    @ManyToMany(mappedBy = "favoriteIngredients")
+    private Set<Person> favoritedBy = new HashSet<>();
 }

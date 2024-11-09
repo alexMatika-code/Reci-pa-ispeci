@@ -1,13 +1,18 @@
 package hr.fer.progi.teams_backend.service.impl;
 
 import hr.fer.progi.teams_backend.dao.RoleRepository;
+import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
+import hr.fer.progi.teams_backend.domain.dto.RoleDTO;
+import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
+import hr.fer.progi.teams_backend.domain.mapper.RoleMapper;
 import hr.fer.progi.teams_backend.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceJpa implements RoleService {
@@ -15,13 +20,16 @@ public class RoleServiceJpa implements RoleService {
     private RoleRepository roleRepository;
 
     @Override
-    public List<Role> listAll() {
-        return roleRepository.findAll();
+    public List<RoleDTO> listAll() {
+        return roleRepository.findAll().stream()
+                .map(RoleMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Role fetchRole(Long id) {
-        return roleRepository.findById(id).orElse(null);
+    public RoleDTO fetchRole(Long id) {
+        Role role = roleRepository.findById(id).orElse(null);
+        return role != null ? RoleMapper.toDTO(role) : null;
     }
 
     @Override
