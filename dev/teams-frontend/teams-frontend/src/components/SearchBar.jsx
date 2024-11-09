@@ -11,6 +11,7 @@ const SearchBar = ({query, setQuery}) => {
                 width: "40%",
                 height: "4%",
                 display: "flex",
+                backgroundColor: "white",
                 justifyContent: "start",
                 gap: "0.5em",
                 alignItems: "center",

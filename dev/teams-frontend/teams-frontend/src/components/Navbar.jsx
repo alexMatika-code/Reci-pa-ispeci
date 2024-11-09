@@ -15,6 +15,10 @@ function Navbar() {
     const navigateToEditProfile = () => {
         navigate(`/profile/edit`);
     };
+
+    const navigateToHome = () => {
+        navigate(`/`);
+    }
     return (
         <div style={{
             width: '100%',
@@ -25,7 +29,11 @@ function Navbar() {
             <header className="App-header">
                 <nav className={`${styles.navbar}`}>
                     <div className="row align-items-center pl-3">
-                        <div className="col-1">
+                        <div className="col-1"
+                             style={{
+                                 cursor: "pointer"
+                             }}
+                             onClick={navigateToHome}>
                             <img src={logo} className={`${styles.logo}`} alt="logo"/>
                         </div>
                         <div className="col-8">
@@ -54,7 +62,7 @@ function Navbar() {
                                  fontSize: 50,
                                  cursor: "pointer"
                              }}
-                        onClick={navigateToEditProfile}>
+                             onClick={navigateToEditProfile}>
                             <BsPersonCircle/>
                         </div>
                     </div>

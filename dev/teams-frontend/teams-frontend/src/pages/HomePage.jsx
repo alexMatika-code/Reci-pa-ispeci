@@ -5,22 +5,23 @@ import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import {BsFillXCircleFill} from "react-icons/bs";
 import {BsChatDotsFill} from "react-icons/bs";
-import RecipeCard from "../components/RecipeCard.jsx";
 import Spagheti from "../assets/spaghetiCarbonara.jpeg";
 import {useNavigate} from "react-router-dom";
+import {BsFunnelFill} from "react-icons/bs";
+import FilterRecipes from "../components/FilterRecipes.jsx";
+import RecipeCards from "../components/RecipeCards.jsx";
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
     const [showChat, setShowChat] = useState(false);
     const navigate = useNavigate();
 
+    const [ingredients, setIngredients] = useState([]);
+
     const toggleChat = () => {
         setShowChat((prev) => !prev);
     };
 
-    const navigateToRecipe = (recipe) => {
-        navigate(`/recipe/${recipe.name}`, {state: recipe});
-    };
 
     const user = {
         uid: "123",
@@ -73,6 +74,9 @@ const HomePage = () => {
         <div>
             <Navbar/>
             <div className="search-bar-container">
+                <div className={"rounded-circle filter-div"}>
+                    <FilterRecipes ingredients={ingredients} setIngredients={setIngredients}></FilterRecipes>
+                </div>
                 <SearchBar query={query} setQuery={setQuery}/>
                 <div className="chat-icon-container">
                     {showChat ? (
@@ -82,21 +86,7 @@ const HomePage = () => {
                     )}
                 </div>
             </div>
-            <div className="recipe-list">
-                {filteredRecipes.length > 0 ? (
-                    filteredRecipes.map((recipe, index) => (
-                        <RecipeCard
-                            onClick={() => navigateToRecipe(recipe)}
-                            key={index}
-                            image={recipe.image}
-                            name={recipe.name}
-                            description={recipe.description}
-                        />
-                    ))
-                ) : (
-                    <p>Nema takvih recepata</p>
-                )}
-            </div>
+            <RecipeCards filteredRecipes={filteredRecipes}></RecipeCards>
             {showChat && (
                 <div className="chat-box-container">
                     <div className="chat-box-header">
