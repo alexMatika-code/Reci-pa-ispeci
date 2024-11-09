@@ -15,8 +15,6 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.stream;
-
 @Service
 public class PersonServiceJpa implements PersonService {
 
@@ -37,6 +35,11 @@ public class PersonServiceJpa implements PersonService {
     public PersonDTO fetchPerson(Long id) {
         Person person = personRepository.findById(id).orElse(null);
         return person != null ? PersonMapper.toDTO(person) : null;
+    }
+
+    @Override
+    public Person getPerson(Long id){
+        return personRepository.findById(id).orElse(null);
     }
 
     @Override

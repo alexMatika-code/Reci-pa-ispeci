@@ -21,7 +21,7 @@ public class PersonMapper {
         dto.setUsername(person.getUsername());
         dto.setEmail(person.getEmail());
 
-        dto.setRecipes(person.getChefRecipes().stream()
+        dto.setRecipes(person.getUserRecipes().stream()
                 .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList()));
 
