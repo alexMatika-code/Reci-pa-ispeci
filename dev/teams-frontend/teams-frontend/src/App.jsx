@@ -8,10 +8,12 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 import EditProfile from "./pages/EditProfilePage.jsx";
 
 const App = () => {
 
+    // Authentication
     const signUp = async (user) => {
         const res = await fetch('/api/register', {
             method: 'POST',
@@ -34,6 +36,7 @@ const App = () => {
         return res.json();
     }
 
+    // Recipe manipulation
     const addRecipe = async (formData) => {
         const res = await fetch('/api/recipes', {
             method: 'POST',
@@ -45,13 +48,20 @@ const App = () => {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <>
+                {/* Home page */}
                 <Route index element={<HomePage />} />
-                <Route path='/recipe/:id' element={<RecipePage />} />
+                {/* Auth page */}
                 <Route path='sign-in' element={<SignInPage signInSubmit={signIn} />} />
                 <Route path='sign-up' element={<SignUpPage signUpSubmit={signUp} />} />
+                {/* Recipe related pages */}
+                <Route path='/recipe/:id' element={<RecipePage />} />
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
-                <Route path='*' element={<NotFoundPage />} />
                 <Route path='/card' element={<RecipeCard />} />
+                {/* User related pages */}
+                {/*<Route path='/profile' element={<ProfilePage />} />*/}
+                <Route path='/profile/:username' element={<ProfilePage />} />
+                {/* Not found page */}
+                <Route path='*' element={<NotFoundPage />} />
                 <Route path='/profile/edit' element={<EditProfile />} />
             </>
         )
