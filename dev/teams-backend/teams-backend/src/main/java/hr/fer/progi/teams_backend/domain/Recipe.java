@@ -25,6 +25,7 @@ public class Recipe {
     protected String title;
     protected String description;
     protected boolean waitingApproval;
+    private byte[] image;
 
     @ManyToOne
     @JoinColumn(name = "chefId", nullable = true)
