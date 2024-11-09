@@ -18,6 +18,7 @@ public class RecipeDTO {
     private Long userId;
     private List<RatingDTO> ratings;
 
+    private String imageBase64;
     private Set<IngredientDTO> ingredients;
 
 }
