@@ -3,10 +3,10 @@ import {useParams} from "react-router-dom";
 import {Row, Container} from "react-bootstrap";
 import profilepic from "../assets/pfp.jpg";
 import Navbar from "../components/Navbar.jsx";
-import RecipeCard from "../components/RecipeCard.jsx";
 import ProfileCard from "../components/ProfileCard.jsx";
 import ProfileInfoCards from "../components/ProfileInfoCards.jsx";
 import Spinner from "../components/Spinner.jsx";
+import RecipeCards from "../components/RecipeCards.jsx";
 
 const ProfilePage = () => {
     const [user, setUser] = useState({
@@ -59,21 +59,7 @@ const ProfilePage = () => {
 
                             {/* recipes */}
                             <h5 className={"mt-3 ml-16 color-dsg font-weight-600"}>📔 Recepti korisnika</h5>
-                            <div className={'d-flex'}>
-                                <RecipeCard/>
-                                <RecipeCard/>
-                                <RecipeCard/>
-                            </div>
-                            <div className={'d-flex'}>
-                                <RecipeCard/>
-                                <RecipeCard/>
-                                <RecipeCard/>
-                            </div>
-                            <div className={'d-flex'}>
-                                <RecipeCard/>
-                                <RecipeCard/>
-                                <RecipeCard/>
-                            </div>
+                            <RecipeCards filteredRecipes={""}></RecipeCards>
                         </Container>
                     </Row>
                 </div>

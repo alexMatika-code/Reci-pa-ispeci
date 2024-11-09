@@ -13,7 +13,7 @@ function Navbar() {
     }
 
     const navigateToEditProfile = () => {
-        navigate(`/profile/edit`);
+        navigate(`/profile/:username`);
     };
 
     const navigateToHome = () => {

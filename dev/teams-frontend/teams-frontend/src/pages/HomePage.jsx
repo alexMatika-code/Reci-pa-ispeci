@@ -1,20 +1,14 @@
 import {useState} from "react";
-import {BsChatDots} from "react-icons/bs";
-import {ChatBox} from "react-chatbox-component";
+import {BsChatDots, BsChatDotsFill, BsFillXCircleFill} from "react-icons/bs";
 import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
-import {BsFillXCircleFill} from "react-icons/bs";
-import {BsChatDotsFill} from "react-icons/bs";
 import Spagheti from "../assets/spaghetiCarbonara.jpeg";
-import {useNavigate} from "react-router-dom";
-import {BsFunnelFill} from "react-icons/bs";
 import FilterRecipes from "../components/FilterRecipes.jsx";
 import RecipeCards from "../components/RecipeCards.jsx";
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
     const [showChat, setShowChat] = useState(false);
-    const navigate = useNavigate();
 
     const [ingredients, setIngredients] = useState([]);
 
@@ -87,16 +81,6 @@ const HomePage = () => {
                 </div>
             </div>
             <RecipeCards filteredRecipes={filteredRecipes}></RecipeCards>
-            {showChat && (
-                <div className="chat-box-container">
-                    <div className="chat-box-header">
-                        <button className="close-button" onClick={toggleChat}>
-                            <BsFillXCircleFill/>
-                        </button>
-                    </div>
-                    <ChatBox typingIndicator={true} user={user}/>
-                </div>
-            )}
         </div>
     );
 };
