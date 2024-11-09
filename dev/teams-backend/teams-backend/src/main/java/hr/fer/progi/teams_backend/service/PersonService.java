@@ -20,4 +20,6 @@ public interface PersonService {
     void addFavoriteIngredient(Long personId, Long ingredientId);
 
     void removeFavoriteIngredient(Long personId, Long ingredientId);
+
+    PersonDTO findByEmail(String email);
 }

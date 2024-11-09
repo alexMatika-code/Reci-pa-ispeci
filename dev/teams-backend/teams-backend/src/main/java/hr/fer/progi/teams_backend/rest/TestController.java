@@ -16,8 +16,21 @@ public class TestController {
         return new RedirectView("/oauth2/authorization/google");
     }
 
-    @GetMapping("/user")
-    public Principal user(Principal user) {
-        return user;
+    @GetMapping("/home")
+    public String home() {
+        return "<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                    "<meta charset=UTF-8>" +
+                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+                    "<title>Favorite Ingredient</title>" +
+                "</head>" +
+                "<body>" +
+                "<h1>Select Your Favorite Ingredient</h1>" +
+                "<form id=\"ingredientForm\" method=\"POST\" action=\"http://localhost:8080/people/favoriteIngredient/1\">"+
+                    "<button type=\"submit\">Submit</button>" +
+                "</form>" +
+                "</body>" +
+                "</html>";
     }
 }
