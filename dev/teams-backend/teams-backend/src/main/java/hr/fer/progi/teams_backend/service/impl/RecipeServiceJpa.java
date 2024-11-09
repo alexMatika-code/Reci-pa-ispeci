@@ -4,6 +4,7 @@ import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Recipe;
+import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.IngredientService;
@@ -13,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,5 +93,30 @@ public class RecipeServiceJpa implements RecipeService {
 
         recipe.getIngredients().remove(ingredient);
         recipeRepository.save(recipe);
+    }
+
+
+    @Override
+    public Recipe createRecipeWithImage(CreateRecipeDTO createRecipeDTO) throws IOException {
+        Recipe recipe = new Recipe();
+        recipe.setTitle(createRecipeDTO.getTitle());
+        recipe.setDescription(createRecipeDTO.getDescription());
+        recipe.setTimeToCook(createRecipeDTO.getTimeToCook());
+        recipe.setProcedure(createRecipeDTO.getProcedure());
+        recipe.setPublicity(createRecipeDTO.isPublicity());
+        recipe.setWaitingApproval(createRecipeDTO.isPublicity());
+
+        // Convert MultipartFile to byte[]
+        if (createRecipeDTO.getImage() != null && !createRecipeDTO.getImage().isEmpty()) {
+            recipe.setImage(createRecipeDTO.getImage().getBytes());
+        }
+
+        Set<Ingredient> ingredients = createRecipeDTO.getIngredientIds().stream()
+                .map(id -> ingredientRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Ingredient not found with ID: " + id)))
+                .collect(Collectors.toSet());
+        recipe.setIngredients(ingredients);
+
+        return recipeRepository.save(recipe);
     }
 }

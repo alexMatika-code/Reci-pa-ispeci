@@ -1,12 +1,15 @@
 package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Recipe;
+import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -51,5 +54,16 @@ public class RecipeController {
     public ResponseEntity<?> removeIngredientFromRecipe(@PathVariable Long recipeId, @PathVariable Long ingredientId) {
         recipeService.removeIngredientFromRecipe(recipeId, ingredientId);
         return ResponseEntity.ok("Ingredient removed from recipe.");
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createRecipe(@ModelAttribute CreateRecipeDTO createRecipeDTO) {
+        try {
+            // Multipart file to byte
+            Recipe createdRecipe = recipeService.createRecipeWithImage(createRecipeDTO);
+            return ResponseEntity.ok("Recipe created successfully with ID: " + createdRecipe.getRecipeId());
+        } catch (IOException e) {
+            return ResponseEntity.status(400).body("Failed to upload image");
+        }
     }
 }
