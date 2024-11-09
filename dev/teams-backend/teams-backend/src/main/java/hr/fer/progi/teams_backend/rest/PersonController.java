@@ -4,7 +4,10 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,16 +44,28 @@ public class PersonController {
         return personService.createPerson(person);
     }
 
-    @PostMapping("/{personId}/favoriteIngredient/{ingredientId}")
-    public ResponseEntity<?> addFavoriteIngredient(@PathVariable Long personId, @PathVariable Long ingredientId) {
-        personService.addFavoriteIngredient(personId, ingredientId);
-        return ResponseEntity.ok("Ingredient added to favorites.");
+    @PostMapping("/favoriteIngredient/{ingredientId}")
+    public ResponseEntity<?> addFavoriteIngredient(@PathVariable Long ingredientId, Authentication authentication) {
+        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+        PersonDTO person = personService.findByEmail(email);
+        if (person != null) {
+            personService.addFavoriteIngredient(person.getPersonId(), ingredientId);
+            return ResponseEntity.ok("Ingredient added to favorites.");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
     }
 
-    @DeleteMapping("/{personId}/favoriteIngredient/{ingredientId}")
-    public ResponseEntity<?> removeFavoriteIngredient(@PathVariable Long personId, @PathVariable Long ingredientId) {
-        personService.removeFavoriteIngredient(personId, ingredientId);
-        return ResponseEntity.ok("Ingredient removed from favorites.");
+    @DeleteMapping("favoriteIngredient/{ingredientId}")
+    public ResponseEntity<?> removeFavoriteIngredient(@PathVariable Long ingredientId, Authentication authentication) {
+        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+        PersonDTO person = personService.findByEmail(email);
+        if (person != null) {
+            personService.removeFavoriteIngredient(person.getPersonId(), ingredientId);
+            return ResponseEntity.ok("Ingredient removed from favorites.");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
     }
 
 }

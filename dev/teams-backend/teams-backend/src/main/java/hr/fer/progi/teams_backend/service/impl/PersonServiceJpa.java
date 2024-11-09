@@ -45,6 +45,12 @@ public class PersonServiceJpa implements PersonService {
     }
 
     @Override
+    public PersonDTO findByEmail(String email) {
+        Person person = personRepository.findByEmail(email).orElse(null);
+        return person != null ? PersonMapper.toDTO(person) : null;
+    }
+
+    @Override
     public Person updatePerson(Long id, Person person) {
         Assert.notNull(person, "Person object must be given");
 
