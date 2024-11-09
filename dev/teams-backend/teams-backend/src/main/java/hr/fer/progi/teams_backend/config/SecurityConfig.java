@@ -29,7 +29,7 @@ public class SecurityConfig {
 
     @Autowired
     private PersonRepository personRepository;
-    private final String frontendUrl = "http://localhost:8080/home";
+    private final String frontendUrl = "http://localhost:8080/user";
     //PRIVREMENA ADRESA RADI TESTIRANJA
 
 
@@ -70,6 +70,7 @@ public class SecurityConfig {
                 newUser.setRole(role);
                 personRepository.save(newUser);
             }
+
             response.sendRedirect(frontendUrl);
         }
     }
