@@ -1,8 +1,10 @@
 package hr.fer.progi.teams_backend.service.impl;
 
+import hr.fer.progi.teams_backend.constants.Roles;
 import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
+import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
@@ -28,6 +30,8 @@ public class RecipeServiceJpa implements RecipeService {
 
     @Autowired
     private IngredientRepository ingredientRepository;
+    @Autowired
+    private PersonServiceJpa personServiceJpa;
 
     @Override
     public List<RecipeDTO> listAll() {
@@ -97,7 +101,7 @@ public class RecipeServiceJpa implements RecipeService {
 
 
     @Override
-    public Recipe createRecipeWithImage(CreateRecipeDTO createRecipeDTO) throws IOException {
+    public Recipe createRecipeWithImage(CreateRecipeDTO createRecipeDTO,Long personId) throws IOException {
         Recipe recipe = new Recipe();
         recipe.setTitle(createRecipeDTO.getTitle());
         recipe.setDescription(createRecipeDTO.getDescription());
@@ -106,7 +110,15 @@ public class RecipeServiceJpa implements RecipeService {
         recipe.setPublicity(createRecipeDTO.isPublicity());
         recipe.setWaitingApproval(createRecipeDTO.isPublicity());
 
-        // Convert MultipartFile to byte[]
+        Person person = personServiceJpa.getPerson(personId);
+        recipe.setUser(person);
+        if(person.getRole().getName().equals(Roles.CHEF)){
+            recipe.setChef(person);
+        }
+        if(person.getRole().getName().equals(Roles.ADMIN)){
+            recipe.setChef(person);
+        }
+
         if (createRecipeDTO.getImage() != null && !createRecipeDTO.getImage().isEmpty()) {
             recipe.setImage(createRecipeDTO.getImage().getBytes());
         }

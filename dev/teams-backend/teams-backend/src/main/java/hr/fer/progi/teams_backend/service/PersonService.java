@@ -22,4 +22,6 @@ public interface PersonService {
     void removeFavoriteIngredient(Long personId, Long ingredientId);
 
     PersonDTO findByEmail(String email);
+
+    public Person getPerson(Long id);
 }

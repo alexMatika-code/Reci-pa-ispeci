@@ -2,10 +2,15 @@ package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
+import hr.fer.progi.teams_backend.service.PersonService;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +23,9 @@ public class RecipeController {
 
     @Autowired
     private RecipeService recipeService;
+
+    @Autowired
+    private PersonService personService;
 
     @GetMapping("")
     public List<RecipeDTO> listRecipes() {
@@ -57,13 +65,24 @@ public class RecipeController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createRecipe(@ModelAttribute CreateRecipeDTO createRecipeDTO) {
-        try {
-            // Multipart file to byte
-            Recipe createdRecipe = recipeService.createRecipeWithImage(createRecipeDTO);
-            return ResponseEntity.ok("Recipe created successfully with ID: " + createdRecipe.getRecipeId());
-        } catch (IOException e) {
-            return ResponseEntity.status(400).body("Failed to upload image");
+    public ResponseEntity<?> createRecipe(@ModelAttribute CreateRecipeDTO createRecipeDTO, Authentication authentication) {
+        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+        PersonDTO person = personService.findByEmail(email);
+
+        if (person != null) {
+            try {
+                // Multipart file to byte
+                Recipe createdRecipe = recipeService.createRecipeWithImage(createRecipeDTO,person.getPersonId());
+
+                //add recipe to user
+
+                return ResponseEntity.ok("Recipe created successfully with ID: " + createdRecipe.getRecipeId() + " user id " + person.getPersonId());
+            } catch (IOException e) {
+                return ResponseEntity.status(400).body("Failed to upload image");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
+
     }
 }

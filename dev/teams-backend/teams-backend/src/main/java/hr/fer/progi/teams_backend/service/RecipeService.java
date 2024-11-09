@@ -23,6 +23,6 @@ public interface RecipeService {
 
     void removeIngredientFromRecipe(Long recipeId, Long ingredientId);
 
-    Recipe createRecipeWithImage(CreateRecipeDTO createRecipeDTO) throws IOException;
+    Recipe createRecipeWithImage(CreateRecipeDTO createRecipeDTO,Long personId) throws IOException;
 
 }
