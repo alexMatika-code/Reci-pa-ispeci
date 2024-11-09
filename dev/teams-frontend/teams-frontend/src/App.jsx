@@ -9,6 +9,7 @@ import SignUpPage from './pages/SignUpPage';
 import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import EditProfile from "./pages/EditProfilePage.jsx";
 
 const App = () => {
 
@@ -61,6 +62,7 @@ const App = () => {
                 <Route path='/profile/:username' element={<ProfilePage />} />
                 {/* Not found page */}
                 <Route path='*' element={<NotFoundPage />} />
+                <Route path='/profile/edit' element={<EditProfile />} />
             </>
         )
     );
