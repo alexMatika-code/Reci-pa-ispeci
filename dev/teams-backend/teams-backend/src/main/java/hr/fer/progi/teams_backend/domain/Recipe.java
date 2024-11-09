@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Getter
@@ -32,10 +34,15 @@ public class Recipe {
     @JoinColumn(name = "userId")
     protected Person user;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    protected List<Rating> ratings;
+    @ManyToMany
+    @JoinTable(
+            name = "recipe_ingredients",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    protected List<RecipeIngredient> ingredients;
+    protected List<Rating> ratings;
 
 }

@@ -1,10 +1,14 @@
 package hr.fer.progi.teams_backend.service.impl;
 
+import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
+import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
+import hr.fer.progi.teams_backend.service.IngredientService;
 import hr.fer.progi.teams_backend.service.RecipeService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -17,6 +21,9 @@ public class RecipeServiceJpa implements RecipeService {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @Override
     public List<RecipeDTO> listAll() {
@@ -58,5 +65,29 @@ public class RecipeServiceJpa implements RecipeService {
     public Recipe createRecipe(Recipe recipe) {
         Assert.notNull(recipe, "Recipe object must be given");
         return recipeRepository.save(recipe);
+    }
+
+    @Override
+    @Transactional
+    public void addIngredientToRecipe(Long recipeId, Long ingredientId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + recipeId));
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + ingredientId));
+
+        recipe.getIngredients().add(ingredient);
+        recipeRepository.save(recipe);
+    }
+
+    @Override
+    @Transactional
+    public void removeIngredientFromRecipe(Long recipeId, Long ingredientId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + recipeId));
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + ingredientId));
+
+        recipe.getIngredients().remove(ingredient);
+        recipeRepository.save(recipe);
     }
 }
