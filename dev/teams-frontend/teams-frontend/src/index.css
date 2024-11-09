@@ -9,16 +9,46 @@
     padding: 0;
 }
 
+.pt-80{
+    padding-top: 80px;
+}
+
+.ml-16{
+    margin-left: 16px;
+}
+
+.max-w-85{
+    max-width: 85% !important;
+}
+
 .text-align-left{
     text-align: left !important;
 }
 
-.recipeCard{
-    border: white 3px solid; !important;
-    outline: gray 3px solid;
+.font-weight-600{
+    font-weight: 600 !important;
 }
 
-.ingredientEntry:hover{
-    background-color: red !important;
-    cursor: pointer;
+.bold{
+    font-weight: bold;
+}
+
+.color-dsg{
+    color: darkslategray;
+}
+
+.color-lsg{
+    color: lightslategray;
+}
+
+.bg-whitesmoke{
+    background-color: whitesmoke;
+}
+
+.font-1-2rem{
+    font-size: 1.2rem !important;
+}
+
+.font-1-4rem{
+    font-size: 1.4rem !important;
 }
