@@ -16,4 +16,6 @@ public interface IngredientService {
     Ingredient updateIngredient(Long id, Ingredient ingredient);
 
     Ingredient createIngredient(Ingredient ingredient);
+
+    List<IngredientDTO> searchIngredientsByName(String namePart);
 }

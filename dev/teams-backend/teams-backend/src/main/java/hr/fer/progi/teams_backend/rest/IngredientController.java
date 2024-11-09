@@ -39,4 +39,9 @@ public class IngredientController {
     public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
         return ingredientService.createIngredient(ingredient);
     }
+
+    @GetMapping("/search")
+    public List<IngredientDTO> searchIngredients(@RequestParam String namePart) {
+        return ingredientService.searchIngredientsByName(namePart);
+    }
 }

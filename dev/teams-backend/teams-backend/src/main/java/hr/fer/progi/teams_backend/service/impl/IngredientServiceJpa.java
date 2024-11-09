@@ -53,4 +53,12 @@ public class IngredientServiceJpa implements IngredientService {
         Assert.notNull(ingredient, "Ingredient object must be given");
         return ingredientRepository.save(ingredient);
     }
+
+    @Override
+    public List<IngredientDTO> searchIngredientsByName(String namePart) {
+        return ingredientRepository.findByNameContainingIgnoreCase(namePart)
+                .stream()
+                .map(IngredientMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

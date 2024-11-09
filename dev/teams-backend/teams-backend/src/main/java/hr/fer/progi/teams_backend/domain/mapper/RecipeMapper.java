@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,7 +22,6 @@ public class RecipeMapper {
         dto.setProcedure(recipe.getProcedure());
         dto.setPublicity(recipe.isPublicity());
         dto.setTimeToCook(recipe.getTimeToCook());
-
         dto.setRatings(recipe.getRatings().stream()
                 .map(RatingMapper::toDTO)
                 .collect(Collectors.toList()));
@@ -31,6 +31,12 @@ public class RecipeMapper {
                         .map(IngredientMapper::toDTO)
                         .collect(Collectors.toSet())
         );
+
+        if (recipe.getImage() != null) {
+            dto.setImageBase64(Base64.getEncoder().encodeToString(recipe.getImage()));
+        }else{
+            dto.setImageBase64(null);
+        }
 
         return dto;
     }
