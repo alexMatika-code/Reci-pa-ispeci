@@ -9,15 +9,16 @@ import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
-import hr.fer.progi.teams_backend.service.IngredientService;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -130,5 +131,12 @@ public class RecipeServiceJpa implements RecipeService {
         recipe.setIngredients(ingredients);
 
         return recipeRepository.save(recipe);
+    }
+
+    @Override
+    public Page<RecipeDTO> listPublicRecipes(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return recipeRepository.findByPublicityTrue(pageable)
+                .map(RecipeMapper::toDTO);
     }
 }

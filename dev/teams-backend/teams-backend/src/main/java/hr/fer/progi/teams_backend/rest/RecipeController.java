@@ -85,4 +85,13 @@ public class RecipeController {
         }
 
     }
+
+    @GetMapping("/public")
+    public ResponseEntity<?> getPublicRecipes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(recipeService.listPublicRecipes(page, size));
+    }
+
+
 }
