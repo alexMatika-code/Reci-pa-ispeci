@@ -2,6 +2,7 @@ package hr.fer.progi.teams_backend.domain.mapper;
 
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Recipe;
+import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.RatingService;
@@ -67,6 +68,19 @@ public class PersonMapper {
         dto.setFavoriteIngredients(person.getFavoriteIngredients().stream()
                 .map(IngredientMapper::toDTO)
                 .collect(Collectors.toSet()));
+
+        return dto;
+    }
+
+    public static PersonAuthInfoDTO PersonToPersonAuthInfoDTO(Person person) {
+        PersonAuthInfoDTO dto = new PersonAuthInfoDTO();
+        dto.setPersonId(person.getPersonId());
+        dto.setFirstName(person.getFirstName());
+        dto.setLastName(person.getLastName());
+        dto.setUsername(person.getUsername());
+        dto.setEmail(person.getEmail());
+        dto.setImage(person.getImage());
+        dto.setRole(person.getRole().getName().toString());
 
         return dto;
     }

@@ -5,6 +5,7 @@ import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
@@ -128,5 +129,11 @@ public class PersonServiceJpa implements PersonService {
 
         // Pass the additional data to the mapper
         return PersonMapper.toPersonProfileDTO(person, recipeCount, ratingCount, averageRating);
+    }
+
+    @Override
+    public PersonAuthInfoDTO GetAuthUserInfo(Long id) {
+        Person person = personRepository.findById(id).orElse(null);
+        return person != null ? PersonMapper.PersonToPersonAuthInfoDTO(person) : null;
     }
 }

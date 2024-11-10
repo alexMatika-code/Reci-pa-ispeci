@@ -1,6 +1,7 @@
 package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
@@ -88,8 +89,8 @@ public class PersonController {
         PersonDTO person = personService.findByEmail(email);
 
         if (person != null) {
-            PersonProfileDTO personProfile = personService.getPersonProfileByUsername(person.getUsername());
-            return ResponseEntity.ok(personProfile);
+            PersonAuthInfoDTO personAuthInfo = personService.GetAuthUserInfo(person.getPersonId());
+            return ResponseEntity.ok(personAuthInfo);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }

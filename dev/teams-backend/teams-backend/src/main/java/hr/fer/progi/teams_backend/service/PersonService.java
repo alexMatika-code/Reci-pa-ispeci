@@ -1,6 +1,7 @@
 package hr.fer.progi.teams_backend.service;
 
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 
@@ -27,4 +28,6 @@ public interface PersonService {
     public Person getPerson(Long id);
 
     PersonProfileDTO getPersonProfileByUsername(String username);
+
+    public PersonAuthInfoDTO GetAuthUserInfo(Long id);
 }
