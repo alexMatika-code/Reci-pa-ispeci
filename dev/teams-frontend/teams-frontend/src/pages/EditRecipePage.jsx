@@ -52,16 +52,20 @@ const EditRecipePage = ({addRecipeSubmit}) => {
         }
 
         const formData = new FormData();
-        formData.append('recipeImg', image);
         formData.append('title', title);
         formData.append('description', description);
-        formData.append('procedure', procedure);
         formData.append('timeToCook', timeToCook);
-        formData.append('publicity', publicity);
-        formData.append('ingredients', ingredients);
+        formData.append('procedure', procedure);
+        // formData.append('publicity', publicity);
+        (publicity === "private" ?
+            formData.append('publicity', false)
+            :
+            formData.append('publicity', true)
+        );
+        formData.append('image', image);
+        formData.append('ingredientIds', ingredients);
 
         addRecipeSubmit(formData);
-        console.log(formData);
         return navigate('/');
     }
 
@@ -137,7 +141,7 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                                     value={procedure}
                                     onChange={(e) => setProcedure(e.target.value)}/>
                             </div>
-                            <div className="w-100 d-md-flex justify-content-md-end">
+                            <div className="w-100 d-md-flex justify-content-md-end mb-5">
                                 <Button type="submit" variant="primary" className="w-25">
                                     {publicity === "private" ? 'Dodaj' : 'Predloži'} recept
                                 </Button>

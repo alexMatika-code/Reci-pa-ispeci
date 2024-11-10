@@ -21,6 +21,10 @@
     max-width: 85% !important;
 }
 
+.min-w-85{
+    min-width: 85% !important;
+}
+
 .text-align-left{
     text-align: left !important;
 }

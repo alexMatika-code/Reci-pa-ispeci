@@ -6,8 +6,8 @@ const ProfileInfoCards = ({user}) => {
             <div className="col-xl-8 col-lg-12 mb-4">
                 <Card className={"shadow-sm"}>
                     <Card.Body>
-                        <Card.Title className="pb-2 font-weight-600">📖 Informacije o @{user.Username}...</Card.Title>
-                        <Card.Text className="card-text">{user.About}</Card.Text>
+                        <Card.Title className="pb-2 font-weight-600">📖 Informacije o @{user.username}...</Card.Title>
+                        <Card.Text className="card-text">{user.About || ("Trenutno ne znamo ništa o @" + user.username + "...")}</Card.Text>
                     </Card.Body>
                 </Card>
             </div>
@@ -16,8 +16,12 @@ const ProfileInfoCards = ({user}) => {
                     <Card.Body>
                         <Card.Title className="pb-2 font-weight-600">💖 Najdraži sastojci...</Card.Title>
                         <Card.Text>
-                            {user.FavouriteIngredients.map((ingredient,index) =>
-                                <Badge className={'py-2 px-3 m-1'} key={index}>{ingredient}</Badge>
+                            {user.favoriteIngredients.length !== 0 ? (
+                                user.favoriteIngredients.map((ingredient,index) =>
+                                    <Badge className={'py-2 px-3 m-1'} key={index}>{ingredient}</Badge>
+                                )
+                            ) : (
+                                <>@{user.username} još nema najdraže sastojke!</>
                             )}
                         </Card.Text>
                     </Card.Body>

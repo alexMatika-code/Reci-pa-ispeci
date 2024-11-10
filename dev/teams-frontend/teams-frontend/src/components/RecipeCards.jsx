@@ -1,12 +1,10 @@
 import RecipeCard from "./RecipeCard.jsx";
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
-
 
 const RecipeCards = ({filteredRecipes}) => {
 
     const navigateToRecipe = (recipe) => {
-        navigate(`/recipe/${recipe.name}`, {state: recipe});
+        navigate(`/recipe/${recipe.recipe_id}`, {state: recipe});
     };
     const navigate = useNavigate();
 

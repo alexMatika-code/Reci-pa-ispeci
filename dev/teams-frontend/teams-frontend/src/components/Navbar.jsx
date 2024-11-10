@@ -7,13 +7,14 @@ import {useNavigate} from "react-router-dom";
 
 function Navbar() {
     const navigate = useNavigate();
+    const username = "1";
 
     const navigateToAddNew = () => {
         navigate(`/recipe/add`);
     }
 
     const navigateToEditProfile = () => {
-        navigate(`/profile/:username`);
+        navigate(`/profile/${username}`);
     };
 
     const navigateToHome = () => {

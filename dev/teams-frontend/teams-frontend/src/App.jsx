@@ -38,10 +38,14 @@ const App = () => {
 
     // Recipe manipulation
     const addRecipe = async (formData) => {
-        const res = await fetch('/api/recipes', {
+        const res = await fetch('/api/recipes/create', {
             method: 'POST',
+            // headers: {
+            //     'Content-Type': 'multipart/form-data',
+            // },
             body: formData
         });
+        console.log(res.json());
         return res.json();
     }
 
