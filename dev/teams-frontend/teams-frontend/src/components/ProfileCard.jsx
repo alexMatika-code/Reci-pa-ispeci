@@ -15,23 +15,23 @@ const ProfileCard = ({user}) => {
             <h5 className={"color-lsg"}>@{user.username} <Badge bg="info">{user.role}</Badge></h5>
             <Row className={'w-75 m-auto mt-5'}>
                 <div className={'col-md-3 col-lg-6 mb-3 color-dsg'}>
-                    <h4 className={"bold"}>{user.recipes.length}</h4>
+                    <h4 className={"bold"}>{user.recipeCount}</h4>
                     <span className={"font-1-2rem"}>
                     <BsClipboard2HeartFill/> recepata
                 </span>
                 </div>
                 <div className={'col-md-3 col-lg-6 mb-5 color-dsg'}>
-                    <h4 className={"bold"}>{user.ratings.length}</h4>
+                    <h4 className={"bold"}>{user.ratingCount}</h4>
                     <span className={"font-1-2rem"}>
                         <BsClipboard2PulseFill/> recenzija
                     </span>
                 </div>
                 <div className={"mb-5 col-md-6 col-lg-12 color-dsg"}>
                     <div className={'mb-2 font-1-4rem'}>
-                        <StarRating rating={user.avgRating}/>
+                        <StarRating rating={user.ratingAverage}/>
                     </div>
                     <div>
-                        Prosječna ocjena: <span className={"bold"}>{user.avgRating || '0'}</span> od <span className={"bold"}>5</span>
+                        Prosječna ocjena: <span className={"bold"}>{user.ratingAverage || '0'}</span> od <span className={"bold"}>5</span>
                     </div>
                 </div>
             </Row>

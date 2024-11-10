@@ -15,9 +15,10 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try{
-                const res = await fetch(`/api/people/${username}`);
+                const res = await fetch(`/api/people/profile/${username}`);
                 const data = await res.json();
                 setUser(data);
+                console.log(user);
             } catch (error) {
                 console.log(`Error fetching data - no user named - ${username}`, error);
             } finally {
