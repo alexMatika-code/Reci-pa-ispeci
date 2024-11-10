@@ -2,11 +2,15 @@ package hr.fer.progi.teams_backend.service.impl;
 
 import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.dao.PersonRepository;
+import hr.fer.progi.teams_backend.dao.RecipeRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
 import hr.fer.progi.teams_backend.service.PersonService;
+import hr.fer.progi.teams_backend.service.RatingService;
+import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +23,13 @@ import java.util.stream.Collectors;
 public class PersonServiceJpa implements PersonService {
 
     @Autowired
+    private RecipeRepository recipeRepository;
+
+    @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private IngredientRepository ingredientRepository;
@@ -103,5 +113,20 @@ public class PersonServiceJpa implements PersonService {
 
         person.getFavoriteIngredients().remove(ingredient);
         personRepository.save(person);
+    }
+
+    @Override
+    public PersonProfileDTO getPersonProfileByUsername(String username) {
+        // Retrieve the person by username
+        Person person = personRepository.findByUsername(username).orElse(null);
+        if (person == null) {
+            return null;
+        }
+        Long recipeCount=recipeRepository.countByUserId(person.getPersonId());
+        Long ratingCount = ratingService.getTotalRatingCountByUserId(person.getPersonId());
+        Double averageRating = ratingService.getAverageRatingByUserId(person.getPersonId());
+
+        // Pass the additional data to the mapper
+        return PersonMapper.toPersonProfileDTO(person, recipeCount, ratingCount, averageRating);
     }
 }

@@ -2,7 +2,10 @@ package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
+import hr.fer.progi.teams_backend.service.RatingService;
+import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +69,11 @@ public class PersonController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
+    }
+
+    @GetMapping("/profile/{username}")
+    public PersonProfileDTO getPersonProfile(@PathVariable String username) {
+        return personService.getPersonProfileByUsername(username);
     }
 
 }

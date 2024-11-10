@@ -16,4 +16,8 @@ public interface RatingService {
     Rating updateRating(Long id, Rating rating);
 
     Rating createRating(Rating rating);
+
+    Long getTotalRatingCountByUserId(Long userId);
+
+    Double getAverageRatingByUserId(Long userId);
 }

@@ -2,6 +2,7 @@ package hr.fer.progi.teams_backend.service;
 
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface PersonService {
     PersonDTO findByEmail(String email);
 
     public Person getPerson(Long id);
+
+    PersonProfileDTO getPersonProfileByUsername(String username);
 }
