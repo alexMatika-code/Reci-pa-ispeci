@@ -1,86 +1,56 @@
-import {useState} from "react";
-import {BsChatDots, BsChatDotsFill, BsFillXCircleFill} from "react-icons/bs";
+import { useState, useEffect } from "react";
+import { BsChatDots, BsChatDotsFill } from "react-icons/bs";
 import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
-import Spagheti from "../assets/spaghetiCarbonara.jpeg";
 import FilterRecipes from "../components/FilterRecipes.jsx";
 import RecipeCards from "../components/RecipeCards.jsx";
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
     const [showChat, setShowChat] = useState(false);
-
     const [ingredients, setIngredients] = useState([]);
+    const [recipes, setRecipes] = useState([]);
+    const [size] = useState(10);
 
     const toggleChat = () => {
         setShowChat((prev) => !prev);
     };
 
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            try {
+                const response = await fetch(`/api/recipes/public?page=0&size=12`);
+                const data = await response.json();
+                setRecipes(data.content);
+            } catch (error) {
+                console.error("Error fetching recipes:", error);
+            }
+        };
 
-    const user = {
-        uid: "123",
-    };
-
-    const recipes = [
-        {
-            name: 'Spaghetti Carbonara',
-            image: Spagheti,
-            description: 'A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.'
-        },
-        {
-            name: 'Chicken Alfredo',
-            image: Spagheti,
-            description: 'A creamy pasta dish with grilled chicken and a rich Alfredo sauce.'
-        },
-        {
-            name: 'Borger',
-            image: Spagheti,
-            description: 'A creamy pasta dish with grilled chicken and a rich Alfredo sauce.'
-        },
-        {
-            name: 'Manestra',
-            image: Spagheti,
-            description: 'A creamy pasta dish with grilled chicken and a rich Alfredo sauce.'
-        },
-        {
-            name: 'Mlinci',
-            image: Spagheti,
-            description: 'A creamy pasta dish with grilled chicken and a rich Alfredo sauce.'
-        },
-        {
-            name: 'Peka',
-            image: Spagheti,
-            description: 'A creamy pasta dish with grilled chicken and a rich Alfredo sauce.'
-        },
-        {
-            name: 'Rostilj',
-            image: Spagheti,
-            description: 'A creamy pasta dish with grilled chicken and a rich Alfredo sauce.'
-        },
-
-    ];
+        fetchRecipes();
+    }, [size]);
 
     const filteredRecipes = recipes.filter((recipe) =>
-        recipe.name.toLowerCase().includes(query.toLowerCase())
+        recipe.title.toLowerCase().includes(query.toLowerCase())
     );
 
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <div className="search-bar-container">
                 <div className={"rounded-circle filter-div"}>
-                    <FilterRecipes ingredients={ingredients} setIngredients={setIngredients}></FilterRecipes>
+                    <FilterRecipes ingredients={ingredients} setIngredients={setIngredients} />
                 </div>
-                <SearchBar query={query} setQuery={setQuery}/>
+                <SearchBar query={query} setQuery={setQuery} />
                 <div className="chat-icon-container">
                     {showChat ? (
-                        <BsChatDotsFill className="chat-icon" onClick={toggleChat}/>
+                        <BsChatDotsFill className="chat-icon" onClick={toggleChat} />
                     ) : (
-                        <BsChatDots className="chat-icon" onClick={toggleChat}/>
+                        <BsChatDots className="chat-icon" onClick={toggleChat} />
                     )}
                 </div>
             </div>
-            <RecipeCards filteredRecipes={filteredRecipes}></RecipeCards>
+            <RecipeCards filteredRecipes={filteredRecipes} />
         </div>
     );
 };

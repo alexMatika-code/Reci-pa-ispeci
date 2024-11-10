@@ -1,12 +1,12 @@
 import RecipeCard from "./RecipeCard.jsx";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const RecipeCards = ({filteredRecipes}) => {
+const RecipeCards = ({ filteredRecipes }) => {
+    const navigate = useNavigate();
 
     const navigateToRecipe = (recipe) => {
-        navigate(`/recipe/${recipe.recipe_id}`, {state: recipe});
+        navigate(`/recipe/${recipe.recipe_id}`, { state: recipe });
     };
-    const navigate = useNavigate();
 
     return (
         <div className="recipe-list">
@@ -15,8 +15,8 @@ const RecipeCards = ({filteredRecipes}) => {
                     <RecipeCard
                         onClick={() => navigateToRecipe(recipe)}
                         key={index}
-                        image={recipe.image}
-                        name={recipe.name}
+                        image={recipe.imageBase64 ? `data:image/jpeg;base64,${recipe.imageBase64}` : null}
+                        name={recipe.title}
                         description={recipe.description}
                     />
                 ))
@@ -24,6 +24,7 @@ const RecipeCards = ({filteredRecipes}) => {
                 <p>Nema takvih recepata</p>
             )}
         </div>
-    )
-}
+    );
+};
+
 export default RecipeCards;

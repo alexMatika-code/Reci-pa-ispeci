@@ -7,7 +7,7 @@ const ProfileInfoCards = ({user}) => {
                 <Card className={"shadow-sm"}>
                     <Card.Body>
                         <Card.Title className="pb-2 font-weight-600">📖 Informacije o @{user.username}...</Card.Title>
-                        <Card.Text className="card-text">{user.About || ("Trenutno ne znamo ništa o @" + user.username + "...")}</Card.Text>
+                        <Card.Text className="card-text">{user.about || ("Trenutno ne znamo ništa o @" + user.username + "...")}</Card.Text>
                     </Card.Body>
                 </Card>
             </div>
@@ -18,7 +18,7 @@ const ProfileInfoCards = ({user}) => {
                         <Card.Text>
                             {user.favoriteIngredients.length !== 0 ? (
                                 user.favoriteIngredients.map((ingredient,index) =>
-                                    <Badge className={'py-2 px-3 m-1'} key={index}>{ingredient}</Badge>
+                                    <Badge className={'py-2 px-3 m-1'} key={index}>{ingredient.name}</Badge>
                                 )
                             ) : (
                                 <>@{user.username} još nema najdraže sastojke!</>
