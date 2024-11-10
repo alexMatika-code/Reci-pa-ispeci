@@ -1,8 +1,12 @@
 package hr.fer.progi.teams_backend.service.impl;
 
+import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RatingRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
+import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Rating;
+import hr.fer.progi.teams_backend.domain.Recipe;
+import hr.fer.progi.teams_backend.domain.dto.CreateRatingDTO;
 import hr.fer.progi.teams_backend.domain.dto.RatingDTO;
 import hr.fer.progi.teams_backend.domain.mapper.RatingMapper;
 import hr.fer.progi.teams_backend.service.RatingService;
@@ -22,6 +26,9 @@ public class RatingServiceJpa implements RatingService {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @Override
     public List<RatingDTO> listAll() {
@@ -72,5 +79,22 @@ public class RatingServiceJpa implements RatingService {
     public Double getAverageRatingByUserId(Long userId) {
         List<Long> recipeIds = recipeRepository.findIdsByUserId(userId);
         return ratingRepository.calculateAverageRatingByRecipeIds(recipeIds);
+    }
+
+    @Override
+    public Rating createRating(CreateRatingDTO createRatingDTO, Long personId) {
+        Recipe recipe = recipeRepository.findById(createRatingDTO.getRecipeId())
+                .orElseThrow(() -> new RuntimeException("Recipe not found"));
+
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
+
+        Rating rating = new Rating();
+        rating.setGrade(createRatingDTO.getGrade());
+        rating.setComment(createRatingDTO.getComment());
+        rating.setRecipe(recipe);
+        rating.setPerson(person);
+
+        return ratingRepository.save(rating);
     }
 }
