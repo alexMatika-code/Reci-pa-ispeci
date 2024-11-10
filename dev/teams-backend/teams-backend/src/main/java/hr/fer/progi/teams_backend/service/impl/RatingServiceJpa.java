@@ -1,10 +1,12 @@
 package hr.fer.progi.teams_backend.service.impl;
 
 import hr.fer.progi.teams_backend.dao.RatingRepository;
+import hr.fer.progi.teams_backend.dao.RecipeRepository;
 import hr.fer.progi.teams_backend.domain.Rating;
 import hr.fer.progi.teams_backend.domain.dto.RatingDTO;
 import hr.fer.progi.teams_backend.domain.mapper.RatingMapper;
 import hr.fer.progi.teams_backend.service.RatingService;
+import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -17,6 +19,9 @@ public class RatingServiceJpa implements RatingService {
 
     @Autowired
     private RatingRepository ratingRepository;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
 
     @Override
     public List<RatingDTO> listAll() {
@@ -55,5 +60,17 @@ public class RatingServiceJpa implements RatingService {
     public Rating createRating(Rating rating) {
         Assert.notNull(rating, "Rating object must be given");
         return ratingRepository.save(rating);
+    }
+
+    @Override
+    public Long getTotalRatingCountByUserId(Long userId) {
+        List<Long> recipeIds = recipeRepository.findIdsByUserId(userId);
+        return ratingRepository.countByRecipeIds(recipeIds);
+    }
+
+    @Override
+    public Double getAverageRatingByUserId(Long userId) {
+        List<Long> recipeIds = recipeRepository.findIdsByUserId(userId);
+        return ratingRepository.calculateAverageRatingByRecipeIds(recipeIds);
     }
 }

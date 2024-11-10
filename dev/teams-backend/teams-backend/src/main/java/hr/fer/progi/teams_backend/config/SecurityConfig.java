@@ -63,6 +63,12 @@ public class SecurityConfig {
                 newUser.setLastName(oauth2User.getAttribute("family_name"));
                 newUser.setImage(oauth2User.getAttribute("picture"));
 
+                String firstName = oauth2User.getAttribute("given_name");
+                String lastName = oauth2User.getAttribute("family_name");
+
+                String username = email.contains("@") ? email.substring(0, email.indexOf("@")) : email;
+                newUser.setUsername(username);
+
                 Role role = roleRepository.findByName(Roles.USER);
                 if (role == null) {
                     role = new Role();
