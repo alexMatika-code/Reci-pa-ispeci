@@ -30,9 +30,7 @@ public class SecurityConfig {
 
     @Autowired
     private PersonRepository personRepository;
-    private final String frontendUrl = "http://localhost:8080/home";
-    //PRIVREMENA ADRESA RADI TESTIRANJA
-
+    private final String frontendUrl = "http://localhost:3000";
 
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
@@ -40,6 +38,8 @@ public class SecurityConfig {
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/").permitAll();
+                    registry.requestMatchers("/recipes/public").permitAll();
+                    registry.requestMatchers("/people/profile/{username}").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
