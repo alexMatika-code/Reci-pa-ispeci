@@ -10,41 +10,47 @@ import RecipeCards from "../components/RecipeCards.jsx";
 const ProfilePage = () => {
     const [user, setUser] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const { username } = useParams();
+
     useEffect(() => {
         const fetchUser = async () => {
-            try{
+            try {
                 const res = await fetch(`/api/people/profile/${username}`);
                 const data = await res.json();
                 setUser(data);
-                console.log(user);
+                console.log(data); // Log the fetched user data
             } catch (error) {
                 console.log(`Error fetching data - no user named - ${username}`, error);
             } finally {
                 setLoading(false);
             }
+        };
+
+        if (username) {
+            setLoading(true);
+            fetchUser();
         }
-        fetchUser();
-    }, []);
+    }, [username]);
 
     return (
         <div>
             <Navbar/>
-            {loading ? (<Spinner loading={loading} />) : (
-                (user.length !== 0) ? (
+            {loading ? (
+                <Spinner loading={loading} />
+            ) : (
+                user.length !== 0 ? (
                     <div className={"w-75 m-auto pt-80"}>
                         <Row className={"d-flex"}>
-                            {/* user info */}
+                            {/* User Info */}
                             <Container className={"col-md-12 col-lg-5 col-xl-3"}>
                                 <ProfileCard user={user} />
                             </Container>
 
                             <Container className={"col-md-12 col-lg-7 col-xl-9"}>
-                                {/* user info i fav in g*/}
+                                {/* User Info and Favorites */}
                                 <ProfileInfoCards user={user} />
 
-                                {/* recipes */}
+                                {/* Recipes */}
                                 <h5 className={"mt-3 ml-16 color-dsg font-weight-600"}>📔 Recepti korisnika</h5>
                                 <RecipeCards filteredRecipes={user.recipes}></RecipeCards>
                             </Container>

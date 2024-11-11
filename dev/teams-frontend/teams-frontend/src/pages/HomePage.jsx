@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
-import { BsChatDots, BsChatDotsFill } from "react-icons/bs";
+import {useState, useEffect} from "react";
+import {BsChatDots, BsChatDotsFill} from "react-icons/bs";
 import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import FilterRecipes from "../components/FilterRecipes.jsx";
 import RecipeCards from "../components/RecipeCards.jsx";
+import Spinner from "../components/Spinner.jsx";
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
@@ -11,6 +12,8 @@ const HomePage = () => {
     const [ingredients, setIngredients] = useState([]);
     const [recipes, setRecipes] = useState([]);
     const [size] = useState(10);
+    const [loading, setLoading] = useState(true);
+
 
     const toggleChat = () => {
         setShowChat((prev) => !prev);
@@ -24,6 +27,8 @@ const HomePage = () => {
                 setRecipes(data.content);
             } catch (error) {
                 console.error("Error fetching recipes:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -36,23 +41,34 @@ const HomePage = () => {
 
     return (
         <div>
-            <Navbar />
-            <div className="search-bar-container">
-                <div className={"rounded-circle filter-div"}>
-                    <FilterRecipes ingredients={ingredients} setIngredients={setIngredients} />
-                </div>
-                <SearchBar query={query} setQuery={setQuery} />
-                <div className="chat-icon-container">
-                    {showChat ? (
-                        <BsChatDotsFill className="chat-icon" onClick={toggleChat} />
-                    ) : (
-                        <BsChatDots className="chat-icon" onClick={toggleChat} />
-                    )}
-                </div>
-            </div>
-            <RecipeCards filteredRecipes={filteredRecipes} />
+           <Navbar/>
+            {loading ? (
+                <Spinner loading={loading}/>
+            ) : (
+                filteredRecipes.length !== 0 ? (
+                    <div>
+                        <div className={"search-bar-container"}>
+                            <div className={"rounded-circle filter-div"}>
+                                <FilterRecipes ingredients={ingredients} setIngredients={setIngredients}/>
+                            </div>
+                            <SearchBar query={query} setQuery={setQuery}/>
+                            <div className={"chat-icon-container"}>
+                                {showChat ? (
+                                    <BsChatDotsFill className={"chat-icon"} onClick={toggleChat}/>
+                                ) : (
+                                    <BsChatDots className={"chat-icon"} onClick={toggleChat}/>
+                                )}
+                            </div>
+                        </div>
+                        <RecipeCards filteredRecipes={filteredRecipes}></RecipeCards>
+                    </div>
+                ) : (
+                    <div>Greška</div>
+                )
+            )}
         </div>
     );
+
 };
 
 export default HomePage;
