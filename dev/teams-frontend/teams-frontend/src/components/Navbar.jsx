@@ -20,7 +20,7 @@ function Navbar() {
         };
 
         fetchCurrentUser();
-    }, [currentUser]);
+    }, []);
     const navigateToAddNew = () => {
         navigate(`/recipe/add`);
     };
@@ -48,11 +48,18 @@ function Navbar() {
                             <div className={"title-navbar"}>Reci-Pa-Ispeci
                             </div>
                         </div>
-                        <div className={"col-2 d-flex plusic-navbar gap-2 align-items-center cursor-pointer"}
-                             onClick={navigateToAddNew}>
-                            <BsFillPlusCircleFill className={""}/>
-                            Novi recept
-                        </div>
+                        {currentUser ? (
+                            <div className={"col-2 d-flex plusic-navbar gap-2 align-items-center cursor-pointer"}
+                                 onClick={navigateToAddNew}>
+                                <BsFillPlusCircleFill className={""}/>
+                                Novi recept
+                            </div>
+                        ) : (
+                            <div className="col-2" style={{ visibility: "hidden" }}>
+                                <BsFillPlusCircleFill className={""}/>
+                                Novi recept
+                            </div>
+                        )}
                         <div className={"col-1 align-items-center d-flex  person-icon"}>
                             {currentUser ? (
                                 <img src={currentUser.image}
