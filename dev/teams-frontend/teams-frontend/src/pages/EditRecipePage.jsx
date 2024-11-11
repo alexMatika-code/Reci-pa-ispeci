@@ -72,7 +72,7 @@ const EditRecipePage = ({addRecipeSubmit}) => {
     return (
         <>
             <Navbar/>
-            <div className={"w-75 m-auto"} style={{paddingTop: "40px"}} >
+            <div className={"w-75 m-auto pt-40"} >
                 <Form className={'form-group'} onSubmit={submitForm}>
                     <h5 className={"mb-4"}>Unesite podatke o jelu</h5>
 

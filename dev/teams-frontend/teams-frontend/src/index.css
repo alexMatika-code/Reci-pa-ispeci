@@ -12,6 +12,9 @@
 .pt-80{
     padding-top: 80px;
 }
+.pt-40{
+    padding-top: 40px;
+}
 
 .ml-16{
     margin-left: 16px;
@@ -55,4 +58,7 @@
 
 .font-1-4rem{
     font-size: 1.4rem !important;
+}
+.cursor-pointer{
+    cursor: pointer;
 }
