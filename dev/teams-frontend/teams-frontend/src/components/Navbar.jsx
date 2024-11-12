@@ -60,15 +60,16 @@ function Navbar() {
                                 Novi recept
                             </div>
                         )}
-                        <div className={"col-1 align-items-center d-flex  person-icon"}>
+                        <div className={"col-1 align-items-center d-flex person-icon"}>
                             {currentUser ? (
                                 <img src={currentUser.image}
                                      alt={"nema"}
-                                     className={"rounded-circle cursor-pointer"}
+                                     className={"rounded-circle cursor-pointer person-icon"}
                                      onClick={navigateToProfilePage}
                                 />
                             ) : (
                                 <BsPersonCircle
+
                                     onClick={handleLoginClick}
                                     className={"cursor-pointer"}
                                 />

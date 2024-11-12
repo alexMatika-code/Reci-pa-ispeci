@@ -5,6 +5,20 @@ body {
     background-color: #cccccc;
 }
 
+.person-icon{
+    height: 80px;
+    width: 80px;
+    font-size: 50px;
+}
+.no-recipes-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.5rem;
+    color: #555;
+    text-align: center;
+}
 .search-bar-container {
     display: flex;
     justify-content: center;
@@ -225,10 +239,7 @@ input:focus {
     font-size: 23px;
 }
 
-.person-icon{
-    font-size: 50px;
 
-}
 /*navbar*/
 * {
     padding: 0;

@@ -1,25 +1,51 @@
-import { useState } from "react";
-import { Button, Modal, Form, InputGroup, FormControl } from "react-bootstrap";
+import {useEffect, useState} from "react";
+import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import IngredientsEntry from "./IngredientsEntry.jsx";
 import { BsFunnelFill } from "react-icons/bs";
 import InputGroupText from "react-bootstrap/InputGroupText";
 
-const FilterRecipes = ({ ingredients, setIngredients }) => {
+const FilterRecipes = ({ ingredients, setIngredients,timeToCook, setTimeToCook }) => {
     const [show, setShow] = useState(false);
     const [ingredient, setIngredient] = useState("");
+    const [ingredientsFromDb, setIngredientsFromDb] = useState([]);
+    const [tempTimeToCook, setTempTimeToCook] = useState(timeToCook);
 
     const handleClose = () => setShow(false);
+    const filter = () => {
+        setTimeToCook(tempTimeToCook);
+        setShow(false);
+    }
+
+    const removeFilter = () =>  {
+        setTempTimeToCook("");
+        setTimeToCook("");
+        handleClose();
+    }
     const handleShow = () => setShow(true);
 
     const addIngredient = () => {
-        if (ingredient.trim() && !ingredients.includes(ingredient)) {
-            setIngredients([...ingredients, ingredient]);
-            setIngredient(""); // Clear input
+        if (ingredient.trim() && !ingredients.some((ing) => ing.name === ingredient)) {
+            setIngredients([...ingredients, { name: ingredient }]);
+            setIngredient("");
         }
     };
 
+    useEffect(() => {
+
+        const fetchIngredients = async() => {
+        try{
+            const response = await fetch(`/api/ingredients`);
+            const data = await response.json();
+            setIngredientsFromDb(data);
+        }catch (error){
+            console.error("Error fetching ingredients:", error);
+        }
+    }
+    fetchIngredients();
+    }, []);
+
     const removeIngredient = (text) => {
-        setIngredients(ingredients.filter((ing) => ing !== text));
+        setIngredients(ingredients.filter((ing) => ing.name !== text));
     };
 
     const onEnter = (e) => {
@@ -47,16 +73,20 @@ const FilterRecipes = ({ ingredients, setIngredients }) => {
                                 placeholder="Filtriraj prema sastojcima..."
                             />
                             <datalist id="datalistOptions">
-                                <option value="Chocolate" />
-                                <option value="Coconut" />
-                                <option value="Mint" />
-                                <option value="Strawberry" />
-                                <option value="Vanilla" />
+                                {ingredientsFromDb.map((ing) => (
+                                    <option key={ing.ingredientId}
+                                            value={ing.name}>
+                                        {ing.name}
+                                    </option>
+                                ))}
                             </datalist>
                         </div>
                         <div className="col-lg-4">
                             <InputGroup>
-                                <FormControl type="number" placeholder="Vrijeme pripreme" />
+                                <Form.Control type="number"
+                                              placeholder="Vrijeme pripreme"
+                                              value={tempTimeToCook}
+                                              onChange={(e) => setTempTimeToCook(e.target.value)}/>
                                 <InputGroupText>minuta</InputGroupText>
                             </InputGroup>
                         </div>
@@ -64,18 +94,18 @@ const FilterRecipes = ({ ingredients, setIngredients }) => {
                     <div>
                         {ingredients.map((ing, index) => (
                             <IngredientsEntry
-                                text={ing}
+                                text={ing.name}
                                 key={index}
-                                clickFunction={() => removeIngredient(ing)}
+                                clickFunction={() => removeIngredient(ing.name)}
                             />
                         ))}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Zatvori
+                    <Button variant="secondary" onClick={removeFilter}>
+                        Poništi
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={filter}>
                         Filtriraj
                     </Button>
                 </Modal.Footer>

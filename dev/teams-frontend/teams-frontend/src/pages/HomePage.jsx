@@ -13,7 +13,7 @@ const HomePage = () => {
     const [recipes, setRecipes] = useState([]);
     const [size] = useState(10);
     const [loading, setLoading] = useState(true);
-
+    const [timeToCook, setTimeToCook] = useState("");
 
     const toggleChat = () => {
         setShowChat((prev) => !prev);
@@ -31,44 +31,51 @@ const HomePage = () => {
                 setLoading(false);
             }
         };
-
         fetchRecipes();
     }, [size]);
 
-    const filteredRecipes = recipes.filter((recipe) =>
-        recipe.title.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredRecipes = recipes.filter((recipe) => {
+        const matchesQuery = query
+            ? recipe.title.toLowerCase().includes(query.toLowerCase())
+            || recipe.description.toLowerCase().includes(query.toLowerCase())
+            : true;
+        // const matchesTime = timeToCook ? recipe.timeToCook <= parseInt(timeToCook, 10) : true;
+        return matchesQuery;
+    });
 
     return (
         <div>
-           <Navbar/>
+            <Navbar/>
             {loading ? (
                 <Spinner loading={loading}/>
             ) : (
-                filteredRecipes.length !== 0 ? (
-                    <div>
-                        <div className={"search-bar-container"}>
-                            <div className={"rounded-circle filter-div"}>
-                                <FilterRecipes ingredients={ingredients} setIngredients={setIngredients}/>
-                            </div>
-                            <SearchBar query={query} setQuery={setQuery}/>
-                            <div className={"chat-icon-container"}>
-                                {showChat ? (
-                                    <BsChatDotsFill className={"chat-icon"} onClick={toggleChat}/>
-                                ) : (
-                                    <BsChatDots className={"chat-icon"} onClick={toggleChat}/>
-                                )}
-                            </div>
+                <div>
+                    <div className={"search-bar-container"}>
+                        <div className={"rounded-circle filter-div"}>
+                            <FilterRecipes ingredients={ingredients}
+                                           setIngredients={setIngredients}
+                                           timeToCook={timeToCook}
+                                           setTimeToCook={setTimeToCook}/>
                         </div>
-                        <RecipeCards filteredRecipes={filteredRecipes}></RecipeCards>
+                        <SearchBar query={query} setQuery={setQuery}/>
+                        <div className={"chat-icon-container"}>
+                            {showChat ? (
+                                <BsChatDotsFill className={"chat-icon"} onClick={toggleChat}/>
+                            ) : (
+                                <BsChatDots className={"chat-icon"} onClick={toggleChat}/>
+                            )}
+                        </div>
                     </div>
-                ) : (
-                    <div>Greška</div>
-                )
+
+                    {filteredRecipes.length > 0 ? (
+                        <RecipeCards filteredRecipes={filteredRecipes}/>
+                    ) : (
+                        <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
+                    )}
+                </div>
             )}
         </div>
     );
-
 };
 
 export default HomePage;
