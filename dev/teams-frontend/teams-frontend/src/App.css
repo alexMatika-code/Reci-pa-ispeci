@@ -219,7 +219,9 @@ input:focus {
     padding: 5%;
     padding-top: 1%;
 }
-
+body{
+    overflow-x: hidden ;
+}
 /* Tablet view: 2 columns */
 @media (max-width: 992px) {
     .recipe-list {

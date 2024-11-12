@@ -5,7 +5,7 @@ const RecipeCards = ({ filteredRecipes }) => {
     const navigate = useNavigate();
 
     const navigateToRecipe = (recipe) => {
-        navigate(`/recipe/${recipe.recipe_id}`, { state: recipe });
+        navigate(`/recipe/${recipe.recipeId}`, { state: recipe });
     };
 
     return (

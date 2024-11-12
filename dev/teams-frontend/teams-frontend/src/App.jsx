@@ -58,7 +58,7 @@ const App = () => {
                 <Route path='sign-in' element={<SignInPage signInSubmit={signIn} />} />
                 <Route path='sign-up' element={<SignUpPage signUpSubmit={signUp} />} />
                 {/* Recipe related pages */}
-                <Route path='/recipe/:id' element={<RecipePage />} />
+                <Route path='/recipe/:recipeId' element={<RecipePage />} />
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
                 <Route path='/card' element={<RecipeCard />} />
                 {/* User related pages */}
