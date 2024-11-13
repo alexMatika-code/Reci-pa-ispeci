@@ -32,6 +32,10 @@
     text-align: left !important;
 }
 
+.text-align-right{
+    text-align: right !important;
+}
+
 .font-weight-600{
     font-weight: 600 !important;
 }
@@ -50,6 +54,14 @@
 
 .bg-whitesmoke{
     background-color: whitesmoke;
+}
+
+.font-0-8rem{
+    font-size: 0.8rem !important;
+}
+
+.font-1rem{
+    font-size: 1rem !important;
 }
 
 .font-1-2rem{

@@ -26,6 +26,10 @@ const EditRecipePage = ({addRecipeSubmit}) => {
         const fileInput = event.target;
 
         if (fileInput.files && fileInput.files[0]) {
+            if(fileInput.files[0].size > 2097152) {
+                toast.warn("Slika je prevelika");
+                return false;
+            }
             const reader = new FileReader();
             reader.onload = function(e) {
                 selectedImage.src = e.target.result;
@@ -83,7 +87,7 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                                  id={'recipeImg'}
                                  style={{maxWidth: "100%"}}
                                  className={'border border-4 rounded mb-3'}/>
-                            <div className="mb-3">
+                            <div className="mb-3 text-align-right">
                                 <Form.Control className="form-control-sm"
                                               type="file"
                                               accept=".jpg,.png"
@@ -141,7 +145,8 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                                     value={procedure}
                                     onChange={(e) => setProcedure(e.target.value)}/>
                             </div>
-                            <div className="w-100 d-md-flex justify-content-md-end mb-5">
+                            <div className="w-100 d-flex justify-content-md-end mb-5">
+                                <div className={"text-secondary font-0-8rem mx-3 h-100"}> Slika može biti maksimalno 2MB</div>
                                 <Button type="submit" variant="primary" className="w-25">
                                     {publicity === "private" ? 'Dodaj' : 'Predloži'} recept
                                 </Button>

@@ -85,6 +85,12 @@ const RecipeAddIngredients = ({ingredients, setIngredients}) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
+                    <h5>
+                        <span style={{color: "red", fontWeight: "bold"}}>OPREZ! </span>
+                        Ovaj dio je jos u doradi, te se za sastojke
+                        <span style={{color: "red", fontWeight: "bold"}}> MORAJU </span>
+                        koristit ID-jevi sastojaka (dok ne implementiramo ispravno). <br/>
+                        Trenutno mozete upisat: <span className={"bold"}>1, 2, 3, 5, 6, 7</span> (svaki zasebno)</h5>
                     <Button variant="secondary" onClick={handleClose}>
                         Zatvori
                     </Button>
