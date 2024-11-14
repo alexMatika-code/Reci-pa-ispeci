@@ -9,6 +9,7 @@ public class TeamsBackendApplication {
 	public static void main(String[] args) {
 
 		new SpringApplicationBuilder()
+				.profiles("prod")
 				.sources(TeamsBackendApplication.class)
 				.run(args);
 	}
