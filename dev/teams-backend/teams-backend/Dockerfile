@@ -1,22 +1,25 @@
-# Importing JDK and copying required files
+# Stage 1: Build the application
 FROM openjdk:23-jdk AS build
 WORKDIR /app
-COPY pom.xml .
-COPY src src
 
-# Copy Maven wrapper
-COPY mvnw .
+# Copy Maven wrapper and project files
+COPY pom.xml ./
+COPY mvnw ./
 COPY .mvn .mvn
+COPY src ./src
 
-# Set execution permission for the Maven wrapper
+# Set execution permissions for Maven wrapper and build the application
 RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
-# Stage 2: Create the final Docker image using OpenJDK 19
+# Stage 2: Create the final image
 FROM openjdk:23-jdk
+WORKDIR /app
 VOLUME /tmp
 
-# Copy the JAR from the build stage
-COPY --from=build target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Copy the JAR file from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose the application port and set the entrypoint
 EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
