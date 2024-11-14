@@ -6,8 +6,6 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 @Table(name="INGREDIENT")
 public class Ingredient {
@@ -22,4 +20,36 @@ public class Ingredient {
 
     @ManyToMany(mappedBy = "favoriteIngredients")
     private Set<Person> favoritedBy = new HashSet<>();
+
+    public Long getIngredientId() {
+        return ingredientId;
+    }
+
+    public void setIngredientId(Long ingredientId) {
+        this.ingredientId = ingredientId;
+    }
+
+    public Set<Person> getFavoritedBy() {
+        return favoritedBy;
+    }
+
+    public void setFavoritedBy(Set<Person> favoritedBy) {
+        this.favoritedBy = favoritedBy;
+    }
+
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

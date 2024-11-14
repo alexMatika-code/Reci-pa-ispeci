@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@Getter
-@Setter
 @Entity
 @Table(name = "RECIPE")
 public class Recipe {
@@ -34,6 +32,102 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "userId")
     protected Person user;
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public Person getUser() {
+        return user;
+    }
+
+    public void setUser(Person user) {
+        this.user = user;
+    }
+
+    public Person getChef() {
+        return chef;
+    }
+
+    public void setChef(Person chef) {
+        this.chef = chef;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public boolean isWaitingApproval() {
+        return waitingApproval;
+    }
+
+    public void setWaitingApproval(boolean waitingApproval) {
+        this.waitingApproval = waitingApproval;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getTimeToCook() {
+        return timeToCook;
+    }
+
+    public void setTimeToCook(int timeToCook) {
+        this.timeToCook = timeToCook;
+    }
+
+    public boolean isPublicity() {
+        return publicity;
+    }
+
+    public void setPublicity(boolean publicity) {
+        this.publicity = publicity;
+    }
+
+    public String getProcedure() {
+        return procedure;
+    }
+
+    public void setProcedure(String procedure) {
+        this.procedure = procedure;
+    }
+
+    public Long getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(Long recipeId) {
+        this.recipeId = recipeId;
+    }
 
     @ManyToMany
     @JoinTable(

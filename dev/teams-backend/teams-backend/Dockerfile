@@ -6,6 +6,7 @@ FROM openjdk:23-jdk
 # RUN apk install <nesto>
 
 # Kopiranje izvrsnog JAR-a iz build containera u izvrsni container
+
 COPY /target/*.jar app.jar
 
 # Izlaganje porta
