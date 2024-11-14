@@ -1,15 +1,25 @@
-FROM alpine/java:23-jre
+# Use a multi-stage build to minimize the final image size
 
-## Ovdje je moguce instalirati alate potrebne za rad aplikacije. Vjerojatno vam nece trebati, no dobro je znati.
-## Linux distro koji se koristi je Alpine, stoga se kao package manager koristi apk
-# RUN apk install <nesto>
+# Stage 1: Build the application
+FROM maven:3.9.4-eclipse-temurin-23 AS build
+WORKDIR /app
 
-# Kopiranje izvrsnog JAR-a iz build containera u izvrsni container
+# Copy the Maven project files
+COPY pom.xml .
+COPY src ./src
+
+# Package the application
+RUN mvn clean package -DskipTests
+
+# Stage 2: Create the runtime container
+FROM eclipse-temurin:23-jre
+WORKDIR /app
+
+# Copy the Spring Boot application JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
 
-# Izlaganje porta
+# Expose the application port (default for Spring Boot is 8080)
 EXPOSE 8080
 
-# Naredba kojom se pokrece aplikacija
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Run the Spring Boot application
+ENTRYPOINT ["java", "-jar", "app.jar"]
