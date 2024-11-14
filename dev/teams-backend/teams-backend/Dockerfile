@@ -1,20 +1,14 @@
-# Start with a base image containing Java runtime
-FROM openjdk:8-jdk-alpine
+FROM alpine/java:21-jre
 
-# Add Maintainer Info
-LABEL maintainer="your.email@example.com"
+## Ovdje je moguce instalirati alate potrebne za rad aplikacije. Vjerojatno vam nece trebati, no dobro je znati.
+## Linux distro koji se koristi je Alpine, stoga se kao package manager koristi apk
+# RUN apk install <nesto>
 
-# Add a volume pointing to /tmp
-VOLUME /tmp
+# Kopiranje izvrsnog JAR-a iz build containera u izvrsni container
+COPY --from=build /app/target/*.jar app.jar
 
-# Make port 8080 available to the world outside this container
+# Izlaganje porta
 EXPOSE 8080
 
-# The application's jar file
-ARG JAR_FILE=target/spring-boot-app-1.0.0.jar
-
-# Add the application's jar to the container
-ADD ${JAR_FILE} app.jar
-
-# Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+# Naredba kojom se pokrece aplikacija
+ENTRYPOINT ["java","-jar","/app.jar"]
