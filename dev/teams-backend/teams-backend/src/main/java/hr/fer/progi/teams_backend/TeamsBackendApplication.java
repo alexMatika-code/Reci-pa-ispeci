@@ -9,7 +9,6 @@ public class TeamsBackendApplication {
 	public static void main(String[] args) {
 
 		new SpringApplicationBuilder()
-				.profiles("dev") // and so does this
 				.sources(TeamsBackendApplication.class)
 				.run(args);
 	}
