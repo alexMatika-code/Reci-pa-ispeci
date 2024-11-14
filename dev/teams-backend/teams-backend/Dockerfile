@@ -1,4 +1,4 @@
-FROM alpine/java:21-jre
+FROM alpine/java:23-jre
 
 ## Ovdje je moguce instalirati alate potrebne za rad aplikacije. Vjerojatno vam nece trebati, no dobro je znati.
 ## Linux distro koji se koristi je Alpine, stoga se kao package manager koristi apk
