@@ -1,22 +1,10 @@
-# Importing JDK and copying required files
-FROM openjdk:19-jdk AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src src
+FROM alpine/java:21-jre
 
-# Copy Maven wrapper
-COPY mvnw .
-COPY .mvn .mvn
+# Kopiranje izvrsnog JAR-a iz build containera u izvrsni container
+COPY target/*.jar /app.jar
 
-# Set execution permission for the Maven wrapper
-RUN chmod +x ./mvnw
-RUN ./mvnw clean package -DskipTests
-
-# Stage 2: Create the final Docker image using OpenJDK 19
-FROM openjdk:19-jdk
-VOLUME /tmp
-
-# Copy the JAR from the build stage
-COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Izlaganje porta
 EXPOSE 8080
+
+# Naredba kojom se pokrece aplikacija
+ENTRYPOINT ["java","-jar","/app.jar"]
