@@ -6,6 +6,7 @@ FROM alpine/java:21-jre
 
 # Kopiranje izvrsnog JAR-a iz build containera u izvrsni container
 COPY --from=build /app/target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
 
 # Izlaganje porta
 EXPOSE 8080
