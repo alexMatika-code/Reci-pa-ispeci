@@ -23,6 +23,8 @@ RUN apk add --no-cache gettext
 # Remove default Nginx static files
 RUN rm -rf /usr/share/nginx/html/*
 
+RUN install -g serve && serve-s dist
+
 # Copy the build output to Nginx html directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
