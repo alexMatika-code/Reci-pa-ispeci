@@ -1,0 +1,76 @@
+/*:root {*/
+/*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
+/*  line-height: 1.5;*/
+/*  font-weight: 400;*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.pt-80{
+    padding-top: 80px;
+}
+.pt-40{
+    padding-top: 40px;
+}
+
+.ml-16{
+    margin-left: 16px;
+}
+
+.max-w-85{
+    max-width: 85% !important;
+}
+
+.min-w-85{
+    min-width: 85% !important;
+}
+
+.text-align-left{
+    text-align: left !important;
+}
+
+.text-align-right{
+    text-align: right !important;
+}
+
+.font-weight-600{
+    font-weight: 600 !important;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.color-dsg{
+    color: darkslategray;
+}
+
+.color-lsg{
+    color: lightslategray;
+}
+
+.bg-whitesmoke{
+    background-color: whitesmoke;
+}
+
+.font-0-8rem{
+    font-size: 0.8rem !important;
+}
+
+.font-1rem{
+    font-size: 1rem !important;
+}
+
+.font-1-2rem{
+    font-size: 1.2rem !important;
+}
+
+.font-1-4rem{
+    font-size: 1.4rem !important;
+}
+.cursor-pointer{
+    cursor: pointer;
+}

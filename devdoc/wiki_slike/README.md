@@ -1,1 +1,1 @@
-Images for the wiki page
+Ovaj folder sadrži slike koje se koriste u wiki-ju.
