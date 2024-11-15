@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM openjdk:23-jdk AS build
+FROM openjdk:17-jdk AS build
 WORKDIR /app
 
 # Copy Maven wrapper and project files
@@ -13,7 +13,7 @@ RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Create the final image
-FROM openjdk:23-jdk
+FROM openjdk:17-jdk
 WORKDIR /app
 VOLUME /tmp
 
