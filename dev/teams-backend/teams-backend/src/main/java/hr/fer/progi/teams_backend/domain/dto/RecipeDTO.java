@@ -20,5 +20,4 @@ public class RecipeDTO {
 
     private String imageBase64;
     private Set<IngredientDTO> ingredients;
-
 }

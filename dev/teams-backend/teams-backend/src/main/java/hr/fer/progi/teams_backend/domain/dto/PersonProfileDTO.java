@@ -15,13 +15,9 @@ public class PersonProfileDTO {
     private String email;
     private String image;
     private String role; //add getRoles.getName
-
     private Long recipeCount;
     private Long ratingCount;
     private Double ratingAverage;
-
-
-
     private List<RatingDTO> ratings;
     private List<RecipeDTO> recipes;
     private Set<IngredientDTO> favoriteIngredients;

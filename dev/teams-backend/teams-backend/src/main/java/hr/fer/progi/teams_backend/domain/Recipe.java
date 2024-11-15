@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@Getter
-@Setter
 @Entity
 @Table(name = "RECIPE")
 public class Recipe {

@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@Getter
-@Setter
 @Entity
 @Table(name = "PERSON")
 public class Person {

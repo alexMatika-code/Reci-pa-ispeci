@@ -71,20 +71,23 @@ public class RecipeController {
 
         if (person != null) {
             try {
-                // Multipart file to byte
-                Recipe createdRecipe = recipeService.createRecipeWithImage(createRecipeDTO,person.getPersonId());
+                // Attempt to create the recipe
+                Recipe createdRecipe = recipeService.createRecipeWithImage(createRecipeDTO, person.getPersonId());
 
-                //add recipe to user
+                // Check if the recipe was created successfully
+                if (createdRecipe == null || createdRecipe.getRecipeId() == null) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save recipe in the database");
+                }
 
-                return ResponseEntity.ok("Recipe created successfully with ID: " + createdRecipe.getRecipeId() + " user id " + person.getPersonId());
+                return ResponseEntity.ok("Recipe created successfully with ID: " + createdRecipe.getRecipeId() + ", user ID: " + person.getPersonId());
             } catch (IOException e) {
-                return ResponseEntity.status(400).body("Failed to upload image");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to upload image");
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
-
     }
+
 
     @GetMapping("/public")
     public ResponseEntity<?> getPublicRecipes(

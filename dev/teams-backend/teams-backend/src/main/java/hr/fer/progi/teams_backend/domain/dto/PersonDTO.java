@@ -16,5 +16,4 @@ public class PersonDTO {
     private List<RatingDTO> ratings;
     private List<RecipeDTO> recipes;
     private Set<IngredientDTO> favoriteIngredients;
-
 }

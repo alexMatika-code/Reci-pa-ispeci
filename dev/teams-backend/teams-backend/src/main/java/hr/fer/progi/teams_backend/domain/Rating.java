@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-@Getter
-@Setter
 @Entity
-
 @Table(name = "RATING")
 public class Rating {
     @Id
