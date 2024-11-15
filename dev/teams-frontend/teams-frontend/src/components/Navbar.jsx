@@ -11,7 +11,7 @@ function Navbar() {
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
-                const response = await fetch(`/api/people/getAuthUser`);
+                const response = await fetch('https://reci-pa-ispeci-be.onrender.com/api/people/getAuthUser');
                 const data = await response.json();
                 setCurrentUser(data);
             } catch (error) {
