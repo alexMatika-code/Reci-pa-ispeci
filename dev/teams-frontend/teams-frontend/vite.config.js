@@ -11,7 +11,7 @@ export default defineConfig({
         // target: 'http://localhost:8080',
         target: 'https://reci-pa-ispeci-q8z2.onrender.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        // rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }
