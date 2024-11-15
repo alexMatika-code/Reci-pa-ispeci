@@ -26,7 +26,7 @@ const App = () => {
     }
 
     const signIn = async (user) => {
-        const res = await fetch('/api/login', {
+        const res = await fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
