@@ -26,15 +26,16 @@ function Navbar() {
     };
     const navigateToProfilePage = () => {
         navigate(`/profile/${currentUser.username}`);
-    }
+    };
 
     const navigateToHome = () => {
         navigate(`/`);
     };
 
     const handleLoginClick = () => {
-        location.href = "/api/login"
-    }
+        location.href = "https://reci-pa-ispeci-be.onrender.com/api/login";
+    };
+
     return (
         <div className={"navbar-container h-100"}>
             <header className="App-header">
@@ -69,7 +70,6 @@ function Navbar() {
                                 />
                             ) : (
                                 <BsPersonCircle
-
                                     onClick={handleLoginClick}
                                     className={"cursor-pointer"}
                                 />
@@ -80,9 +80,7 @@ function Navbar() {
 
             </header>
         </div>
-
-    )
-        ;
+    );
 }
 
 export default Navbar;

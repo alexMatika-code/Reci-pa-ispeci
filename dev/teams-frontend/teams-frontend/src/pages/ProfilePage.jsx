@@ -15,7 +15,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await fetch(`/api/people/profile/${username}`);
+                const res = await fetch(`https://reci-pa-ispeci-be.onrender.com/api/people/profile/${username}`);
                 const data = await res.json();
                 setUser(data);
                 console.log(data); // Log the fetched user data
