@@ -11,11 +11,5 @@ public class TeamsBackendApplication {
 		new SpringApplicationBuilder()
 				.sources(TeamsBackendApplication.class)
 				.run(args);
-
-		        Environment environment = context.getEnvironment();
-
-        // Example: Log specific environment variables
-        System.out.println("Environment Variables:");
-        System.out.println("GOOGLE_CLIENT_SECRET: " + environment.getProperty("GOOGLE_CLIENT_SECRET"));
 	}
 }
