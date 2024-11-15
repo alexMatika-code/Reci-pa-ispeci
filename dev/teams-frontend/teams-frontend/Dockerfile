@@ -19,17 +19,20 @@ RUN npm run build
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine
 
-# Remove the default Nginx static files
+# Install gettext for envsubst
+RUN apk add --no-cache gettext
+
+# Remove default Nginx static files
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the React build output to Nginx's HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy a custom Nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy the Nginx configuration template
+COPY default.template /etc/nginx/conf.d/default.template
 
 # Expose the default Nginx port
 EXPOSE 80
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Set dynamic environment variables and start Nginx
+CMD ["/bin/sh", "-c", "envsubst '$BACKEND_URL' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
