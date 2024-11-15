@@ -29,6 +29,8 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Copy the Nginx configuration template
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
+# Expose port 80
+EXPOSE 80
 
 # Start Nginx with dynamic configuration
 CMD ["nginx", "-g", "daemon off;"]
