@@ -1,34 +1,35 @@
 # Stage 1: Build the React application
 FROM node:18-alpine AS build
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy package.json and package-lock.json to the container
 COPY package.json package-lock.json* ./
+
+# Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
 COPY . .
 
-# Build the application
+# Build the React application
 RUN npm run build
 
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine
 
-# Install gettext for envsubst
-RUN apk add --no-cache gettext
-
 # Remove default Nginx static files
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the build output to Nginx html directory
+# Copy the React build output to Nginx's HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy the Nginx configuration template
-COPY nginx.conf /etc/nginx/templates/default.conf.template
+# Copy the static Nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Expose the default Nginx port
+EXPOSE 80
 
-# Start Nginx with dynamic configuration
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
