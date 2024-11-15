@@ -29,6 +29,8 @@ COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy the Nginx configuration template
 COPY nginx.conf /etc/nginx/templates/default.conf.template
+ENTRYPOINT ["/bin/sh", "-c", "envsubst '${BACKEND_URL}' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+
 
 # Expose port 80
 EXPOSE 80
