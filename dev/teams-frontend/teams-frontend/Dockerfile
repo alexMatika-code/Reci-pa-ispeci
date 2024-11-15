@@ -1,13 +1,35 @@
+# Stage 1: Build the React application
+FROM node:18-alpine AS build
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the container
+COPY package.json package-lock.json* ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the React application
+RUN npm run build
+
+# Stage 2: Serve the app with Nginx
 FROM nginx:alpine
 
-# Kopira dist folder sadržaj sa stroja u nginx folder u Docker containeru
-COPY dist /usr/share/nginx/html
+# Remove the default Nginx static files
+RUN rm -rf /usr/share/nginx/html/*
 
-# Izlozi port
+# Copy the React build output to Nginx's HTML directory
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy a custom Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose the default Nginx port
 EXPOSE 80
 
-# Kopira konfiguraciju nginx-a
-COPY nginx.conf /etc/nginx/conf.d/default.template
-
-# postavlja entrypoint
-ENTRYPOINT ["/bin/sh", "-c", "envsubst '${BACKEND_URL}' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
