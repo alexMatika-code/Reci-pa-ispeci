@@ -22,7 +22,7 @@ const HomePage = () => {
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await fetch(`/recipes/public?page=0&size=12`);
+                const response = await fetch(`/api/recipes/public?page=0&size=12`);
                 const data = await response.json();
                 setRecipes(data.content);
             } catch (error) {
