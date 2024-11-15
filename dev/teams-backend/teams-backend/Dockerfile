@@ -21,5 +21,5 @@ VOLUME /tmp
 COPY --from=build /app/target/*.jar app.jar
 
 # Expose the application port and set the entrypoint
-EXPOSE 443
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
