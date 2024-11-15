@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/': {
+      '/api': {
         target: 'https://reci-pa-ispeci-q8z2.onrender.com', // Backend URL
         changeOrigin: true,
         secure: true, // Since Render uses HTTPS
