@@ -3,9 +3,9 @@ name: Build and Push Backend Image
 on:
   push:
     branches:
-      - master
+      - dev-proxy-fix
     paths:
-      - 'backend/**'      # Trigger only on changes in the /backend directory
+      - 'dev/teams-backend/teams-backend/**'      # Trigger only on changes in the /backend directory
   workflow_dispatch:
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           architecture: x64
           cache: 'maven'
-          cache-dependency-path: 'backend/pom.xml'
+          cache-dependency-path: 'dev/teams-backend/teams-backend/pom.xml'
 
       - name: Maven build
         run: mvn clean package
