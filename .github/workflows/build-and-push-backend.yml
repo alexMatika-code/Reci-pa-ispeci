@@ -30,7 +30,7 @@ jobs:
 
       - name: Maven build
         run: mvn clean package
-        working-directory: backend
+        working-directory: dev/teams-backend/teams-backend
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
