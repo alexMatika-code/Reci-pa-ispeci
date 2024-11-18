@@ -6,3 +6,4 @@ Frontend, backend i baza deployani na render. Frontend funkcionalan ali nije pov
 
 Error koji dobijamo većinu vremena. Vjerojatno nismo dobro uspjeli namjestiti proxy pomoću nginx i docker fileova. 
 
+Environment varijable inače držimo sakrivene, no radi neuspješnog povezivanja FE s BE ostavili smo ih u radi mogućnosti lokalnog testiranja.
