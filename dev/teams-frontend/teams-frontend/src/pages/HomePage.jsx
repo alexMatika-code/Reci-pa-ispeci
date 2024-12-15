@@ -14,6 +14,8 @@ const HomePage = () => {
     const [size] = useState(10);
     const [loading, setLoading] = useState(true);
     const [timeToCook, setTimeToCook] = useState("");
+    const [currentUser, setCurrentUser] = useState(null);
+
 
     const toggleChat = () => {
         setShowChat((prev) => !prev);
@@ -32,6 +34,17 @@ const HomePage = () => {
             }
         };
         fetchRecipes();
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await fetch(`/api/people/getAuthUser`);
+                const data = await response.json();
+                setCurrentUser(data);
+            } catch (error) {
+                console.error("Error fetching currentUser:", error);
+            }
+        };
+
+        fetchCurrentUser();
     }, [size]);
 
     const filteredRecipes = recipes.filter((recipe) => {
@@ -45,7 +58,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <Navbar/>
+            <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             {loading ? (
                 <Spinner loading={loading}/>
             ) : (

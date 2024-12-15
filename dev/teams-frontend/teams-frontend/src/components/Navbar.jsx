@@ -4,22 +4,21 @@ import {BsPersonCircle} from "react-icons/bs";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 
-function Navbar() {
+function Navbar({currentUser, setCurrentUser}) {
     const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        const fetchCurrentUser = async () => {
-            try {
-                const response = await fetch(`/api/people/getAuthUser`);
-                const data = await response.json();
-                setCurrentUser(data);
-            } catch (error) {
-                console.error("Error fetching currentUser:", error);
-            }
-        };
-
-        fetchCurrentUser();
+        // const fetchCurrentUser = async () => {
+        //     try {
+        //         const response = await fetch(`/api/people/getAuthUser`);
+        //         const data = await response.json();
+        //         setCurrentUser(data);
+        //     } catch (error) {
+        //         console.error("Error fetching currentUser:", error);
+        //     }
+        // };
+        //
+        // fetchCurrentUser();
     }, []);
     const navigateToAddNew = () => {
         navigate(`/recipe/add`);
