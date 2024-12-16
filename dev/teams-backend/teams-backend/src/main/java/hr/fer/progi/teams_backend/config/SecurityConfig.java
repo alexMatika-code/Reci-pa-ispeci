@@ -18,8 +18,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Configuration
@@ -36,6 +40,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
+        http.cors(Customizer.withDefaults());
+
         http.requiresChannel(channel -> channel
                 .anyRequest().requiresSecure()
         );
@@ -46,6 +52,7 @@ public class SecurityConfig {
                     registry.requestMatchers("/").permitAll();
                     registry.requestMatchers("/recipes/public").permitAll();
                     registry.requestMatchers("/people/profile/{username}").permitAll();
+                    registry.requestMatchers("/login").permitAll();
                     registry.requestMatchers("/oauth2/authorization/google").permitAll();
                     registry.requestMatchers("/api/oauth2/authorization/google").permitAll();
                     registry.anyRequest().authenticated();
@@ -91,5 +98,20 @@ public class SecurityConfig {
             System.out.println(request);
             response.sendRedirect(frontendUrl);
         }
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
