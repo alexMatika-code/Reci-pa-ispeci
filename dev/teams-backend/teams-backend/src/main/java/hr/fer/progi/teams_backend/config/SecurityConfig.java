@@ -83,6 +83,8 @@ public class SecurityConfig {
                 personRepository.save(newUser);
             }
 
+            System.out.println(response);
+            System.out.println(request);
             response.sendRedirect(frontendUrl);
         }
     }
