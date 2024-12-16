@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
-@CrossOrigin(origins = "https://reci-pa-ispeci.onrender.com", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "https://reci-pa-ispeci.onrender.com", allowCredentials = "true")
 public class RecipeController {
 
     @Autowired
