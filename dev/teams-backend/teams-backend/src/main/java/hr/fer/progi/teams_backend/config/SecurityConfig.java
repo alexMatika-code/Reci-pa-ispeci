@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,7 +37,7 @@ public class SecurityConfig {
     @Autowired
     private PersonRepository personRepository;
     private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
-    
+
 
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
@@ -64,6 +65,7 @@ public class SecurityConfig {
                 })
                 .build();
     }
+
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
         @Override
@@ -96,6 +98,9 @@ public class SecurityConfig {
 
             System.out.println(response);
             System.out.println(request);
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+            response.setHeader("Access-Control-Allow-Headers", "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range");
             response.sendRedirect(frontendUrl);
         }
     }
