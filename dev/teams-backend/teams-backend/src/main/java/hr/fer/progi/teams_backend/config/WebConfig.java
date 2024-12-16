@@ -13,7 +13,7 @@ public class WebConfig implements CorsConfigurationSource {
     @Override
     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com/"));
+        config.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
         return config;
