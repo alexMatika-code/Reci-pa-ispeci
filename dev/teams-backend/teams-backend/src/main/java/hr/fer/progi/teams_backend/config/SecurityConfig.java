@@ -33,8 +33,12 @@ public class SecurityConfig {
     private final String frontendUrl = "https://reci-pa-ispeci.onrender.com/";
 
     @Bean
-    public SecurityFilterChain oauthFilterChain(HttpSecurity https) throws Exception {
-        return https.cors(Customizer.withDefaults())
+    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
+        http.requiresChannel(channel -> channel
+                .anyRequest().requiresSecure()
+        );
+
+        return http.cors(Customizer.withDefaults())
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/").permitAll();
