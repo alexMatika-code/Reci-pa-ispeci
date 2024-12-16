@@ -46,6 +46,8 @@ public class SecurityConfig {
                     registry.requestMatchers("/").permitAll();
                     registry.requestMatchers("/recipes/public").permitAll();
                     registry.requestMatchers("/people/profile/{username}").permitAll();
+                    registry.requestMatchers("/oauth2/authorization/google").permitAll();
+                    registry.requestMatchers("/api/oauth2/authorization/google").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
