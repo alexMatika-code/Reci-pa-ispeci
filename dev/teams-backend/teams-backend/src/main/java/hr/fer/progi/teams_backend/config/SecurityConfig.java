@@ -34,6 +34,8 @@ public class SecurityConfig {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired WebConfig customCorsConfiguration;
+
     @Autowired
     private PersonRepository personRepository;
     private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
@@ -47,7 +49,7 @@ public class SecurityConfig {
                 .anyRequest().requiresSecure()
         );
 
-        return http.cors(Customizer.withDefaults())
+        return http.cors(c -> c.configurationSource(customCorsConfiguration))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/").permitAll();
@@ -96,11 +98,6 @@ public class SecurityConfig {
                 personRepository.save(newUser);
             }
 
-            System.out.println(response);
-            System.out.println(request);
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-            response.setHeader("Access-Control-Allow-Headers", "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range");
             response.sendRedirect(frontendUrl);
         }
     }
