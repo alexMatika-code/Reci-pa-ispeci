@@ -30,7 +30,7 @@ public class SecurityConfig {
 
     @Autowired
     private PersonRepository personRepository;
-    private final String frontendUrl = "https://reci-pa-ispeci.onrender.com/";
+    private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
 
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
