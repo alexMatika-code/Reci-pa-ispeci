@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "https://reci-pa-ispeci.onrender.com", methods = {RequestMethod.GET, RequestMethod.POST})
 @RequestMapping("/ingredients")
 public class IngredientController {
 
