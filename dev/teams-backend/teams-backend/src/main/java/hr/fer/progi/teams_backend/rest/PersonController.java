@@ -82,17 +82,22 @@ public class PersonController {
     }
 
     @GetMapping("/getAuthUser")
-    public ResponseEntity<?> getAuthUser(Authentication authentication) {
-        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+    public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal OAuth2User oauth2User) {
+        if (oauth2User == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("User is not authenticated");
+        }
+
+        String email = oauth2User.getAttribute("email");
         PersonDTO person = personService.findByEmail(email);
 
         if (person != null) {
             PersonAuthInfoDTO personAuthInfo = personService.GetAuthUserInfo(person.getPersonId());
             return ResponseEntity.ok(personAuthInfo);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("User not found");
         }
     }
-
 
 }
