@@ -18,6 +18,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -38,7 +40,8 @@ public class SecurityConfig {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired WebConfig customCorsConfiguration;
+    @Autowired
+    WebConfig customCorsConfiguration;
 
     @Autowired
     private PersonRepository personRepository;
@@ -63,31 +66,16 @@ public class SecurityConfig {
                     registry.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
-                    oauth2
-                            .successHandler(new CustomAuthenticationSuccessHandler());
+                    oauth2.userInfoEndpoint(
+                                    userInfoEndpoint -> userInfoEndpoint.userAuthoritiesMapper(this.authorityMapper()))
+                            .successHandler(
+                                    (request, response, authentication) -> {
+                                        response.sendRedirect(frontendUrl);
+                                    });
                 })
+                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .build();
     }
-//    @Bean
-//    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> {
-//                    auth.requestMatchers("/recipes/public").permitAll();
-//                    auth.requestMatchers("/api/login");
-//                    auth.anyRequest().authenticated();
-//                })
-//                .oauth2Login(oauth2 -> {
-//                    oauth2.userInfoEndpoint(
-//                            userInfoEndpoint -> userInfoEndpoint.userAuthoritiesMapper(this.authorityMapper()));
-//                    oauth2.successHandler(
-//                                    (request, response, authentication) -> {
-//                                        response.sendRedirect(frontendUrl);
-//                                    });
-//                })
-//                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
-//                .build();
-//    }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
         @Override
@@ -117,6 +105,8 @@ public class SecurityConfig {
                 newUser.setRole(role);
                 personRepository.save(newUser);
             }
+
+            response.sendRedirect(frontendUrl);
         }
     }
 
@@ -135,12 +125,40 @@ public class SecurityConfig {
         return source;
     }
 
-    private GrantedAuthoritiesMapper authorityMapper() {
-        final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
-
-        authorityMapper.setDefaultAuthority("ROLE_ADMIN");
-
-        return authorityMapper;
+    @Bean
+    public GrantedAuthoritiesMapper authorityMapper() {
+        return authorities -> {
+            if (authorities instanceof List) {
+                for (Object authority : authorities) {
+                    if (authority instanceof DefaultOidcUser oidcUser) {
+                        handleNewUser(oidcUser); // Create user if they don't exist
+                    }
+                }
+            }
+            return authorities;
+        };
     }
 
+    private void handleNewUser(OidcUser oidcUser) {
+        String email = oidcUser.getAttribute("email");
+        if (!personRepository.existsByEmail(email)) {
+            Person newUser = new Person();
+            newUser.setEmail(email);
+            newUser.setFirstName(oidcUser.getAttribute("given_name"));
+            newUser.setLastName(oidcUser.getAttribute("family_name"));
+            newUser.setImage(oidcUser.getAttribute("picture"));
+
+            String username = email.contains("@") ? email.substring(0, email.indexOf("@")) : email;
+            newUser.setUsername(username);
+
+            Role role = roleRepository.findByName(Roles.USER);
+            if (role == null) {
+                role = new Role();
+                role.setName(Roles.USER);
+                roleRepository.save(role);
+            }
+            newUser.setRole(role);
+            personRepository.save(newUser);
+        }
+    }
 }
