@@ -16,6 +16,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -43,48 +45,49 @@ public class SecurityConfig {
     private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
 
 
-//    @Bean
-//    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-//        http.cors(Customizer.withDefaults());
-//        http.requiresChannel(channel -> channel
-//                .anyRequest().requiresSecure()
-//        );
-//
-//        return http.cors(c -> c.configurationSource(customCorsConfiguration))
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(registry -> {
-//                    registry.requestMatchers("/").permitAll();
-//                    registry.requestMatchers("/recipes/public").permitAll();
-//                    registry.requestMatchers("/people/profile/{username}").permitAll();
-//                    registry.requestMatchers("/api/login").permitAll();
-//                    registry.requestMatchers("/oauth2/authorization/google").permitAll();
-//                    registry.requestMatchers("/api/oauth2/authorization/google").permitAll();
-//                    registry.anyRequest().authenticated();
-//                })
-//                .oauth2Login(oauth2 -> {
-//                    oauth2
-//                            .successHandler(new CustomAuthenticationSuccessHandler());
-//                })
-//                .build();
-//    }
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/recipes/public").permitAll();
-                    auth.requestMatchers("/api/login");
-                    auth.anyRequest().authenticated();
+        http.cors(Customizer.withDefaults());
+        http.requiresChannel(channel -> channel
+                .anyRequest().requiresSecure()
+        );
+
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(registry -> {
+                    registry.requestMatchers("/").permitAll();
+                    registry.requestMatchers("/recipes/public").permitAll();
+                    registry.requestMatchers("/people/profile/{username}").permitAll();
+                    registry.requestMatchers("/api/login").permitAll();
+                    registry.requestMatchers("/oauth2/authorization/google").permitAll();
+                    registry.requestMatchers("/api/oauth2/authorization/google").permitAll();
+                    registry.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
-                    oauth2.successHandler(
-                                    (request, response, authentication) -> {
-                                        response.sendRedirect(frontendUrl);
-                                    });
+                    oauth2
+                            .successHandler(new CustomAuthenticationSuccessHandler());
                 })
-                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .build();
     }
+//    @Bean
+//    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> {
+//                    auth.requestMatchers("/recipes/public").permitAll();
+//                    auth.requestMatchers("/api/login");
+//                    auth.anyRequest().authenticated();
+//                })
+//                .oauth2Login(oauth2 -> {
+//                    oauth2.userInfoEndpoint(
+//                            userInfoEndpoint -> userInfoEndpoint.userAuthoritiesMapper(this.authorityMapper()));
+//                    oauth2.successHandler(
+//                                    (request, response, authentication) -> {
+//                                        response.sendRedirect(frontendUrl);
+//                                    });
+//                })
+//                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
+//                .build();
+//    }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
         @Override
@@ -114,8 +117,6 @@ public class SecurityConfig {
                 newUser.setRole(role);
                 personRepository.save(newUser);
             }
-
-            response.sendRedirect(frontendUrl);
         }
     }
 
@@ -133,4 +134,13 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+    private GrantedAuthoritiesMapper authorityMapper() {
+        final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
+
+        authorityMapper.setDefaultAuthority("ROLE_ADMIN");
+
+        return authorityMapper;
+    }
+
 }
