@@ -73,6 +73,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/recipes/public").permitAll();
+                    auth.requestMatchers("/api/login");
                     auth.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
