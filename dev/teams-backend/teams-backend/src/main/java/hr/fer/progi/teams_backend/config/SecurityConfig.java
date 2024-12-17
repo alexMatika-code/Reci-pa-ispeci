@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,33 +43,47 @@ public class SecurityConfig {
     private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
 
 
+//    @Bean
+//    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
+//        http.cors(Customizer.withDefaults());
+//        http.requiresChannel(channel -> channel
+//                .anyRequest().requiresSecure()
+//        );
+//
+//        return http.cors(c -> c.configurationSource(customCorsConfiguration))
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(registry -> {
+//                    registry.requestMatchers("/").permitAll();
+//                    registry.requestMatchers("/recipes/public").permitAll();
+//                    registry.requestMatchers("/people/profile/{username}").permitAll();
+//                    registry.requestMatchers("/api/login").permitAll();
+//                    registry.requestMatchers("/oauth2/authorization/google").permitAll();
+//                    registry.requestMatchers("/api/oauth2/authorization/google").permitAll();
+//                    registry.anyRequest().authenticated();
+//                })
+//                .oauth2Login(oauth2 -> {
+//                    oauth2
+//                            .successHandler(new CustomAuthenticationSuccessHandler());
+//                })
+//                .build();
+//    }
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults());
-
-        http.requiresChannel(channel -> channel
-                .anyRequest().requiresSecure()
-        );
-
-        return http.cors(c -> c.configurationSource(customCorsConfiguration))
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/").permitAll();
-                    registry.requestMatchers("/recipes/public").permitAll();
-                    registry.requestMatchers("/people/profile/{username}").permitAll();
-                    registry.requestMatchers("/api/login").permitAll();
-                    registry.requestMatchers("/oauth2/authorization/google").permitAll();
-                    registry.requestMatchers("/api/oauth2/authorization/google").permitAll();
-                    registry.anyRequest().authenticated();
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/recipes/public").permitAll();
+                    auth.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
-                    oauth2
-                            .loginPage("/oauth2/authorization/google")
-                            .successHandler(new CustomAuthenticationSuccessHandler());
+                    oauth2.successHandler(
+                                    (request, response, authentication) -> {
+                                        response.sendRedirect(frontendUrl);
+                                    });
                 })
+                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .build();
     }
-
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
         @Override
