@@ -36,7 +36,13 @@ const HomePage = () => {
         fetchRecipes();
         const fetchCurrentUser = async () => {
             try {
-                const response = await fetch(`/api/people/getAuthUser`);
+                const response = await fetch(`/api/people/getAuthUser`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
                 const data = await response.json();
                 setCurrentUser(data);
             } catch (error) {

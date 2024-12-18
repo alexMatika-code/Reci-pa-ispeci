@@ -34,7 +34,13 @@ const FilterRecipes = ({ ingredients, setIngredients,timeToCook, setTimeToCook }
 
         const fetchIngredients = async() => {
         try{
-            const response = await fetch(`/api/ingredients`);
+            const response = await fetch(`/api/ingredients`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             const data = await response.json();
             setIngredientsFromDb(data);
         }catch (error){
