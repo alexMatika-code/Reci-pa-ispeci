@@ -99,6 +99,10 @@ public class SecurityConfig {
                 newUser.setRole(role);
                 personRepository.save(newUser);
             }
+
+            String sessionId = request.getSession().getId();
+            response.addHeader("Set-Cookie", "JSESSIONID=" + sessionId + "; Path=/; HttpOnly; Secure; SameSite=None");
+
             response.sendRedirect(frontendUrl);
         }
     }
