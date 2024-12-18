@@ -32,7 +32,7 @@ function Navbar({currentUser, setCurrentUser}) {
     };
 
     const handleLoginClick = () => {
-        location.href = "/api/login"
+        location.href = "/api"
     }
     return (
         <div className={"navbar-container h-100"}>
