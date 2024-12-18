@@ -1,7 +1,6 @@
 package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Person;
-import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
@@ -10,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,22 +82,24 @@ public class PersonController {
     }
 
     @GetMapping("/getAuthUser")
-    public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal OAuth2User oauth2User) {
-        if (oauth2User == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("User is not authenticated");
+    public ResponseEntity<?> getAuthUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
         }
 
+        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         String email = oauth2User.getAttribute("email");
-        PersonDTO person = personService.findByEmail(email);
+        System.out.println("Authenticated user's email: " + email);
 
+        PersonDTO person = personService.findByEmail(email);
         if (person != null) {
-            PersonAuthInfoDTO personAuthInfo = personService.GetAuthUserInfo(person.getPersonId());
-            return ResponseEntity.ok(personAuthInfo);
+            return ResponseEntity.ok(person);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
+
+
 
 }

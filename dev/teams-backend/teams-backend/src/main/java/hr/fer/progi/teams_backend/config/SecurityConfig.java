@@ -56,7 +56,7 @@ public class SecurityConfig {
                     registry.requestMatchers("/login").permitAll();
                     registry.requestMatchers("/oauth2/authorization/google").permitAll();
                     registry.requestMatchers("/api/oauth2/authorization/google").permitAll();
-                    registry.anyRequest().hasRole("USER");
+                    registry.anyRequest().hasAuthority("USER");
                 })
                 .oauth2Login(oauth2 -> {
                     oauth2
@@ -70,7 +70,7 @@ public class SecurityConfig {
     private GrantedAuthoritiesMapper authorityMapper() {
         final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
 
-        authorityMapper.setDefaultAuthority("ROLE_USER");
+        authorityMapper.setDefaultAuthority("USER");
 
         return authorityMapper;
     }
