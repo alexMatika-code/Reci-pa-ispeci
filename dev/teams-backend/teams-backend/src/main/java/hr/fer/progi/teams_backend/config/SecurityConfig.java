@@ -5,6 +5,7 @@ import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(AbstractHttpConfigurer::disable);
         http.requiresChannel(channel -> channel
                 .anyRequest().requiresSecure()
         );
@@ -109,13 +110,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
         configuration.setAllowedOrigins(List.of("https://accounts.google.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Access-Control-Allow-Headers", "X-Requested-With," +
-                " WWW-Authenticate, Authorization, Origin, Content-Type, Version","Authorization",
+                        " WWW-Authenticate, Authorization, Origin, Content-Type, Version","Authorization",
                 "Content-Type", "X-Requested-With", "Accept", "Origin","Access-Control-Allow-Headers",
                 "x-requested-with, authorization"));
         configuration.setExposedHeaders(List.of("Authorization", "Access-Control-Expose-Headers",
