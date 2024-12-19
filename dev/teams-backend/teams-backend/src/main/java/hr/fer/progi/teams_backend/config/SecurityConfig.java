@@ -51,7 +51,8 @@ public class SecurityConfig {
                 .anyRequest().requiresSecure()
         );
 
-        return http.csrf(AbstractHttpConfigurer::disable)
+        return http.
+                csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     registry.requestMatchers("/").permitAll();
@@ -112,8 +113,9 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
+        configuration.setAllowedOrigins(List.of("https://accounts.google.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin","Access-Control-Allow-Headers", "x-requested-with, authorization"));
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
