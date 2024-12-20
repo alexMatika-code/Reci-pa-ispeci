@@ -6,6 +6,7 @@ import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
