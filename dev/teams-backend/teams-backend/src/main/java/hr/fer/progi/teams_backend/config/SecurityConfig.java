@@ -54,7 +54,6 @@ public class SecurityConfig {
 
         return http.
                 csrf(AbstractHttpConfigurer::disable)
-                .securityContext((sec) -> sec.requireExplicitSave(false))
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     registry.requestMatchers("/").permitAll();
@@ -72,9 +71,7 @@ public class SecurityConfig {
                                         response.sendRedirect(frontendUrl);
                                     });
                 })
-                .exceptionHandling(handling ->
-                        handling.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                )                .build();
+                .build();
     }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
