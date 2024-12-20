@@ -16,6 +16,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -54,6 +55,7 @@ public class SecurityConfig {
 
         return http.
                 csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((ses) -> ses.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     registry.requestMatchers("/").permitAll();
@@ -71,7 +73,9 @@ public class SecurityConfig {
                                         response.sendRedirect(frontendUrl);
                                     });
                 })
-                .build();
+                .exceptionHandling(handling ->
+                        handling.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                )                .build();
     }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
