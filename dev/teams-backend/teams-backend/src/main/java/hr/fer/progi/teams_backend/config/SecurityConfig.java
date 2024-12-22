@@ -43,15 +43,15 @@ public class SecurityConfig {
 
     @Autowired
     private PersonRepository personRepository;
-    private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
+    private final String frontendUrl = "https://reci-pa-ispeci-1.onrender.com";
 
 
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
 //        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-//        http.requiresChannel(channel -> channel
-//                .anyRequest().requiresSecure()
-//        );
+        http.requiresChannel(channel -> channel
+                .anyRequest().requiresSecure()
+        );
 
         return http.
                 csrf(AbstractHttpConfigurer::disable)
