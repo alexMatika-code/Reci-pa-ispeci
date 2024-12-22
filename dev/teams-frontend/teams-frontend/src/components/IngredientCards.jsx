@@ -1,11 +1,12 @@
 import IngredientCard from "./IngredientCard.jsx";
-
 const IngredientCards = () => {
     return (
-        <div className="w-50 mx-auto">
-            <IngredientCard name={"Mrkva"}/>
-            <IngredientCard name={"Mlijeko"}/>
-            <IngredientCard name={"Pistacija"}/>
+        <div className="responsive-width mx-auto">
+            <div>
+                <IngredientCard name={"Mrkva"}/>
+                <IngredientCard name={"Mlijeko"}/>
+                <IngredientCard name={"Pistacija"}/>
+            </div>
         </div>
     );
 };

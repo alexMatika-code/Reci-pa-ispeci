@@ -12,12 +12,29 @@
 .pt-80{
     padding-top: 80px;
 }
+
 .pt-40{
     padding-top: 40px;
 }
 
+.mt-10{
+    margin-top: 10px;
+}
+
+.mt-100{
+    margin-top: 100px;
+}
+
+.ml-4{
+    margin-left: 4px;
+}
+
 .ml-16{
     margin-left: 16px;
+}
+
+.w-10{
+    width: 10%;
 }
 
 .max-w-85{
@@ -71,6 +88,19 @@
 .font-1-4rem{
     font-size: 1.4rem !important;
 }
+
+.font-1-6rem{
+    font-size: 1.6rem !important;
+}
+
+.font-1-8rem{
+    font-size: 1.8rem !important;
+}
+
+.font-2rem{
+    font-size: 2rem !important;
+}
+
 .cursor-pointer{
     cursor: pointer;
 }
