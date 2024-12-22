@@ -206,10 +206,6 @@ input:focus {
 }
 
 /* profile */
-.profile-card {
-    /*border: 1px lightgray solid;*/
-    border-radius: 5px;
-}
 
 .recipe-list {
     display: grid;
@@ -353,3 +349,12 @@ h1{
     }
 }
 /*navbar*/
+
+/*ingredients page*/
+.ingredient-card:hover .edit-icon {
+    display: inline-block;
+}
+
+.edit-icon{
+    display: none
+}
