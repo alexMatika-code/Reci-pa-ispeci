@@ -49,9 +49,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
 //        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        http.requiresChannel(channel -> channel
-                .anyRequest().requiresSecure()
-        );
+//        http.requiresChannel(channel -> channel
+//                .anyRequest().requiresSecure()
+//        );
 
         return http.
                 csrf(AbstractHttpConfigurer::disable)
