@@ -2,12 +2,15 @@ package hr.fer.progi.teams_backend.service.impl;
 
 import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
+import hr.fer.progi.teams_backend.domain.dto.IngredientDTO;
+import hr.fer.progi.teams_backend.domain.mapper.IngredientMapper;
 import hr.fer.progi.teams_backend.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IngredientServiceJpa implements IngredientService {
@@ -16,13 +19,16 @@ public class IngredientServiceJpa implements IngredientService {
     private IngredientRepository ingredientRepository;
 
     @Override
-    public List<Ingredient> listAll() {
-        return ingredientRepository.findAll();
+    public List<IngredientDTO> listAll() {
+        return ingredientRepository.findAll().stream()
+                .map(IngredientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Ingredient fetchIngredient(Long id) {
-        return ingredientRepository.findById(id).orElse(null);
+    public IngredientDTO fetchIngredient(Long id) {
+        Ingredient ingredient=ingredientRepository.findById(id).orElse(null);
+        return ingredient==null?null:IngredientMapper.toDTO(ingredient);
     }
 
     @Override
@@ -38,7 +44,6 @@ public class IngredientServiceJpa implements IngredientService {
         Assert.notNull(updateIngredient, "Ingredient by the ID of " + id + " does not exist");
 
         updateIngredient.setName(ingredient.getName());
-        updateIngredient.setDescription(ingredient.getDescription());
 
         return ingredientRepository.save(updateIngredient);
     }
@@ -47,5 +52,13 @@ public class IngredientServiceJpa implements IngredientService {
     public Ingredient createIngredient(Ingredient ingredient) {
         Assert.notNull(ingredient, "Ingredient object must be given");
         return ingredientRepository.save(ingredient);
+    }
+
+    @Override
+    public List<IngredientDTO> searchIngredientsByName(String namePart) {
+        return ingredientRepository.findByNameContainingIgnoreCase(namePart)
+                .stream()
+                .map(IngredientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

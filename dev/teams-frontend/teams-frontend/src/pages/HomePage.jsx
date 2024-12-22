@@ -5,6 +5,7 @@ import SearchBar from "../components/SearchBar.jsx";
 import FilterRecipes from "../components/FilterRecipes.jsx";
 import RecipeCards from "../components/RecipeCards.jsx";
 import Spinner from "../components/Spinner.jsx";
+// import axios from "axios";
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
@@ -14,6 +15,8 @@ const HomePage = () => {
     const [size] = useState(10);
     const [loading, setLoading] = useState(true);
     const [timeToCook, setTimeToCook] = useState("");
+    const [currentUser, setCurrentUser] = useState(null);
+
 
     const toggleChat = () => {
         setShowChat((prev) => !prev);
@@ -32,6 +35,21 @@ const HomePage = () => {
             }
         };
         fetchRecipes();
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await fetch(`/api/people/getAuthUser`, {
+                    credentials: 'include',
+                });
+                // axios.get("/api", {withCredentials: true})
+                //     .then((response) => {setCurrentUser(response.data)})
+                const data = await response.json();
+                setCurrentUser(data);
+            } catch (error) {
+                console.error("Error fetching currentUser:", error);
+            }
+        };
+
+        fetchCurrentUser();
     }, [size]);
 
     const filteredRecipes = recipes.filter((recipe) => {
@@ -45,7 +63,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <Navbar/>
+            <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             {loading ? (
                 <Spinner loading={loading}/>
             ) : (
