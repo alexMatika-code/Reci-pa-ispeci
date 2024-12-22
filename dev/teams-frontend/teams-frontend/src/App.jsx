@@ -10,6 +10,7 @@ import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import EditProfile from "./pages/EditProfilePage.jsx";
+import IngredientsPage from "./pages/IngredientsPage";
 
 const App = () => {
 
@@ -57,6 +58,8 @@ const App = () => {
                 {/* Auth page */}
                 <Route path='sign-in' element={<SignInPage signInSubmit={signIn} />} />
                 <Route path='sign-up' element={<SignUpPage signUpSubmit={signUp} />} />
+                {/* Ingredient related pages */}
+                <Route path='/ingredient' element={<IngredientsPage />}/>
                 {/* Recipe related pages */}
                 <Route path='/recipe/:recipeId' element={<RecipePage />} />
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />

@@ -5,13 +5,13 @@ import StarRating from "./StarRating.jsx";
 
 const ProfileCard = ({user}) => {
     return (
-        <div className={"text-center bg-white profile-card mb-4 shadow-sm"}>
+        <div className={"text-center bg-white b-radius-5 mb-4 shadow-sm"}>
             <img src={user.image || placeholder}
                  alt="img"
                  id={'recipeImg'}
                  className={'border border-4 rounded-circle max-w-85 min-w-85 mt-3 shadow-sm'}
             />
-            <h2 className={"mb-2 mt-4 color-dsg bold"}>{(user.firstName || "") + " " + (user.lastName || "")}</h2>
+            <h2 className={"mb-2 px-1 mt-4 color-dsg bold"}>{(user.firstName || "") + " " + (user.lastName || "")}</h2>
             <h5 className={"color-lsg"}>@{user.username} <Badge bg="info">{user.role}</Badge></h5>
             <Row className={'w-75 m-auto mt-5'}>
                 <div className={'col-md-3 col-lg-6 mb-3 color-dsg'}>

@@ -3,6 +3,7 @@ import {BsFillPlusCircleFill} from "react-icons/bs";
 import {BsPersonCircle} from "react-icons/bs";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {Row} from "react-bootstrap";
 
 function Navbar({currentUser, setCurrentUser}) {
     const navigate = useNavigate();
@@ -35,53 +36,37 @@ function Navbar({currentUser, setCurrentUser}) {
         location.href = "/api/login"
     }
     return (
-        <div className={"navbar-container h-100"}>
-            <header className="App-header">
-                <nav className={"navbar"}>
-                    <div className="row align-items-center pl-3">
-                        <div className="col-1 logo-navbar cursor-pointer"
-                             onClick={navigateToHome}>
-                            <img src={logo} className={"w-100 h-100"} alt="logo"/>
-                        </div>
-                        <div className="col-8">
-                            <div className={"title-navbar"}>Reci-Pa-Ispeci
-                            </div>
-                        </div>
-                        {currentUser ? (
-                            <div className={"col-2 d-flex plusic-navbar gap-2 align-items-center cursor-pointer"}
-                                 onClick={navigateToAddNew}>
-                                <BsFillPlusCircleFill className={""}/>
-                                Novi recept
-                            </div>
-                        ) : (
-                            <div className="col-2" style={{ visibility: "hidden" }}>
-                                <BsFillPlusCircleFill className={""}/>
-                                Novi recept
-                            </div>
-                        )}
-                        <div className={"col-1 align-items-center d-flex person-icon"}>
-                            {currentUser ? (
-                                <img src={currentUser.image}
-                                     alt={"nema"}
-                                     className={"rounded-circle cursor-pointer person-icon"}
-                                     onClick={navigateToProfilePage}
-                                />
-                            ) : (
-                                <BsPersonCircle
+        <div className={"navbar-container h-100 nav-custom d-flex justify-content-between px-5"}>
+            <span className={"d-flex align-items-center"}>
+                <div className="nav-logo logo-navbar cursor-pointer" onClick={navigateToHome}>
+                    <img src={logo} className={"w-100 h-100"} alt="logo"/>
+                </div>
 
-                                    onClick={handleLoginClick}
-                                    className={"cursor-pointer"}
-                                />
-                            )}
-                        </div>
-                    </div>
-                </nav>
+                <div className={"title-navbar"}>
+                    Reci-Pa-Ispeci
+                </div>
+            </span>
 
-            </header>
+            <span className={"d-flex align-items-center"}>
+                {currentUser ? (
+                    <BsFillPlusCircleFill className={"font-1-8rem mx-4 cursor-pointer clickable-icon"} onClick={navigateToAddNew} />
+                ) : ( <></> )}
+
+                <div className={"d-flex align-items-center person-icon"}>
+                    {currentUser ? (
+                        <img src={currentUser.image}
+                             alt={"nema"}
+                             className={"rounded-circle cursor-pointer person-icon"}
+                             onClick={navigateToProfilePage}/>
+                    ) : (
+                        <BsPersonCircle
+                            onClick={handleLoginClick}
+                            className={"cursor-pointer clickable-icon"}/>
+                    )}
+                </div>
+            </span>
         </div>
-
-    )
-        ;
+    );
 }
 
 export default Navbar;

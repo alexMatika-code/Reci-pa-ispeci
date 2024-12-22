@@ -1,20 +1,25 @@
 package hr.fer.progi.teams_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Entity
+@Table(name="INGREDIENT")
 public class Ingredient {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long ingredientId;
 
-    private String name;
+    protected String name;
 
-    private String description;
+    @ManyToMany(mappedBy = "ingredients")
+    private Set<Recipe> recipes = new HashSet<>();
+
+    @ManyToMany(mappedBy = "favoriteIngredients")
+    private Set<Person> favoritedBy = new HashSet<>();
 }

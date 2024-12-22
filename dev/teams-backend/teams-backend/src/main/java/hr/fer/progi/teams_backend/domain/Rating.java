@@ -1,27 +1,26 @@
 package hr.fer.progi.teams_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Entity
+@Table(name = "RATING")
 public class Rating {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long ratingId;
 
-    private String comment;
+    protected int grade;
+    protected String comment;
 
-    private int rating;
+    @ManyToOne
+    @JoinColumn(name = "personId")
+    protected Person person;
 
-    @OneToOne
-    private Person person;
-
-    @OneToOne
-    private Recipe recipe;
+    @ManyToOne
+    @JoinColumn(name = "recipeId")
+    protected Recipe recipe;
 }

@@ -1,31 +1,50 @@
 package hr.fer.progi.teams_backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Entity
+@Table(name = "PERSON")
 public class Person {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long personId;
 
-    private String authority;
+    protected String firstName;
+    protected String lastName;
+    protected String about;
+    protected String username;
+    protected String email;
+    protected String password;
+    protected String image;
 
-    private String firstName;
+    @ManyToOne
+    @JoinColumn(name = "roleId")
+    protected Role role;
 
-    private String lastName;
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @JsonBackReference
+    protected List<Rating> ratings;
 
-    private String email;
+    @OneToMany(mappedBy = "chef", cascade = CascadeType.ALL)
+    protected List<Recipe> chefRecipes;
 
-    private String favouriteIngredients;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    protected List<Recipe> userRecipes;
 
-    private String about;
-
-    @OneToMany
-    private Set<Recipe> recipes;
+    @ManyToMany
+    @JoinTable(
+            name = "favorite_ingredients",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private Set<Ingredient> favoriteIngredients = new HashSet<>();
 }
