@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +42,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-//        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.requiresChannel(channel -> channel
                 .anyRequest().requiresSecure()
         );
@@ -100,25 +102,25 @@ public class SecurityConfig {
         }
     }
 
-//    @Bean
-//    UrlBasedCorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
-//        configuration.setAllowedOrigins(List.of("https://accounts.google.com"));
-//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//        configuration.setAllowedHeaders(List.of("Access-Control-Allow-Headers", "X-Requested-With," +
-//                        " WWW-Authenticate, Authorization, Origin, Content-Type, Version","Authorization",
-//                "Content-Type", "X-Requested-With", "Accept", "Origin","Access-Control-Allow-Headers",
-//                "x-requested-with, authorization"));
-//        configuration.setExposedHeaders(List.of("Authorization", "Access-Control-Expose-Headers",
-//                "X-Requested-With, WWW-Authenticate, Authorization, Origin, Content-Type"));
-//        configuration.setAllowCredentials(true);
-//        configuration.setMaxAge(3600L);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
+    @Bean
+    UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
+        configuration.setAllowedOrigins(List.of("https://accounts.google.com"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Access-Control-Allow-Headers", "X-Requested-With," +
+                        " WWW-Authenticate, Authorization, Origin, Content-Type, Version","Authorization",
+                "Content-Type", "X-Requested-With", "Accept", "Origin","Access-Control-Allow-Headers",
+                "x-requested-with, authorization"));
+        configuration.setExposedHeaders(List.of("Authorization", "Access-Control-Expose-Headers",
+                "X-Requested-With, WWW-Authenticate, Authorization, Origin, Content-Type"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 
     @Bean
