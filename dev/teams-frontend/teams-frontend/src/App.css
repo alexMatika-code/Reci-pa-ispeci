@@ -10,9 +10,8 @@ body {
 }
 
 .person-icon{
-    height: 80px;
-    width: 80px;
     font-size: 50px;
+    /*margin-right: 20px;*/
 }
 .no-recipes-message {
     display: flex;
@@ -60,7 +59,7 @@ input:focus {
     width: 100%;
     text-align: left;
     color: #FF0037;
-    font-size: 42px;
+    font-size: 40px;
     font-family: Outfit, serif;
     font-weight: 700;
     word-wrap: break-word;
@@ -265,7 +264,7 @@ h1{
 /* navbar */
 .nav-custom {
     background-color: lightcyan;
-    padding: 10px 20px;
+    padding: 10px 75px;
     min-height: 120px;
     width: 100%;
 }
@@ -292,8 +291,19 @@ h1{
 }
 
 .nav-logo{
-    flex: 0 0 auto;
-    width: 7%;
+    /*flex: 0 0 auto;*/
+    width: 75px;
+}
+
+.nav-profile{
+    width: 50px;
+    border: lightslategray 2px solid;
+    outline: darkslategray 3px solid;
+}
+
+.nav-profile:hover{
+    outline: darkslategray 5px solid;
+    transition: 0.05s ;
 }
 
 .responsive-width{
@@ -306,20 +316,12 @@ h1{
     .responsive-width{
         width: 60%;
     }
-    .nav-logo{
-        flex: 0 0 auto;
-        width: 9%;
-    }
 }
 
 /* lg */
 @media screen and (max-width: 992px) {
     .responsive-width{
         width: 70%;
-    }
-    .nav-logo{
-        flex: 0 0 auto;
-        width: 11%;
     }
 }
 
@@ -328,9 +330,19 @@ h1{
     .responsive-width{
         width: 80%;
     }
+    .nav-custom {
+        min-height: 100px;
+        padding: 10px 25px;
+    }
     .nav-logo{
-        flex: 0 0 auto;
-        width: 13%;
+        display: none;
+    }
+    .title-navbar{
+        font-size: 32px;
+    }
+    .person-icon{
+        padding-right: 5px;
+        font-size: 40px;
     }
 
     /* hamburger */
