@@ -1,11 +1,11 @@
 import logo from "../assets/logo.png";
-import { BsFillGearFill } from "react-icons/bs";
+import { BsFillGearFill, BsBasket2Fill } from "react-icons/bs";
 import { BsClipboard2PlusFill } from "react-icons/bs";
 import {BsPersonCircle} from "react-icons/bs";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
-function Navbar({currentUser, setCurrentUser}) {
+function Navbar({currentUser}) {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,6 +24,11 @@ function Navbar({currentUser, setCurrentUser}) {
     const navigateToAddNew = () => {
         navigate(`/recipe/add`);
     };
+
+    const navigateToIngredients = () => {
+        navigate(`/ingredients`);
+    }
+
     const navigateToProfilePage = () => {
         navigate(`/profile/${currentUser.username}`);
     }
@@ -49,7 +54,9 @@ function Navbar({currentUser, setCurrentUser}) {
 
             <span className={"d-flex align-items-center mr-16"}>
                 {currentUser ? (
-                    <div className={"d-flex align-items-center mr-16"}>
+                    <div className={"nav-links align-items-center mr-16"}>
+                        <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                       onClick={navigateToIngredients} />
                         <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"} />
                         <BsClipboard2PlusFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
                                               onClick={navigateToAddNew} />

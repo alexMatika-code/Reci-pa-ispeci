@@ -5,11 +5,15 @@ import IngredientCardDeleteModal from "./IngredientCardDeleteModal.jsx";
 import {useRef, useState} from "react";
 import IngredientCardEditModal from "./IngredientCardEditModal.jsx";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const IngredientCard = ({ingredientName, id}) => {
     const [name, setName] = useState(ingredientName);
     const [nameEdit, setNameEdit] = useState(name);
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
+    const [disableButtons, setDisableButtons] = useState(false);
     const card = useRef()
 
     const handleShowDelete = () => setShowDelete(true);
@@ -17,19 +21,26 @@ const IngredientCard = ({ingredientName, id}) => {
 
     const deleteIngredient = async (id) => {
         try {
+            setDisableButtons(true);
             const response = await fetch(`/api/ingredients/` + id, {method: 'DELETE'});
             if(response.ok) {
+                toast.success("Sastojak izbrisan!");
                 card.current.remove();
+            }
+            else{
+                toast.error("Ups! Dogodila se greška.");
             }
         } catch (error) {
             console.error("Error deleting ingredient:", error);
         } finally {
             setShowDelete(false);
+            setDisableButtons(false);
         }
     };
 
     const editIngredient = async (id) => {
         try {
+            setDisableButtons(true);
             const response = await fetch(`/api/ingredients/` + id, {
                 method: "PUT",
                 body: `{"name" : "${nameEdit}"}`,
@@ -38,13 +49,18 @@ const IngredientCard = ({ingredientName, id}) => {
                 }
             })
             if(response.ok) {
+                toast.success("Sastojak izmijenjen!");
                 setName(nameEdit);
+            }
+            else{
+                toast.error("Ups! Dogodila se greška.");
             }
             console.log(`ID: ${id}, old: ${name}, new: ${nameEdit}`);
         } catch (error) {
             console.error("Error editing ingredient:", error);
         } finally {
             setShowEdit(false);
+            setDisableButtons(false);
         }
     };
 
@@ -63,6 +79,7 @@ const IngredientCard = ({ingredientName, id}) => {
             </Card>
 
             <IngredientCardDeleteModal show={showDelete}
+                                       disable={disableButtons}
                                        handleDelete={() => deleteIngredient(id)}
                                        handleClose={() => setShowDelete(false)}
             />
@@ -70,8 +87,22 @@ const IngredientCard = ({ingredientName, id}) => {
             <IngredientCardEditModal name={nameEdit}
                                      setName={setNameEdit}
                                      show={showEdit}
+                                     disable={disableButtons}
                                      handleEdit={() => editIngredient(id)}
                                      handleClose={() => setShowEdit(false)}
+            />
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={false}
+                theme="colored"
+                transition: Slide
             />
         </div>
     );
