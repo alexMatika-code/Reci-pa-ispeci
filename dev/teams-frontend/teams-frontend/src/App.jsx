@@ -4,8 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
 import RecipePage from './pages/RecipePage';
-import SignInPage from './pages/SignInPage';
-import SignUpPage from './pages/SignUpPage';
 import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
@@ -13,37 +11,10 @@ import EditProfile from "./pages/EditProfilePage.jsx";
 import IngredientsPage from "./pages/IngredientsPage";
 
 const App = () => {
-
-    // Authentication
-    const signUp = async (user) => {
-        const res = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({user})
-        });
-        return res.json();
-    }
-
-    const signIn = async (user) => {
-        const res = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({user})
-        });
-        return res.json();
-    }
-
     // Recipe manipulation
     const addRecipe = async (formData) => {
         const res = await fetch('/api/recipes/create', {
             method: 'POST',
-            // headers: {
-            //     'Content-Type': 'multipart/form-data',
-            // },
             body: formData
         });
         console.log(res.json());
@@ -55,11 +26,8 @@ const App = () => {
             <>
                 {/* Home page */}
                 <Route index element={<HomePage />} />
-                {/* Auth page */}
-                <Route path='sign-in' element={<SignInPage signInSubmit={signIn} />} />
-                <Route path='sign-up' element={<SignUpPage signUpSubmit={signUp} />} />
                 {/* Ingredient related pages */}
-                <Route path='/ingredient' element={<IngredientsPage />}/>
+                <Route path='/ingredients' element={<IngredientsPage />}/>
                 {/* Recipe related pages */}
                 <Route path='/recipe/:recipeId' element={<RecipePage />} />
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
