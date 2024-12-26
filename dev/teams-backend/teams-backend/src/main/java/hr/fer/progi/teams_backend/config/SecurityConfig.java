@@ -53,6 +53,7 @@ public class SecurityConfig {
         );
 
         return http.
+                cors(Customizer.withDefaults()).
                 csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((ses) -> ses.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .sessionManagement((ses) -> ses.sessionFixation().none())
@@ -77,7 +78,7 @@ public class SecurityConfig {
                 })
                 .exceptionHandling(handling ->
                         handling.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                )                .build();
+                ).build();
     }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {

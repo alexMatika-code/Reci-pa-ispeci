@@ -17,14 +17,9 @@ public class CorsConfig {
     public FilterRegistrationBean customCorsFilter() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
-        configuration.setAllowedOrigins(List.of("https://accounts.google.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Access-Control-Allow-Headers", "X-Requested-With," +
-                        " WWW-Authenticate, Authorization, Origin, Content-Type, Version","Authorization",
-                "Content-Type", "X-Requested-With", "Accept", "Origin","Access-Control-Allow-Headers",
-                "x-requested-with, authorization"));
-        configuration.setExposedHeaders(List.of("Authorization", "Access-Control-Expose-Headers",
-                "X-Requested-With, WWW-Authenticate, Authorization, Origin, Content-Type"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
+        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
