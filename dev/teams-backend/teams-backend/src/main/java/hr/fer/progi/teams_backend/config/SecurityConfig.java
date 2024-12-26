@@ -5,10 +5,12 @@ import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
+import jakarta.servlet.SessionCookieConfig;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -56,7 +58,7 @@ public class SecurityConfig {
                 cors(Customizer.withDefaults()).
                 csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((ses) -> ses.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .sessionManagement((ses) -> ses.sessionFixation().none())
+                .sessionManagement((ses) -> ses.sessionFixation().migrateSession())
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     registry.requestMatchers("/").permitAll();
@@ -112,6 +114,17 @@ public class SecurityConfig {
 
             response.sendRedirect(frontendUrl);
         }
+    }
+
+    @Bean
+    public ServletContextInitializer initializer() {
+        return servletContext -> {
+            SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
+            sessionCookieConfig.setPath("/");
+            sessionCookieConfig.setDomain("reci-pa-ispeci.onrender.com");
+            sessionCookieConfig.setSecure(true);
+            sessionCookieConfig.setHttpOnly(true);
+        };
     }
 
     @Bean
