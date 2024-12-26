@@ -17,6 +17,7 @@ const RecipeCards = ({ filteredRecipes }) => {
                         key={index}
                         image={recipe.imageBase64 ? `data:image/jpeg;base64,${recipe.imageBase64}` : null}
                         name={recipe.title}
+                        timeToCook={recipe.timeToCook}
                         description={recipe.description}
                     />
                 ))

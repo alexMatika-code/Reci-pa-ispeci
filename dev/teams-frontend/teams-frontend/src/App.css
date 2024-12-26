@@ -134,14 +134,18 @@ input:focus {
 }
 
 .recipe-card {
+    outline: 4px solid whitesmoke;
+
+    margin: 0;
+    padding: 0;
+
     position: relative;
     width: 90%;
     height: 90%;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 24px;
     cursor: pointer;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
@@ -153,7 +157,7 @@ input:focus {
 }
 
 .recipe-card:hover .recipe-card-image {
-    transform: scale(1.1); /* Slight zoom effect on hover */
+    transform: scale(1.02); /* Slight zoom effect on hover */
 }
 
 .recipe-card-overlay {
@@ -174,15 +178,16 @@ input:focus {
 }
 
 .recipe-name {
-    padding: 1px;
-    background-color: rgba(255, 255, 255, 0.8);
     color: #333;
-    font-weight: bold;
-    font-size: 1.2rem;
-    text-align: left;
-    width: fit-content;
-    margin-bottom: 10px;
-    border-radius: 5px;
+
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+    border-top-right-radius: 15px;
+    padding: 10px 15px;
+
+    background-color: whitesmoke;
 }
 
 .hover-text {

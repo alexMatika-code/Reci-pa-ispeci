@@ -1,15 +1,19 @@
 import placeholder from "../assets/placeholder.jpg";
 
-const RecipeCard = ({ image, name, description, onClick}) => {
+const RecipeCard = ({ image, name, timeToCook, description, onClick}) => {
     return (
-        <div onClick={onClick} className="recipe-card">
+        <div onClick={onClick} className="recipe-card shadow-lg">
             <img
                 src={image ? image : placeholder}
                 alt={name || "Naziv jela"}
                 className="recipe-card-image"
             />
             <div className="recipe-card-overlay">
-                <div className="recipe-name">{name || "Naziv jela"}</div>
+                <span className={"recipe-name d-flex align-items-center"}>
+                    <div className="mr-16 color-dsg">{name || "Naziv jela"}</div>
+                    <div className="font-0-8rem color-lsg">{timeToCook}min</div>
+                </span>
+
                 <div className="hover-text">{description || "Procedura pripeme recepta"}</div>
             </div>
         </div>
