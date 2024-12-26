@@ -5,14 +5,18 @@ import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -20,8 +24,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
@@ -37,7 +43,7 @@ public class SecurityConfig {
 
     @Autowired
     private PersonRepository personRepository;
-    private final String frontendUrl = "https://reci-pa-ispeci-1.onrender.com";
+    private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
 
 
     @Bean
@@ -47,12 +53,16 @@ public class SecurityConfig {
                 .anyRequest().requiresSecure()
         );
 
-        return http.authorizeHttpRequests(registry -> {
+        return http.
+                csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((ses) -> ses.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     registry.requestMatchers("/").permitAll();
                     registry.requestMatchers("/recipes/public").permitAll();
                     registry.requestMatchers("/people/profile/{username}").permitAll();
                     registry.requestMatchers("/login").permitAll();
+                    registry.requestMatchers("/ingredients").permitAll();
                     registry.requestMatchers("/oauth2/authorization/google").permitAll();
                     registry.anyRequest().authenticated();
                 })
@@ -66,7 +76,7 @@ public class SecurityConfig {
                 })
                 .exceptionHandling(handling ->
                         handling.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                ).build();
+                )                .build();
     }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
