@@ -54,7 +54,8 @@ public class SecurityConfig {
 
         return http.
                 csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((ses) -> ses.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .sessionManagement((ses) -> ses.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .sessionManagement((ses) -> ses.sessionFixation().none())
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     registry.requestMatchers("/").permitAll();
