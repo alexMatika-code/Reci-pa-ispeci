@@ -63,6 +63,7 @@ public class SecurityConfig {
                     registry.requestMatchers("/people/profile/{username}").permitAll();
                     registry.requestMatchers("/login").permitAll();
                     registry.requestMatchers("/ingredients").permitAll();
+                    registry.requestMatchers("/ingredients/{id}").permitAll();
                     registry.requestMatchers("/oauth2/authorization/google").permitAll();
                     registry.anyRequest().authenticated();
                 })
