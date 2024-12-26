@@ -85,11 +85,13 @@ const HomePage = () => {
                         </div>
                     </div>
 
-                    {filteredRecipes.length > 0 ? (
-                        <RecipeCards filteredRecipes={filteredRecipes}/>
-                    ) : (
-                        <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
-                    )}
+                    <div className={"max-w-92-5 mx-auto home-recipes-container"}>
+                        {filteredRecipes.length > 0 ? (
+                            <RecipeCards filteredRecipes={filteredRecipes}/>
+                        ) : (
+                            <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
+                        )}
+                    </div>
                 </div>
             )}
         </div>

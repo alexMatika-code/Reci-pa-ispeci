@@ -9,10 +9,15 @@ body {
     background-color: #cccccc;
 }
 
+input:focus {
+    outline: none;
+}
+
 .person-icon{
     font-size: 50px;
     /*margin-right: 20px;*/
 }
+
 .no-recipes-message {
     display: flex;
     justify-content: center;
@@ -22,12 +27,13 @@ body {
     color: #555;
     text-align: center;
 }
+
 .search-bar-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 2%;
-    padding-bottom: 3%;
+    padding-top: 75px;
+    padding-bottom: 50px;
 }
 
 .search-bar-main {
@@ -51,10 +57,6 @@ body {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-input:focus {
-    outline: none;
-}
-
 .title-navbar{
     width: 100%;
     text-align: left;
@@ -64,6 +66,7 @@ input:focus {
     font-weight: 700;
     word-wrap: break-word;
 }
+
 .chat-icon-container {
     display: flex;
     padding-left: 1%;
@@ -98,50 +101,14 @@ input:focus {
     position: relative;
 }
 
-.chat-box-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 25%;
-    overflow-y: auto;
-    max-height: 60%;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background: white;
-}
-
-
-.chat-box-header {
-    display: flex;
-    justify-content: flex-end;
-    padding: 3%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    background-color: #E3FCF9;
-    border-bottom: 1px solid #ddd;
-}
-
-.close-button {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #888;
-}
-
-.close-button:hover {
-    color: #000;
-}
-
 .recipe-card {
-    outline: 4px solid whitesmoke;
+    outline: 4px solid white;
 
     margin: 0;
     padding: 0;
 
     position: relative;
-    width: 90%;
-    height: 90%;
+    height: 85%;
     overflow: hidden;
     border-radius: 24px;
     cursor: pointer;
@@ -187,7 +154,7 @@ input:focus {
     border-top-right-radius: 15px;
     padding: 10px 15px;
 
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 .hover-text {
@@ -213,39 +180,6 @@ input:focus {
     cursor: pointer;
 }
 
-/* profile */
-
-.recipe-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1%;
-    margin: 0 auto;
-    padding: 5%;
-    padding-top: 1%;
-}
-body{
-    overflow-x: hidden ;
-}
-/* Tablet view: 2 columns */
-@media (max-width: 992px) {
-    .recipe-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Mobile view: 1 column */
-@media (max-width: 600px) {
-    .recipe-list {
-        grid-template-columns: 1fr;
-    }
-}
-
-.plusic-navbar {
-    color: red;
-    font-size: 23px;
-}
-
-
 /*navbar*/
 * {
     padding: 0;
@@ -263,9 +197,6 @@ a {
     font-size: 18px;
 }
 
-h1{
-    color:red;
-}
 /* navbar */
 .nav-custom {
     background-color: lightcyan;
@@ -274,26 +205,7 @@ h1{
     width: 100%;
 }
 
-.userIcon {
-    width: 100px;
-    height: auto;
-    margin-right: 30px;
-    cursor: pointer;
-}
-
-
-.userIcon{
-    height: 100%;
-    width: 100%;
-}
-
 /* ul  */
-.navMenu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 60px;
-}
 
 .nav-logo{
     /*flex: 0 0 auto;*/
@@ -311,7 +223,7 @@ h1{
     line-height: 43px;
     text-align: center;
     border: lightslategray 2px solid;
-    outline: darkslategray 3px solid;
+    outline: darkslategray 4px solid;
 }
 
 .nav-profile:hover{
@@ -359,60 +271,6 @@ h1{
     .person-icon{
         padding-right: 5px;
         font-size: 40px;
-    }
-
-    /* hamburger */
-    .hamburger {
-        display: block;
-        cursor: pointer;
-    }
-
-    .bar {
-        background-color: #120f0b;
-        width: 20px;
-        height: 3px;
-        display: block;
-        margin: 5px;
-        -webkit-transition: 0.3s ease-in-out;
-        transition: 0.3s ease-in-out;
-    }
-
-    /* adding active class to the bars  */
-    .hamburger.active .bar:nth-child(2){
-        opacity: 0;
-    }
-    .hamburger.active .bar:nth-child(1){
-        transform: translateY(8px) rotate(45deg);
-    }
-    .hamburger.active .bar:nth-child(3){
-        transform: translateY(-8px) rotate(-45deg);
-    }
-
-
-    /* navMenu */
-
-    .navMenu{
-        position: absolute;
-        flex-direction: column;
-        gap: 0;
-        top: 70px;
-        left: -100%;
-        text-align: start;
-        width: 100%;
-        transition: 0.7s ease-in-out;
-        background-color: aliceblue;
-        padding: 10px;
-    }
-
-    .navMenu.active{
-        left: 0;
-    }
-
-    .navMenu li {
-        margin: 16px 0;
-    }
-    .logo-navbar{
-        margin-left: 2%;
     }
 }
 /*navbar*/

@@ -43,7 +43,7 @@ function Navbar({currentUser}) {
     return (
         <div className={"navbar-container h-100 nav-custom d-flex justify-content-between"}>
             <span className={"d-flex align-items-center ml-16"}>
-                <div className="nav-logo logo-navbar cursor-pointer" onClick={navigateToHome}>
+                <div className="nav-logo cursor-pointer" onClick={navigateToHome}>
                     <img src={logo} className={"w-100 h-100"} alt="logo"/>
                 </div>
 

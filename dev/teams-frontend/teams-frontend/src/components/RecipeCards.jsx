@@ -1,5 +1,6 @@
 import RecipeCard from "./RecipeCard.jsx";
 import { useNavigate } from "react-router-dom";
+import {Row} from "react-bootstrap";
 
 const RecipeCards = ({ filteredRecipes }) => {
     const navigate = useNavigate();
@@ -9,7 +10,8 @@ const RecipeCards = ({ filteredRecipes }) => {
     };
 
     return (
-        <div className="recipe-list">
+        // <div className="recipe-list">
+        <Row>
             {filteredRecipes.length > 0 ? (
                 filteredRecipes.map((recipe, index) => (
                     <RecipeCard
@@ -24,7 +26,7 @@ const RecipeCards = ({ filteredRecipes }) => {
             ) : (
                 <p>Nema takvih recepata</p>
             )}
-        </div>
+        </Row>
     );
 };
 
