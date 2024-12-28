@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar.jsx";
 import IngredientCards from "../components/IngredientCards.jsx";
 import {Button, Form, Row} from "react-bootstrap";
 import {useState} from "react";
@@ -38,7 +37,6 @@ const IngredientsPage = () => {
 
     return (
         <div>
-            <Navbar/>
             <div className={"responsive-width mx-auto mt-100"}>
                 <h5 className={"my-3 color-dsg"}>Popis sastojaka</h5>
                 <div>

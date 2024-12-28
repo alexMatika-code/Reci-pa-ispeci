@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar.jsx";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../components/Spinner.jsx";
@@ -34,7 +33,6 @@ const RecipePage = () => {
 
     return (
         <div>
-            <Navbar/>
             {loading ? (
                 <Spinner loading={loading}/>
             ) : (
