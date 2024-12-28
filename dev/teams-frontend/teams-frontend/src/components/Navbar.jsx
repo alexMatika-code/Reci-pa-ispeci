@@ -1,8 +1,11 @@
 import logo from "../assets/logo.png";
 import { BsFillGearFill, BsBasket2Fill, BsClipboard2PlusFill, BsPersonCircle } from "react-icons/bs";
+import {AuthContext} from "../Contexts.jsx";
 import {useNavigate} from "react-router-dom";
+import {useContext} from "react";
 
-function Navbar({currentUser}) {
+function Navbar() {
+    const currentUser = useContext(AuthContext);
     const navigate = useNavigate();
 
     const navigateToAddNew = () => {
