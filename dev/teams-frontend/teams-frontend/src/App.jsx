@@ -1,6 +1,7 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import MainLayout from "./layouts/MainLayout.jsx";
 import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
 import RecipePage from './pages/RecipePage';
@@ -23,7 +24,7 @@ const App = () => {
 
     const router = createBrowserRouter(
         createRoutesFromElements(
-            <>
+            <Route path="/" element={<MainLayout />}>
                 {/* Home page */}
                 <Route index element={<HomePage />} />
                 {/* Ingredient related pages */}
@@ -38,7 +39,7 @@ const App = () => {
                 {/* Not found page */}
                 <Route path='*' element={<NotFoundPage />} />
                 <Route path='/profile/edit' element={<EditProfile />} />
-            </>
+            </Route>
         )
     );
 
