@@ -1,6 +1,5 @@
 import RecipeCard from "./RecipeCard.jsx";
 import { useNavigate } from "react-router-dom";
-import {Row} from "react-bootstrap";
 
 const RecipeCards = ({ filteredRecipes }) => {
     const navigate = useNavigate();
@@ -10,8 +9,7 @@ const RecipeCards = ({ filteredRecipes }) => {
     };
 
     return (
-        // <div className="recipe-list">
-        <Row>
+        <div className="recipe-list">
             {filteredRecipes.length > 0 ? (
                 filteredRecipes.map((recipe, index) => (
                     <RecipeCard
@@ -19,14 +17,13 @@ const RecipeCards = ({ filteredRecipes }) => {
                         key={index}
                         image={recipe.imageBase64 ? `data:image/jpeg;base64,${recipe.imageBase64}` : null}
                         name={recipe.title}
-                        timeToCook={recipe.timeToCook}
                         description={recipe.description}
                     />
                 ))
             ) : (
                 <p>Nema takvih recepata</p>
             )}
-        </Row>
+        </div>
     );
 };
 
