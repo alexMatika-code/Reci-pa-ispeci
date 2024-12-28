@@ -1,18 +1,29 @@
 import logo from "../assets/logo.png";
-import { BsFillGearFill, BsBasket2Fill, BsClipboard2PlusFill, BsPersonCircle } from "react-icons/bs";
+import {BsFillPlusCircleFill} from "react-icons/bs";
+import {BsPersonCircle} from "react-icons/bs";
 import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 
-function Navbar({currentUser}) {
+function Navbar() {
     const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState(null);
 
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await fetch(`/api/people/getAuthUser`);
+                const data = await response.json();
+                setCurrentUser(data);
+            } catch (error) {
+                console.error("Error fetching currentUser:", error);
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
     const navigateToAddNew = () => {
         navigate(`/recipe/add`);
     };
-
-    const navigateToIngredients = () => {
-        navigate(`/ingredients`);
-    }
-
     const navigateToProfilePage = () => {
         navigate(`/profile/${currentUser.username}`);
     }
@@ -24,46 +35,54 @@ function Navbar({currentUser}) {
     const handleLoginClick = () => {
         location.href = "/api/login"
     }
-
     return (
-        <div className={"navbar-container h-100 nav-custom d-flex justify-content-between"}>
-            <span className={"d-flex align-items-center ml-16"}>
-                <div className="nav-logo cursor-pointer" onClick={navigateToHome}>
-                    <img src={logo} className={"w-100 h-100"} alt="logo"/>
-                </div>
+        <div className={"navbar-container h-100"}>
+            <header className="App-header">
+                <nav className={"navbar"}>
+                    <div className="row align-items-center pl-3">
+                        <div className="col-1 logo-navbar cursor-pointer"
+                             onClick={navigateToHome}>
+                            <img src={logo} className={"w-100 h-100"} alt="logo"/>
+                        </div>
+                        <div className="col-8">
+                            <div className={"title-navbar"}>Reci-Pa-Ispeci
+                            </div>
+                        </div>
+                        {currentUser ? (
+                            <div className={"col-2 d-flex plusic-navbar gap-2 align-items-center cursor-pointer"}
+                                 onClick={navigateToAddNew}>
+                                <BsFillPlusCircleFill className={""}/>
+                                Novi recept
+                            </div>
+                        ) : (
+                            <div className="col-2" style={{ visibility: "hidden" }}>
+                                <BsFillPlusCircleFill className={""}/>
+                                Novi recept
+                            </div>
+                        )}
+                        <div className={"col-1 align-items-center d-flex person-icon"}>
+                            {currentUser ? (
+                                <img src={currentUser.image}
+                                     alt={"nema"}
+                                     className={"rounded-circle cursor-pointer person-icon"}
+                                     onClick={navigateToProfilePage}
+                                />
+                            ) : (
+                                <BsPersonCircle
 
-                <div className={"cursor-pointer title-navbar"} onClick={navigateToHome}>
-                    Reci-Pa-Ispeci
-                </div>
-            </span>
-
-            <span className={"d-flex align-items-center mr-16"}>
-                {currentUser ? (
-                    // dodat provjeru za rolse
-                    <div className={"nav-links align-items-center mr-16"}>
-                        <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
-                                       onClick={navigateToIngredients} />
-                        <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"} />
-                        <BsClipboard2PlusFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
-                                              onClick={navigateToAddNew} />
+                                    onClick={handleLoginClick}
+                                    className={"cursor-pointer"}
+                                />
+                            )}
+                        </div>
                     </div>
-                ) : ( <></> )}
+                </nav>
 
-                <div className={"d-flex align-items-center justify-content-end person-icon"}>
-                    {currentUser ? (
-                        <img src={currentUser.image}
-                             alt={"nema"}
-                             className={"cursor-pointer rounded-circle nav-profile"}
-                             onClick={navigateToProfilePage}/>
-                    ) : (
-                        <BsPersonCircle
-                            onClick={handleLoginClick}
-                            className={"cursor-pointer color-dsg clickable-icon"}/>
-                    )}
-                </div>
-            </span>
+            </header>
         </div>
-    );
+
+    )
+        ;
 }
 
 export default Navbar;
