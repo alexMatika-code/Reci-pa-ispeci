@@ -1,10 +1,10 @@
 import {useState, useEffect} from "react";
 import {BsChatDots, BsChatDotsFill} from "react-icons/bs";
-import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import FilterRecipes from "../components/FilterRecipes.jsx";
 import RecipeCards from "../components/RecipeCards.jsx";
 import Spinner from "../components/Spinner.jsx";
+// import axios from "axios";
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
@@ -45,7 +45,6 @@ const HomePage = () => {
 
     return (
         <div>
-            <Navbar/>
             {loading ? (
                 <Spinner loading={loading}/>
             ) : (
@@ -67,11 +66,13 @@ const HomePage = () => {
                         </div>
                     </div>
 
-                    {filteredRecipes.length > 0 ? (
-                        <RecipeCards filteredRecipes={filteredRecipes}/>
-                    ) : (
-                        <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
-                    )}
+                    <div className={"max-w-92-5 mx-auto home-recipes-container"}>
+                        {filteredRecipes.length > 0 ? (
+                            <RecipeCards filteredRecipes={filteredRecipes}/>
+                        ) : (
+                            <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
+                        )}
+                    </div>
                 </div>
             )}
         </div>
