@@ -10,16 +10,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import java.io.IOException;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.io.IOException;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -30,24 +33,39 @@ public class SecurityConfig {
 
     @Autowired
     private PersonRepository personRepository;
+
     private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
 
     @Bean
-    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-        return http.cors(Customizer.withDefaults())
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/").permitAll();
-                    registry.requestMatchers("/recipes/public").permitAll();
-                    registry.requestMatchers("/people/profile/{username}").permitAll();
+                    registry.requestMatchers("/", "/recipes/public", "/people/profile/{username}").permitAll();
                     registry.anyRequest().authenticated();
                 })
-                .oauth2Login(oauth2 -> {
-                    oauth2
-                            .loginPage("/oauth2/authorization/google")
-                            .successHandler(new CustomAuthenticationSuccessHandler());
-                })
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/oauth2/authorization/google")
+                        .successHandler(new CustomAuthenticationSuccessHandler()))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl(frontendUrl + "/logout-success")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true))
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(frontendUrl, "http://localhost:3000")); // Frontend URL-ovi
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/", configuration);
+        return source;
     }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
