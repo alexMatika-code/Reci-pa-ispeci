@@ -14,7 +14,18 @@ import java.util.List;
 public class CorsConfig {
 
     @Bean
-    public FilterRegistrationBean customCorsFilter() {
+    public FilterRegistrationBean<CorsFilter> customCorsFilter() {
+        CorsConfiguration configuration = getCorsConfiguration();
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
+
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return bean;
+    }
+
+    private static CorsConfiguration getCorsConfiguration() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://reci-pa-ispeci.onrender.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -22,12 +33,6 @@ public class CorsConfig {
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return bean;
+        return configuration;
     }
 }

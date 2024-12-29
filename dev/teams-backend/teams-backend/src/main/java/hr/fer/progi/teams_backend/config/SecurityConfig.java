@@ -117,17 +117,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public ServletContextInitializer initializer() {
-        return servletContext -> {
-            SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
-            sessionCookieConfig.setPath("/");
-            sessionCookieConfig.setDomain("reci-pa-ispeci.onrender.com");
-            sessionCookieConfig.setSecure(true);
-            sessionCookieConfig.setHttpOnly(true);
-        };
-    }
-
-    @Bean
     public GrantedAuthoritiesMapper authorityMapper() {
         return authorities -> {
             if (authorities instanceof List) {
