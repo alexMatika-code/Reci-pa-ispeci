@@ -5,6 +5,7 @@ import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
