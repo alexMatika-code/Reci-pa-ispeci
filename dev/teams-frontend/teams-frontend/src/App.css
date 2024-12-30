@@ -277,6 +277,7 @@ a {
 
 /*ingredients page*/
 .clickable-icon:hover {
+    cursor: pointer;
     color: #FF0037;
     background: #eaeaea;
     outline: 6px solid #eaeaea;

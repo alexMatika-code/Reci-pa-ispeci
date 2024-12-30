@@ -11,9 +11,12 @@ import 'react-toastify/dist/ReactToastify.css';
 const IngredientCard = ({ingredientName, id}) => {
     const [name, setName] = useState(ingredientName);
     const [nameEdit, setNameEdit] = useState(name);
+
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
+
     const [disableButtons, setDisableButtons] = useState(false);
+
     const card = useRef()
 
     const handleShowDelete = () => setShowDelete(true);
