@@ -75,13 +75,13 @@ public class SecurityConfig {
             OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
             String email = oauth2User.getAttribute("email");
 
-            // User registration logic
             if (!personRepository.existsByEmail(email)) {
                 Person newUser = new Person();
                 newUser.setEmail(email);
                 newUser.setFirstName(oauth2User.getAttribute("given_name"));
                 newUser.setLastName(oauth2User.getAttribute("family_name"));
                 newUser.setImage(oauth2User.getAttribute("picture"));
+
                 String username = email.contains("@") ? email.substring(0, email.indexOf("@")) : email;
                 newUser.setUsername(username);
 
@@ -95,19 +95,7 @@ public class SecurityConfig {
                 personRepository.save(newUser);
             }
 
-            // Redirect to frontend
-            response.addCookie(createSessionCookie(request.getSession().getId()));
             response.sendRedirect(frontendUrl);
-        }
-
-        private Cookie createSessionCookie(String sessionId) {
-            Cookie cookie = new Cookie("JSESSIONID", sessionId);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            cookie.setDomain(".onrender.com");
-            cookie.setPath("/");
-            cookie.setMaxAge(7 * 24 * 60 * 60); // 1 week
-            return cookie;
         }
     }
 }
