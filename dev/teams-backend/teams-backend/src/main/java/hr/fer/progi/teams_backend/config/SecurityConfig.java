@@ -99,8 +99,7 @@ public class SecurityConfig {
                 newUser.setRole(role);
                 personRepository.save(newUser);
             }
-            String jsessionId = request.getSession().getId();
-            request.getSession().setAttribute("JSESSIONID", jsessionId);
+            request.changeSessionId();
             response.sendRedirect(frontendUrl);
         }
     }
