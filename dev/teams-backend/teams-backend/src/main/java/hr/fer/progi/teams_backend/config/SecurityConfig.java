@@ -37,7 +37,7 @@ public class SecurityConfig {
     @Autowired
     private PersonRepository personRepository;
 
-    private final String frontendUrl = "https://reci-pa-ispeci-1.onrender.com";
+    private final String frontendUrl = "https://reci-pa-ispeci.onrender.com";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,7 +49,6 @@ public class SecurityConfig {
                     registry.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/oauth2/authorization/google")
                         .successHandler(new CustomAuthenticationSuccessHandler()))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
@@ -85,7 +84,8 @@ public class SecurityConfig {
             // Regenerate the session ID after successful login
             request.changeSessionId();
 
-            log.error("JSESSIONID after change: {}", request.getSession().getId());            if (!personRepository.existsByEmail(email)) {
+            log.error("JSESSIONID after change: {}", request.getSession().getId());
+            if (!personRepository.existsByEmail(email)) {
                 Person newUser = new Person();
                 newUser.setEmail(email);
                 newUser.setFirstName(oauth2User.getAttribute("given_name"));
