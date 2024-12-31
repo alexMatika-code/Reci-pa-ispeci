@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {Row, Container} from "react-bootstrap";
-import Navbar from "../components/Navbar.jsx";
 import ProfileCard from "../components/ProfileCard.jsx";
 import ProfileInfoCards from "../components/ProfileInfoCards.jsx";
 import Spinner from "../components/Spinner.jsx";
@@ -34,7 +33,6 @@ const ProfilePage = () => {
 
     return (
         <div>
-            <Navbar/>
             {loading ? (
                 <Spinner loading={loading} />
             ) : (

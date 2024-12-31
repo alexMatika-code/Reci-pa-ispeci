@@ -1,29 +1,21 @@
 import logo from "../assets/logo.png";
-import {BsFillPlusCircleFill} from "react-icons/bs";
-import {BsPersonCircle} from "react-icons/bs";
+import { BsFillGearFill, BsBasket2Fill, BsClipboard2PlusFill, BsPersonCircle } from "react-icons/bs";
+import {AuthContext} from "../Contexts.jsx";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {Row} from "react-bootstrap";
+import {useContext} from "react";
 
-function Navbar({currentUser, setCurrentUser}) {
+function Navbar() {
+    const currentUser = useContext(AuthContext);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // const fetchCurrentUser = async () => {
-        //     try {
-        //         const response = await fetch(`/api/people/getAuthUser`);
-        //         const data = await response.json();
-        //         setCurrentUser(data);
-        //     } catch (error) {
-        //         console.error("Error fetching currentUser:", error);
-        //     }
-        // };
-        //
-        // fetchCurrentUser();
-    }, []);
     const navigateToAddNew = () => {
         navigate(`/recipe/add`);
     };
+
+    const navigateToIngredients = () => {
+        navigate(`/ingredients`);
+    }
+
     const navigateToProfilePage = () => {
         navigate(`/profile/${currentUser.username}`);
     }
@@ -35,33 +27,41 @@ function Navbar({currentUser, setCurrentUser}) {
     const handleLoginClick = () => {
         location.href = "/api/login"
     }
+
     return (
-        <div className={"navbar-container h-100 nav-custom d-flex justify-content-between px-5"}>
-            <span className={"d-flex align-items-center"}>
-                <div className="nav-logo logo-navbar cursor-pointer" onClick={navigateToHome}>
+        <div className={"navbar-container h-100 nav-custom d-flex justify-content-between"}>
+            <span className={"d-flex align-items-center ml-16"}>
+                <div className="nav-logo cursor-pointer" onClick={navigateToHome}>
                     <img src={logo} className={"w-100 h-100"} alt="logo"/>
                 </div>
 
-                <div className={"title-navbar"}>
+                <div className={"cursor-pointer title-navbar"} onClick={navigateToHome}>
                     Reci-Pa-Ispeci
                 </div>
             </span>
 
-            <span className={"d-flex align-items-center"}>
+            <span className={"d-flex align-items-center mr-16"}>
                 {currentUser ? (
-                    <BsFillPlusCircleFill className={"font-1-8rem mx-4 cursor-pointer clickable-icon"} onClick={navigateToAddNew} />
+                    // dodat provjeru za rolse
+                    <div className={"nav-links align-items-center mr-16"}>
+                        <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                       onClick={navigateToIngredients} />
+                        <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"} />
+                        <BsClipboard2PlusFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                              onClick={navigateToAddNew} />
+                    </div>
                 ) : ( <></> )}
 
-                <div className={"d-flex align-items-center person-icon"}>
+                <div className={"d-flex align-items-center justify-content-end person-icon"}>
                     {currentUser ? (
                         <img src={currentUser.image}
                              alt={"nema"}
-                             className={"rounded-circle cursor-pointer person-icon"}
+                             className={"cursor-pointer rounded-circle nav-profile"}
                              onClick={navigateToProfilePage}/>
                     ) : (
                         <BsPersonCircle
                             onClick={handleLoginClick}
-                            className={"cursor-pointer clickable-icon"}/>
+                            className={"cursor-pointer color-dsg clickable-icon"}/>
                     )}
                 </div>
             </span>

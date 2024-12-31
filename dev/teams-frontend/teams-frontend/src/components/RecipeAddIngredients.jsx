@@ -1,37 +1,49 @@
-import {useState} from "react";
-import {Button, Modal, Form} from "react-bootstrap";
+import {useEffect, useRef, useState} from "react";
+import {Button, Modal} from "react-bootstrap";
 import {BsBasket3Fill} from "react-icons/bs";
 import IngredientsEntry from './IngredientsEntry';
+import TomSelect from "tom-select/base";
+import "tom-select/dist/css/tom-select.bootstrap5.css";
 
-const RecipeAddIngredients = ({ingredients, setIngredients}) => {
+const RecipeAddIngredients = ({allIngredients, ingredients, setIngredients}) => {
     const [show, setShow] = useState(false);
+    const [update, setUpdate] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+        setUpdate(!update);
+    }
 
-    const [ingredient, setIngredient] = useState('');
+    const selectRef = useRef(null);
 
-    const addIngredient = () => {
-        if (ingredients.includes(ingredient)) {
+    const addIngredient = (ingredient) => {
+        const ing = JSON.parse(ingredient);
+
+        const ingredientNames = ingredients.map(ing => ing.name.trim());
+        if (ingredientNames.includes(ing.name.trim())) {
             return;
         }
 
-        if (ingredient.trim() !== "" || ingredient.trim().length === 0) {
-            ingredients.push(ingredient);
-            setIngredients(ingredients);
-            setIngredient('');
-        }
+        setIngredients(prevIngredients => [...prevIngredients, ing]);
     }
 
-    const onEnter = (e) => {
-        if(e.key === 'Enter') {
-            addIngredient();
-        }
+    const removeIngredient = (e, ingId) => {
+        setIngredients(ingredients.filter(ingredient => ingredient.ingredientId !== ingId));
     }
 
-    const removeIngredient = (e, text) => {
-        setIngredients(ingredients.filter(ingredient => ingredient !== text));
-    }
+    useEffect(() => {
+        if (selectRef.current) {
+            new TomSelect("#select-ing",{
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                onChange: (value) => addIngredient(value)
+            });
+        }
+    }, [update]);
 
     return (
         <>
@@ -51,33 +63,19 @@ const RecipeAddIngredients = ({ingredients, setIngredients}) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className={"d-flex mb-3"}>
-                        <div className={"form-outline col-lg-9"}>
-                            <Form.Control
-                                   list="datalistOptions"
-                                   id="ingredient"
-                                   value={ingredient}
-                                   onChange={(e) => setIngredient(e.target.value)}
-                                   onKeyDown={(e) => onEnter(e)}
-                                   placeholder="Pretraži sastojke..."/>
-                            <datalist id="datalistOptions">
-                                {/* ovo ce se dinamicki hvata s baze :) */}
-                                <option value="Chocolate"></option>
-                                <option value="Coconut"></option>
-                                <option value="Mint"></option>
-                                <option value="Strawberry"></option>
-                                <option value="Vanilla"></option>
-                            </datalist>
-                        </div>
-                        <div className={"col-lg-3 "}>
-                            <Button className={"w-75 m-auto d-flex justify-content-center"}
-                                    onClick={addIngredient}>
-                                Dodaj
-                            </Button>
+                        <div className={"form-outline col-12"}>
+                            <select ref={selectRef} id="select-ing" placeholder="Pretraži sastojke..." autoComplete="off">
+                                <option value="">Pretraži sastojke...</option>
+                                {allIngredients.map((ing) => (
+                                    <option key={ing.ingredientId} value={JSON.stringify(ing)}>{ing.name}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div>
                         {ingredients.map((ingredient, index) =>
-                            <IngredientsEntry text={ingredient}
+                            <IngredientsEntry text={ingredient.name}
+                                              ingId={ingredient.ingredientId}
                                               key={index}
                                               index={index}
                                               clickFunction={removeIngredient}/>
@@ -85,12 +83,6 @@ const RecipeAddIngredients = ({ingredients, setIngredients}) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <h5>
-                        <span style={{color: "red", fontWeight: "bold"}}>OPREZ! </span>
-                        Ovaj dio je jos u doradi, te se za sastojke
-                        <span style={{color: "red", fontWeight: "bold"}}> MORAJU </span>
-                        koristit ID-jevi sastojaka (dok ne implementiramo ispravno). <br/>
-                        Trenutno mozete upisat: <span className={"bold"}>1, 2, 3, 5, 6, 7</span> (svaki zasebno)</h5>
                     <Button variant="secondary" onClick={handleClose}>
                         Zatvori
                     </Button>
