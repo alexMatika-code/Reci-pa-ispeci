@@ -100,7 +100,7 @@ public class SecurityConfig {
                 personRepository.save(newUser);
             }
             String jsessionId = request.getSession().getId();
-            response.addHeader("Set-Cookie", "JSESSIONID=" + jsessionId + "; Path=/; Secure; HttpOnly; SameSite=None");
+            request.getSession().setAttribute("JSESSIONID", jsessionId);
             response.sendRedirect(frontendUrl);
         }
     }
