@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl(frontendUrl + "/logout-success")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true))
+                .sessionManagement(ses -> ses.sessionFixation().migrateSession())
                 .build();
     }
 
@@ -79,8 +80,12 @@ public class SecurityConfig {
             String email = oauth2User.getAttribute("email");
 
             log.error("Custom handler {}", oauth2User);
-            log.error("JSESSIONID: {}", request.getSession().getId());
-            if (!personRepository.existsByEmail(email)) {
+            log.error("JSESSIONID before change: {}", request.getSession().getId());
+
+            // Regenerate the session ID after successful login
+            request.changeSessionId();
+
+            log.error("JSESSIONID after change: {}", request.getSession().getId());            if (!personRepository.existsByEmail(email)) {
                 Person newUser = new Person();
                 newUser.setEmail(email);
                 newUser.setFirstName(oauth2User.getAttribute("given_name"));
@@ -99,7 +104,7 @@ public class SecurityConfig {
                 newUser.setRole(role);
                 personRepository.save(newUser);
             }
-            request.changeSessionId();
+
             response.sendRedirect(frontendUrl);
         }
     }
