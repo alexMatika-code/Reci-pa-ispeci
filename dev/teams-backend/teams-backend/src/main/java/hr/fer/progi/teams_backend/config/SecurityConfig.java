@@ -77,6 +77,7 @@ public class SecurityConfig {
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
             OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
             String email = oauth2User.getAttribute("email");
+
             log.error("Custom handler {}", oauth2User);
             log.error("JSESSIONID: {}", request.getSession().getId());
             if (!personRepository.existsByEmail(email)) {
@@ -98,7 +99,8 @@ public class SecurityConfig {
                 newUser.setRole(role);
                 personRepository.save(newUser);
             }
-
+            String jsessionId = request.getSession().getId();
+            response.addHeader("Set-Cookie", "JSESSIONID=" + jsessionId + "; Path=/; Secure; HttpOnly; SameSite=None");
             response.sendRedirect(frontendUrl);
         }
     }
