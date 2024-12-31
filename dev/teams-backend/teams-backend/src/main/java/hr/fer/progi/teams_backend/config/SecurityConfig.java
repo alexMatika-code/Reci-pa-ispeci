@@ -8,6 +8,7 @@ import hr.fer.progi.teams_backend.domain.Role;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SecurityConfig {
 
     @Autowired
@@ -39,6 +41,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        log.info("HttpSecurity configuration: {}", http);
         return http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {

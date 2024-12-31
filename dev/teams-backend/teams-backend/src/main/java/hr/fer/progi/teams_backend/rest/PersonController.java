@@ -4,6 +4,7 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/people")
 public class PersonController {
@@ -84,6 +86,8 @@ public class PersonController {
 
     @GetMapping("/getAuthUser")
     public ResponseEntity<?> getAuthUser(Authentication authentication) {
+        log.info("GetAuthUser");
+        log.info("Principal: {}", authentication.getPrincipal());
         String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
         PersonDTO person = personService.findByEmail(email);
 
