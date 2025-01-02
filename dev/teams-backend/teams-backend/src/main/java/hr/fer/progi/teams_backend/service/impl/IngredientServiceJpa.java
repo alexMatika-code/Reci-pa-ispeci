@@ -50,7 +50,11 @@ public class IngredientServiceJpa implements IngredientService {
 
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
+        System.out.println(ingredient);
         Assert.notNull(ingredient, "Ingredient object must be given");
+//        if (ingredientRepository.existsByNameEquals(ingredient.getName())) {
+//            return null;
+//        }
         return ingredientRepository.save(ingredient);
     }
 
