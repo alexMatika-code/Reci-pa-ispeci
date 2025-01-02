@@ -50,12 +50,6 @@ public class SecurityConfig {
                 })
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new CustomAuthenticationSuccessHandler()))
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl(frontendUrl + "/logout-success")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true))
-                .sessionManagement(ses -> ses.sessionFixation().migrateSession())
                 .build();
     }
 
