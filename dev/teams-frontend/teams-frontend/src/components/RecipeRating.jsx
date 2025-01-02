@@ -1,5 +1,4 @@
 import StarRating from "./StarRating.jsx";
-import { BsClipboard2PulseFill } from "react-icons/bs";
 import React, {useEffect} from "react";
 import {Row} from "react-bootstrap";
 

@@ -1,7 +1,7 @@
-import { Row } from "react-bootstrap";
+
 import placeholder from "../assets/placeholder.jpg";
 
-import React, { useEffect } from "react";
+
 
 const RecipePageImage = ({ recipe }) => {
 
