@@ -136,7 +136,7 @@ public class RecipeServiceJpa implements RecipeService {
     @Override
     public Page<RecipeDTO> listPublicRecipes(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return recipeRepository.findByPublicityTrue(pageable)
+        return recipeRepository.findByPublicityTrueAndWaitingApprovalFalse(pageable)
                 .map(RecipeMapper::toDTO);
     }
 }

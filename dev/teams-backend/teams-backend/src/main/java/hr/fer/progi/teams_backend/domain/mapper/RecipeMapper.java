@@ -21,6 +21,7 @@ public class RecipeMapper {
         dto.setDescription(recipe.getDescription());
         dto.setProcedure(recipe.getProcedure());
         dto.setPublicity(recipe.isPublicity());
+        dto.setWaitingApproval(recipe.isWaitingApproval());
         dto.setTimeToCook(recipe.getTimeToCook());
         dto.setRatings(recipe.getRatings().stream()
                 .map(RatingMapper::toDTO)
@@ -37,6 +38,13 @@ public class RecipeMapper {
         }else{
             dto.setImageBase64(null);
         }
+
+        if (recipe.getChef() != null) {
+            dto.setChefId(recipe.getChef().getPersonId());
+        } else {
+            dto.setChefId(null);
+        }
+        dto.setUserId(recipe.getUser().getPersonId() != null ? recipe.getUser().getPersonId() : null);
 
         return dto;
     }

@@ -12,6 +12,7 @@ public class RecipeDTO {
     private String description;
     private String procedure;
     private boolean publicity;
+    private boolean waitingApproval;
     private int timeToCook;
 
     private Long chefId;

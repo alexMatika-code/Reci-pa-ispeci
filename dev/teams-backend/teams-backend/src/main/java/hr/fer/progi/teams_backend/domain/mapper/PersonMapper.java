@@ -58,6 +58,7 @@ public class PersonMapper {
 
         // Map related entities like recipes, ratings, and favorite ingredients
         dto.setRecipes(person.getUserRecipes().stream()
+                .filter(recipe -> recipe.isPublicity() && !recipe.isWaitingApproval())
                 .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList()));
 

@@ -12,11 +12,11 @@ import java.util.List;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    @Query("SELECT COUNT(r) FROM Recipe r WHERE r.user.personId = :userId")
+    @Query("SELECT COUNT(r) FROM Recipe r WHERE r.user.personId = :userId AND r.waitingApproval = false AND r.publicity=true")
     Long countByUserId(@Param("userId") Long userId);
 
-    @Query("SELECT r.recipeId FROM Recipe r WHERE r.user.personId = :userId")
+    @Query("SELECT r.recipeId FROM Recipe r WHERE r.user.personId = :userId AND r.waitingApproval = false AND r.publicity=true")
     List<Long> findIdsByUserId(@Param("userId") Long userId);
 
-    Page<Recipe> findByPublicityTrue(Pageable pageable);
+    Page<Recipe> findByPublicityTrueAndWaitingApprovalFalse(Pageable pageable);
 }

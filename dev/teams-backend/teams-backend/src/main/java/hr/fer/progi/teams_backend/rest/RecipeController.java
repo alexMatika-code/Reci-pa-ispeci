@@ -71,10 +71,8 @@ public class RecipeController {
 
         if (person != null) {
             try {
-                // Attempt to create the recipe
                 Recipe createdRecipe = recipeService.createRecipeWithImage(createRecipeDTO, person.getPersonId());
 
-                // Check if the recipe was created successfully
                 if (createdRecipe == null || createdRecipe.getRecipeId() == null) {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save recipe in the database");
                 }
