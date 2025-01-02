@@ -30,4 +30,6 @@ public interface PersonService {
     PersonProfileDTO getPersonProfileByUsername(String username);
 
     public PersonAuthInfoDTO GetAuthUserInfo(Long id);
+
+    void addFavoriteIngredients(Long personId, List<Long> ingredientIds);
 }
