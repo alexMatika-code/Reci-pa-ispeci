@@ -2,7 +2,9 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../components/Spinner.jsx";
 import {Container, Row} from "react-bootstrap";
-import RecipePageCard from "../components/RecipePageCard.jsx";
+import RecipePageImage from "../components/RecipePageImage.jsx";
+import RecipePageTextBox from "../components/RecipePageTextBox.jsx";
+import RecipeRating from "../components/RecipeRating.jsx";
 
 
 const RecipePage = () => {
@@ -37,20 +39,17 @@ const RecipePage = () => {
                 <Spinner loading={loading}/>
             ) : (
                 recipe ? (
-                    <div className={"w-75 m-auto pt-80"}>
+                    <div className={"w-90 m-auto pt-80"}>
                         <Row className={"d-flex"}>
                             {/* Recipe Info */}
                             <Container className={"col-md-12 col-lg-5 col-xl-3"}>
-                                <RecipePageCard recipe={recipe}/>
+                                <RecipePageImage recipe={recipe}/>
+                                <RecipeRating recipe={recipe}/>
                             </Container>
 
-                            <Container className={"col-md-12 col-lg-7 col-xl-9"}>
-
-                                <h5 className={"mt-3 ml-16 color-dsg font-weight-600"}>Opis: {recipe.description}</h5>
-                                <h5 className={"mt-3 ml-16 color-dsg font-weight-600"}>Postupak pripreme</h5>
-                                <p className={"mt-3 ml-16 color-dsg"}>
-                                    {recipe.procedure}
-                                </p>
+                            <Container className={"mt-5 col-md-12 col-lg-7 col-xl-9"}>
+                                <RecipePageTextBox header={"Opis:"} text = {recipe.description}/>
+                                <RecipePageTextBox header={"Postupak:"} text = {recipe.procedure}></RecipePageTextBox>
                             </Container>
                         </Row>
                     </div>
