@@ -5,13 +5,14 @@ import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -38,11 +39,13 @@ public class SecurityConfig {
     private PersonRepository personRepository;
 
     private final String frontendUrl = "https://reci-pa-ispeci-1.onrender.com";
+    @Autowired
+    private HttpSession httpSession;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("HttpSecurity configuration: {}", http);
-        return http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        return http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/", "/recipes/public", "/people/profile/{username}", "/api/login", "/login").permitAll();
@@ -75,10 +78,17 @@ public class SecurityConfig {
             log.error("Custom handler {}", oauth2User);
             log.error("JSESSIONID before change: {}", request.getSession().getId());
 
-            // Regenerate the session ID after successful login
-            request.changeSessionId();
+            String frontendSessionId = null;
+            if (request.getCookies() != null) {
+                for (var cookie : request.getCookies()) {
+                    if ("JSESSIONID".equals(cookie.getName())) {
+                        frontendSessionId = cookie.getValue();
+                        log.error("Frontend JSESSIONID: {}", frontendSessionId);
+                        break;
+                    }
+                }
+            }
 
-            log.error("JSESSIONID after change: {}", request.getSession().getId());
             if (!personRepository.existsByEmail(email)) {
                 Person newUser = new Person();
                 newUser.setEmail(email);
