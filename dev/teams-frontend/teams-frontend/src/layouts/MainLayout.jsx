@@ -12,9 +12,7 @@ const MainLayout = () => {
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
-                const response = await fetch(`https://reci-pa-ispeci-q8z2.onrender.com/api/people/getAuthUser`, {
-                    credentials: 'include',
-                });
+                const response = await fetch(`https://reci-pa-ispeci-q8z2.onrender.com/api/people/getAuthUser`);
                 const data = await response.json();
                 setCurrentUser(data);
             } catch (error) {
