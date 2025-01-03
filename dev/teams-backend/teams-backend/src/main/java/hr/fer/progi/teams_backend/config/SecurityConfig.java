@@ -52,7 +52,7 @@ public class SecurityConfig {
         return http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/","/api/people/getAuthUser", "/recipes/public", "/people/profile/{username}", "/api/login", "/login").permitAll();
+                    registry.requestMatchers("/","/people/getAuthUser","ingredients", "/recipes/public", "/people/profile/{username}", "/api/login", "/login").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> oauth2.successHandler(new CustomAuthenticationSuccessHandler()))
