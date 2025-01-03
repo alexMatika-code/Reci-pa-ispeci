@@ -5,6 +5,7 @@ import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
@@ -51,6 +53,9 @@ public class SecurityConfig {
         log.info("HttpSecurity configuration: {}", http);
         return http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(sys ->
+                        sys.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                                .maximumSessions(1))
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/","/people/getAuthUser","ingredients", "/recipes/public", "/people/profile/{username}", "/api/login", "/login").permitAll();
                     registry.anyRequest().authenticated();
@@ -61,6 +66,7 @@ public class SecurityConfig {
                 )
                 .build();
     }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -90,6 +96,7 @@ public class SecurityConfig {
                     if ("JSESSIONID".equals(cookie.getName())) {
                         frontendSessionId = cookie.getValue();
                         log.error("Frontend JSESSIONID: {}", frontendSessionId);
+                        response.addCookie(createSessionCookie(frontendSessionId));
                         break;
                     }
                 }
@@ -117,5 +124,15 @@ public class SecurityConfig {
 
             response.sendRedirect(frontendUrl);
         }
+    }
+
+    private Cookie createSessionCookie(String sessionId) {
+        Cookie sessionCookie = new Cookie("JSESSIONID", sessionId);
+        sessionCookie.setHttpOnly(true);
+        sessionCookie.setSecure(true); // if using HTTPS
+        sessionCookie.setPath("/");
+        sessionCookie.setMaxAge(30 * 60); // Set cookie expiration if necessary
+        sessionCookie.setDomain("https://reci-pa-ispeci-q8z2.onrender.com"); // specify backend domain
+        return sessionCookie;
     }
 }
