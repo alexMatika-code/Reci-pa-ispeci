@@ -55,16 +55,7 @@ public class SecurityConfig {
                     registry.requestMatchers("/", "/recipes/public", "/people/profile/{username}", "/api/login", "/login").permitAll();
                     registry.anyRequest().authenticated();
                 })
-                .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(endpoint -> endpoint
-                                .authorizationRequestResolver(
-                                        new DefaultOAuth2AuthorizationRequestResolver(
-                                                http.getSharedObject(ClientRegistrationRepository.class),
-                                                OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
-                                        )
-                                )
-                        ).successHandler(new CustomAuthenticationSuccessHandler())
-                )
+                .oauth2Login(oauth2 -> oauth2.successHandler(new CustomAuthenticationSuccessHandler()))
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/oauth2/authorization/google"))
                 )
