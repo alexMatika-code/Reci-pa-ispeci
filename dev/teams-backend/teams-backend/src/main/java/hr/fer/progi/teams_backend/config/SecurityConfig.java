@@ -17,9 +17,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -52,7 +56,18 @@ public class SecurityConfig {
                     registry.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new CustomAuthenticationSuccessHandler()))
+                        .authorizationEndpoint(endpoint -> endpoint
+                                .authorizationRequestResolver(
+                                        new DefaultOAuth2AuthorizationRequestResolver(
+                                                http.getSharedObject(ClientRegistrationRepository.class),
+                                                OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
+                                        )
+                                )
+                        ).successHandler(new CustomAuthenticationSuccessHandler())
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/oauth2/authorization/google"))
+                )
                 .build();
     }
 
