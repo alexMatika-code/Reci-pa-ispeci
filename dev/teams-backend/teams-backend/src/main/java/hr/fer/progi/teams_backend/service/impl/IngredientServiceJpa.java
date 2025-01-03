@@ -6,8 +6,10 @@ import hr.fer.progi.teams_backend.domain.dto.IngredientDTO;
 import hr.fer.progi.teams_backend.domain.mapper.IngredientMapper;
 import hr.fer.progi.teams_backend.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +53,13 @@ public class IngredientServiceJpa implements IngredientService {
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
         Assert.notNull(ingredient, "Ingredient object must be given");
+
+        if (ingredientRepository.existsByNameIgnoreCase(ingredient.getName())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Ingredient with the given name already exists."
+            );        }
+
         return ingredientRepository.save(ingredient);
     }
 
