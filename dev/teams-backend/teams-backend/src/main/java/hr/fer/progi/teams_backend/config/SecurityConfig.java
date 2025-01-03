@@ -132,7 +132,7 @@ public class SecurityConfig {
         sessionCookie.setSecure(true); // if using HTTPS
         sessionCookie.setPath("/");
         sessionCookie.setMaxAge(30 * 60); // Set cookie expiration if necessary
-        sessionCookie.setDomain("https://reci-pa-ispeci-q8z2.onrender.com"); // specify backend domain
+        sessionCookie.setDomain("reci-pa-ispeci-q8z2.onrender.com"); // specify backend domain
         return sessionCookie;
     }
 }
