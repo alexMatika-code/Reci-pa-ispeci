@@ -25,7 +25,7 @@ function Navbar() {
     };
 
     const handleLoginClick = () => {
-        location.href = "https://reci-pa-ispeci-q8z2.onrender.com/api/login"
+        location.href = "/api/login"
     }
 
     return (
