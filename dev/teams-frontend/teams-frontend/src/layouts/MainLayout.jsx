@@ -12,7 +12,7 @@ const MainLayout = () => {
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
-                const response = await fetch(`/api/people/getAuthUser`, {
+                const response = await fetch(`https://reci-pa-ispeci-q8z2.onrender.com/api/people/getAuthUser`, {
                     credentials: 'include',
                 });
                 const data = await response.json();
