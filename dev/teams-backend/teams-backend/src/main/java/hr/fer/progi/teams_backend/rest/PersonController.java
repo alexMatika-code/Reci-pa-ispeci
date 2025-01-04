@@ -40,7 +40,7 @@ public class PersonController {
         personService.deletePerson(id);
     }
 
-    @PutMapping("")
+    @PutMapping("/about")
     public void updatePerson(@RequestBody String about) {
         personService.updatePerson(about);
     }
