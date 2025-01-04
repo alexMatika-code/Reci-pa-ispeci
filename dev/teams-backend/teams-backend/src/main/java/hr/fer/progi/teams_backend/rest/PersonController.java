@@ -90,6 +90,25 @@ public class PersonController {
         }
     }
 
+    @PutMapping("/favoriteIngredients")
+    public ResponseEntity<?> setFavoriteIngredients(@RequestBody List<Long> ingredientIds,
+                                                    Authentication authentication) {
+        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+        PersonDTO person = personService.findByEmail(email);
+        if (person != null) {
+            try {
+                personService.setFavoriteIngredients(person.getPersonId(), ingredientIds);
+                return ResponseEntity.ok("Favorite ingredients updated.");
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            } catch (RuntimeException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
+    }
+
     @GetMapping("/profile/{username}")
     public PersonProfileDTO getPersonProfile(@PathVariable String username) {
         return personService.getPersonProfileByUsername(username);

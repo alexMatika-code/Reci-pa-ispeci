@@ -41,7 +41,7 @@ public class Person {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     protected List<Recipe> userRecipes;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "favorite_ingredients",
             joinColumns = @JoinColumn(name = "person_id"),

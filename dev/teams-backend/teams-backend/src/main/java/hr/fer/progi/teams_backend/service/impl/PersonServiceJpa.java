@@ -135,6 +135,23 @@ public class PersonServiceJpa implements PersonService {
     }
 
     @Override
+    @Transactional
+    public void setFavoriteIngredients(Long personId, List<Long> ingredientIds) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found with id: " + personId));
+
+        List<Ingredient> ingredients = ingredientRepository.findAllById(ingredientIds);
+        if (ingredients.size() != ingredientIds.size()) {
+            throw new RuntimeException("Some ingredients were not found with the provided IDs");
+        }
+
+        person.getFavoriteIngredients().clear();
+        person.getFavoriteIngredients().addAll(ingredients);
+
+        personRepository.save(person);
+    }
+
+    @Override
     public PersonProfileDTO getPersonProfileByUsername(String username) {
         // Retrieve the person by username
         Person person = personRepository.findByUsername(username).orElse(null);
