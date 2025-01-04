@@ -15,9 +15,9 @@ public interface PersonService {
 
     void deletePerson(Long id);
 
-    Person updatePerson(Long id, Person person);
-
     Person createPerson(Person person);
+
+    void updatePerson(String about);
 
     void addFavoriteIngredient(Long personId, Long ingredientId);
 

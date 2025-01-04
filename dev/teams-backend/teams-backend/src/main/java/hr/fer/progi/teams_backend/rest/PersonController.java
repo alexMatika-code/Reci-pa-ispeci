@@ -40,9 +40,9 @@ public class PersonController {
         personService.deletePerson(id);
     }
 
-    @PutMapping("/{id}")
-    public Person updatePerson(@PathVariable Long id, @RequestBody Person person) {
-        return personService.updatePerson(id, person);
+    @PutMapping("")
+    public void updatePerson(@RequestBody String about) {
+        personService.updatePerson(about);
     }
 
     @PostMapping("")

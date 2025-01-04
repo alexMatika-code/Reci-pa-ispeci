@@ -14,6 +14,9 @@ import hr.fer.progi.teams_backend.service.RatingService;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -65,31 +68,25 @@ public class PersonServiceJpa implements PersonService {
     }
 
     @Override
-    public Person updatePerson(Long id, Person person) {
-        Assert.notNull(person, "Person object must be given");
-
-        Person updatePerson = personRepository.findById(id).orElse(null);
-        Assert.notNull(updatePerson, "Person by the ID of " + id + " does not exist");
-
-        updatePerson.setFirstName(person.getFirstName());
-        updatePerson.setLastName(person.getLastName());
-        updatePerson.setEmail(person.getEmail());
-        updatePerson.setAbout(person.getAbout());
-        updatePerson.setUsername(person.getUsername());
-        updatePerson.setPassword(person.getPassword());
-
-        updatePerson.setRole(person.getRole());
-        updatePerson.setRatings(person.getRatings());
-        updatePerson.setChefRecipes(person.getChefRecipes());
-        updatePerson.setUserRecipes(person.getUserRecipes());
-
-        return personRepository.save(updatePerson);
-    }
-
-    @Override
     public Person createPerson(Person person) {
         Assert.notNull(person, "Person object must be given");
         return personRepository.save(person);
+    }
+
+    @Override
+    public void updatePerson(String about) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+
+        personRepository.findByEmail(email).ifPresentOrElse(
+                person -> {
+                    person.setAbout(about);
+                    personRepository.save(person);
+                },
+                () -> {
+                    throw new RuntimeException("User not found: " + email);
+                }
+        );
     }
 
     @Override
