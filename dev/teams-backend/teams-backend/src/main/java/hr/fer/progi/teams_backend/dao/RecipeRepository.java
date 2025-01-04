@@ -19,4 +19,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Long> findIdsByUserId(@Param("userId") Long userId);
 
     Page<Recipe> findByPublicityTrueAndWaitingApprovalFalse(Pageable pageable);
+
+    List<Recipe> findByWaitingApprovalTrueAndPublicityTrue();
 }
