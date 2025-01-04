@@ -40,7 +40,7 @@ public class PersonMapper {
         return dto;
     }
 
-    public static PersonProfileDTO toPersonProfileDTO(Person person, Long recipeCount, Long ratingCount, Double averageRating) {
+    public static PersonProfileDTO toPersonProfileDTO(Person person, Long recipeCount, Long ratingCount, Double averageRating,boolean isOwner) {
         PersonProfileDTO dto = new PersonProfileDTO();
         dto.setPersonId(person.getPersonId());
         dto.setFirstName(person.getFirstName());
@@ -56,11 +56,20 @@ public class PersonMapper {
         dto.setRatingCount(ratingCount);
         dto.setRatingAverage(averageRating);
 
-        // Map related entities like recipes, ratings, and favorite ingredients
-        dto.setRecipes(person.getUserRecipes().stream()
-                .filter(recipe -> recipe.isPublicity() && !recipe.isWaitingApproval())
-                .map(RecipeMapper::toDTO)
-                .collect(Collectors.toList()));
+        if (isOwner) {
+            dto.setRecipes(
+                    person.getUserRecipes().stream()
+                            .map(RecipeMapper::toDTO)
+                            .collect(Collectors.toList())
+            );
+        } else {
+            dto.setRecipes(
+                    person.getUserRecipes().stream()
+                            .filter(recipe -> recipe.isPublicity() && !recipe.isWaitingApproval())
+                            .map(RecipeMapper::toDTO)
+                            .collect(Collectors.toList())
+            );
+        }
 
         dto.setRatings(person.getRatings().stream()
                 .map(RatingMapper::toDTO)

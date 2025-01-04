@@ -152,8 +152,7 @@ public class PersonServiceJpa implements PersonService {
     }
 
     @Override
-    public PersonProfileDTO getPersonProfileByUsername(String username) {
-        // Retrieve the person by username
+    public PersonProfileDTO getPersonProfileByUsername(String username,boolean isOwner) {
         Person person = personRepository.findByUsername(username).orElse(null);
         if (person == null) {
             return null;
@@ -162,8 +161,7 @@ public class PersonServiceJpa implements PersonService {
         Long ratingCount = ratingService.getTotalRatingCountByUserId(person.getPersonId());
         Double averageRating = ratingService.getAverageRatingByUserId(person.getPersonId());
 
-        // Pass the additional data to the mapper
-        return PersonMapper.toPersonProfileDTO(person, recipeCount, ratingCount, averageRating);
+        return PersonMapper.toPersonProfileDTO(person, recipeCount, ratingCount, averageRating,isOwner);
     }
 
     @Override

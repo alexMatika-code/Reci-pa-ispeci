@@ -110,8 +110,20 @@ public class PersonController {
     }
 
     @GetMapping("/profile/{username}")
-    public PersonProfileDTO getPersonProfile(@PathVariable String username) {
-        return personService.getPersonProfileByUsername(username);
+    public PersonProfileDTO getPersonProfile(@PathVariable String username, Authentication authentication) {
+        String usernameAuth = null;
+
+        if (authentication != null && authentication.getPrincipal() instanceof OAuth2User principal) {
+            String email = principal.getAttribute("email");
+            PersonDTO person = personService.findByEmail(email);
+            if (person != null) {
+                usernameAuth = person.getUsername();
+            }
+        }
+
+        boolean isOwner = (usernameAuth != null && usernameAuth.equals(username));
+        log.info("Fetching profile: loggedInUser={}, requestedProfile={}", usernameAuth, username);
+        return personService.getPersonProfileByUsername(username,isOwner);
     }
 
     @GetMapping("/getAuth")

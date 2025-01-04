@@ -27,7 +27,7 @@ public interface PersonService {
 
     public Person getPerson(Long id);
 
-    PersonProfileDTO getPersonProfileByUsername(String username);
+    PersonProfileDTO getPersonProfileByUsername(String username,boolean isOwner);
 
     public PersonAuthInfoDTO GetAuthUserInfo(Long id);
 
