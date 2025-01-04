@@ -1,8 +1,8 @@
 import {Button, Form, Modal} from "react-bootstrap";
 
-const ProfileDescriptionEditModal = ({desc, show, disable, handleEdit, handleClose}) => {
+const ProfileDescriptionEditModal = ({description, setDescription, show, disable, handleSave, handleClose}) => {
     return (
-        <Modal show={show} onHide={handleClose} size="lg">
+        <Modal show={show} onHide={handleClose} size="lg" centered>
             <Modal.Header>
                 <Modal.Title><span className={"bold color-lsg"}>Izmjeni opis profila</span></Modal.Title>
             </Modal.Header>
@@ -15,8 +15,8 @@ const ProfileDescriptionEditModal = ({desc, show, disable, handleEdit, handleClo
                             placeholder="Opišite se! Što volite, što malo manje.. Sve nas zanima!"
                             as="textarea"
                             rows={3}
-                            value={desc}
-                            // onChange={(e) => setName(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             autoFocus
                         />
                     </Form.Group>
@@ -26,7 +26,7 @@ const ProfileDescriptionEditModal = ({desc, show, disable, handleEdit, handleClo
                 <Button variant="secondary" onClick={handleClose} disabled={disable}>
                     Odustani
                 </Button>
-                <Button variant="primary" onClick={handleEdit} disabled={disable}>
+                <Button variant="primary" onClick={handleSave} disabled={disable}>
                     Spremi
                 </Button>
             </Modal.Footer>
