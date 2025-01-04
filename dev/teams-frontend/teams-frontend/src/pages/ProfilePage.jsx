@@ -17,7 +17,6 @@ const ProfilePage = () => {
                 const res = await fetch(`/api/people/profile/${username}`);
                 const data = await res.json();
                 setUser(data);
-                console.log(data); // Log the fetched user data
             } catch (error) {
                 console.log(`Error fetching data - no user named - ${username}`, error);
             } finally {
