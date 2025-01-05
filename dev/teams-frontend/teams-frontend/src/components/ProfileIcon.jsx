@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import placeholder from "../assets/placeholder.jpg";
 import { Link } from 'react-router-dom';
 
 const ProfileIcon = ({ authorId }) => {
     const [author, setAuthor] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchAuthor = async () => {
