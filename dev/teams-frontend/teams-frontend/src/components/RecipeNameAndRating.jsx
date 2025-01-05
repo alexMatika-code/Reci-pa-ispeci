@@ -18,7 +18,7 @@ const RecipeNameAndRating = ({ recipe }) => {
     }, [recipe]);
     return (
         <div className={"bg-coral b-radius-10 shadow-sm ptb-10-20 text-center shadow-sm object-fit-contain"}>
-            <h2 className={"bold text-white"}> {recipe.title} </h2>
+            <h2 className={"bold text-white"}> {recipe.title ? recipe.title : 'Name'} </h2>
             <div>
                 <Row className={'w-90 m-auto'}>
                     <div className={"col-md-10 col-lg-12 text-white d-flex align-items-center justify-content-center object-fit-contain"}>

@@ -309,3 +309,17 @@ a {
     border-radius: 5px;
     transition: 0.1s;
 }
+
+/* Add these styles to your existing CSS */
+.text-warning {
+    color: #ffc107 !important;
+    letter-spacing: 2px;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+.border-bottom:last-child {
+    border-bottom: none !important;
+}
