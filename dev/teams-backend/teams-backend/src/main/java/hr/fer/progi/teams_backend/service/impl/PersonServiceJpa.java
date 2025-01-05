@@ -7,6 +7,7 @@ import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
 import hr.fer.progi.teams_backend.service.PersonService;
@@ -169,4 +170,12 @@ public class PersonServiceJpa implements PersonService {
         Person person = personRepository.findById(id).orElse(null);
         return person != null ? PersonMapper.PersonToPersonAuthInfoDTO(person) : null;
     }
+
+    @Override
+    public List<PersonInfoDTO> listAllPersonInfo() {
+        return personRepository.findAll().stream()
+                .map(PersonMapper::toPersonInfoDTO)
+                .collect(Collectors.toList());
+    }
+
 }

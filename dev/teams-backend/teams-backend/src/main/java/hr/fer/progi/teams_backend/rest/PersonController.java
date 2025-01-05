@@ -2,6 +2,7 @@ package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
@@ -144,5 +145,10 @@ public class PersonController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
+    }
+
+    @GetMapping("/info")
+    public List<PersonInfoDTO> getAllPeopleInfo() {
+        return personService.listAllPersonInfo();
     }
 }

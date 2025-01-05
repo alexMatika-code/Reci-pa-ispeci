@@ -4,7 +4,7 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
-
+import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
 import java.util.List;
 
 public interface PersonService {
@@ -34,4 +34,6 @@ public interface PersonService {
     void addFavoriteIngredients(Long personId, List<Long> ingredientIds);
 
     void setFavoriteIngredients(Long personId, List<Long> ingredientIds);
+
+    List<PersonInfoDTO> listAllPersonInfo();
 }

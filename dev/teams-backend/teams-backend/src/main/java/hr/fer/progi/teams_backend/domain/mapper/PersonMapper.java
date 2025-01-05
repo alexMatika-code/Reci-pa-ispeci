@@ -4,6 +4,7 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.service.RatingService;
 import hr.fer.progi.teams_backend.service.RecipeService;
@@ -91,6 +92,22 @@ public class PersonMapper {
         dto.setEmail(person.getEmail());
         dto.setImage(person.getImage());
         dto.setRole(person.getRole().getName().toString());
+
+        return dto;
+    }
+
+    public static PersonInfoDTO toPersonInfoDTO(Person person) {
+        PersonInfoDTO dto = new PersonInfoDTO();
+        dto.setImage(person.getImage());
+        dto.setFirstName(person.getFirstName());
+        dto.setLastName(person.getLastName());
+        dto.setUsername(person.getUsername());
+        dto.setEmail(person.getEmail());
+        if (person.getRole() != null) {
+            dto.setRole(person.getRole().getName().toString());
+        } else {
+            dto.setRole("UNDEFINED");
+        }
 
         return dto;
     }
