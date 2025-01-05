@@ -4,7 +4,7 @@ import Spinner from "../components/Spinner.jsx";
 import {Container, Row} from "react-bootstrap";
 import RecipePageImage from "../components/RecipePageImage.jsx";
 import RecipePageTextBox from "../components/RecipePageTextBox.jsx";
-import RecipeRating from "../components/RecipeRating.jsx";
+import RecipeNameAndRating from "../components/RecipeNameAndRating.jsx";
 
 
 const RecipePage = () => {
@@ -39,15 +39,16 @@ const RecipePage = () => {
                 <Spinner loading={loading}/>
             ) : (
                 recipe ? (
-                    <div className={"w-90 m-auto pt-80"}>
+                    <div className={"justify-content-center align-items-center p-5 pt-80 pl-80"}>
                         <Row className={"d-flex"}>
                             {/* Recipe Info */}
-                            <Container className={"col-md-12 col-lg-5 col-xl-3"}>
+                            <Container className={"col-md-10 col-lg-4 col-xl-3"}>
                                 <RecipePageImage recipe={recipe}/>
-                                <RecipeRating recipe={recipe}/>
                             </Container>
 
-                            <Container className={"mt-5 col-md-12 col-lg-7 col-xl-9"}>
+                            <Container className={"col-md-12 col-lg-7 col-xl-8"}>
+
+                                <RecipeNameAndRating recipe={recipe}/>
                                 <RecipePageTextBox header={"Opis:"} text = {recipe.description}/>
                                 <RecipePageTextBox header={"Postupak:"} text = {recipe.procedure}></RecipePageTextBox>
                             </Container>
