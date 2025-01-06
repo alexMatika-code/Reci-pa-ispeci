@@ -1,13 +1,11 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import placeholder from "../assets/placeholder.jpg";
 import RecipeAddIngredients from '../components/RecipeAddIngredients';
 import {Form, Row, Button, InputGroup} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
-
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Spinner from "../components/Spinner.jsx";
 
 const EditRecipePage = ({addRecipeSubmit}) => {
     const [title, setTitle] = useState("");
@@ -157,19 +155,6 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                     </div>
                 </Row>
             </Form>
-            <ToastContainer
-                position="bottom-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover={false}
-                theme="colored"
-                transition: Slide
-            />
         </div>
     );
 };

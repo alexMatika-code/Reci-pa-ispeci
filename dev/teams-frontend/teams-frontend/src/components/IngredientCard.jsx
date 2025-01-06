@@ -94,19 +94,6 @@ const IngredientCard = ({ingredientName, id}) => {
                                      handleEdit={() => editIngredient(id)}
                                      handleClose={() => setShowEdit(false)}
             />
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover={false}
-                theme="colored"
-                transition: Slide
-            />
         </div>
     );
 };
