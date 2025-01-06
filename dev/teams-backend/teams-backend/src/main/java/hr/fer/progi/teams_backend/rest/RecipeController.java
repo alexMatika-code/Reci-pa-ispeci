@@ -4,6 +4,7 @@ import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
+import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.PersonService;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import hr.fer.progi.teams_backend.domain.dto.SearchRecipesDTO;
 
 import java.io.IOException;
 import java.util.List;
@@ -89,10 +91,17 @@ public class RecipeController {
 
     @GetMapping("/public")
     public ResponseEntity<?> getPublicRecipes(
+            @RequestParam(required = false) String searchText,
+            @RequestParam(required = false) Integer maxTimeToCook,
+            @RequestParam(required = false) List<Long> ingredientIds,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(recipeService.listPublicRecipes(page, size));
+
+        SearchRecipesDTO searchRecipesDTO = RecipeMapper.toSearchRecipesDTO(
+                searchText,
+                maxTimeToCook,
+                ingredientIds
+        );
+        return ResponseEntity.ok(recipeService.listPublicRecipes(searchRecipesDTO,page, size));
     }
-
-
 }

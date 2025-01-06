@@ -21,4 +21,32 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Page<Recipe> findByPublicityTrueAndWaitingApprovalFalse(Pageable pageable);
 
     List<Recipe> findByWaitingApprovalTrueAndPublicityTrue();
+
+    @Query("SELECT r FROM Recipe r " +
+            "WHERE r.publicity = true AND r.waitingApproval = false " +
+            "AND (LOWER(r.title) LIKE :searchText OR LOWER(r.description) LIKE :searchText) " +
+            "AND r.timeToCook <= :maxTimeToCook")
+    Page<Recipe> findByPublicityTrueAndWaitingApprovalFalseAndSearchCriteria(
+            @Param("searchText") String searchText,
+            @Param("maxTimeToCook") Integer maxTimeToCook,
+            Pageable pageable);
+
+    @Query("""
+       SELECT r
+       FROM Recipe r
+            JOIN r.ingredients i
+       WHERE r.publicity = true
+         AND r.waitingApproval = false
+         AND (LOWER(r.title) LIKE :searchText OR LOWER(r.description) LIKE :searchText)
+         AND r.timeToCook <= :maxTimeToCook
+         AND i.ingredientId IN :ingredientIds
+       GROUP BY r
+       HAVING COUNT(DISTINCT i.ingredientId) = :ingredientCount
+       """)
+    Page<Recipe> findByIngredientsAndSearchCriteria(
+            @Param("searchText") String searchText,
+            @Param("maxTimeToCook") Integer maxTimeToCook,
+            @Param("ingredientIds") List<Long> ingredientIds,
+            @Param("ingredientCount") long ingredientCount,
+            Pageable pageable);
 }

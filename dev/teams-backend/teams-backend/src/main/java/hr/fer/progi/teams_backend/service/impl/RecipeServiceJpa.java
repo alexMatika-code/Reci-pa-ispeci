@@ -8,6 +8,7 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
+import hr.fer.progi.teams_backend.domain.dto.SearchRecipesDTO;
 import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
@@ -134,9 +135,30 @@ public class RecipeServiceJpa implements RecipeService {
     }
 
     @Override
-    public Page<RecipeDTO> listPublicRecipes(int page, int size) {
+    public Page<RecipeDTO> listPublicRecipes(SearchRecipesDTO searchRecipesDTO, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return recipeRepository.findByPublicityTrueAndWaitingApprovalFalse(pageable)
-                .map(RecipeMapper::toDTO);
+
+        String searchText = (searchRecipesDTO.getSearchText() != null)
+                ? "%" + searchRecipesDTO.getSearchText().toLowerCase() + "%"
+                : "%";
+
+        Integer maxTimeToCook = (searchRecipesDTO.getMaxTimeToCook() != null)
+                ? searchRecipesDTO.getMaxTimeToCook()
+                : Integer.MAX_VALUE;
+
+        List<Long> ingIds = searchRecipesDTO.getIngredientIds() != null
+                ? searchRecipesDTO.getIngredientIds()
+                : List.of();
+
+        if (ingIds.isEmpty()) {
+            return recipeRepository.findByPublicityTrueAndWaitingApprovalFalseAndSearchCriteria(
+                    searchText, maxTimeToCook, pageable
+            ).map(RecipeMapper::toDTO);
+        } else {
+            return recipeRepository.findByIngredientsAndSearchCriteria(
+                    searchText, maxTimeToCook, ingIds, ingIds.size(), pageable
+            ).map(RecipeMapper::toDTO);
+        }
     }
+
 }
