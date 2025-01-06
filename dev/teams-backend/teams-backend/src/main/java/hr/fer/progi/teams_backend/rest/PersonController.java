@@ -1,14 +1,11 @@
 package hr.fer.progi.teams_backend.rest;
 
 import hr.fer.progi.teams_backend.domain.Person;
-import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
-import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
-import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
+import hr.fer.progi.teams_backend.domain.dto.*;
 import hr.fer.progi.teams_backend.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -150,5 +147,35 @@ public class PersonController {
     @GetMapping("/info")
     public List<PersonInfoDTO> getAllPeopleInfo() {
         return personService.listAllPersonInfo();
+    }
+
+    @PutMapping("/promote")
+    public ResponseEntity<?> promotePerson(@RequestBody PromoteDemoteRequestDTO request) {
+        Long personId = request.getPersonId();
+        if (personId == null) {
+            return ResponseEntity.badRequest().body("Invalid request. 'personId' is required.");
+        }
+
+        try {
+            personService.promotePerson(personId);
+            return ResponseEntity.ok("User with ID " + personId + " has been promoted.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/demote")
+    public ResponseEntity<?> demotePerson(@RequestBody PromoteDemoteRequestDTO request) {
+        Long personId = request.getPersonId();
+        if (personId == null) {
+            return ResponseEntity.badRequest().body("Invalid request. 'personId' is required.");
+        }
+
+        try {
+            personService.demotePerson(personId);
+            return ResponseEntity.ok("User with ID " + personId + " has been demoted.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

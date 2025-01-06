@@ -1,10 +1,13 @@
 package hr.fer.progi.teams_backend.service.impl;
 
+import hr.fer.progi.teams_backend.constants.Roles;
 import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
+import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.Role;
 import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
@@ -38,6 +41,9 @@ public class PersonServiceJpa implements PersonService {
 
     @Autowired
     private IngredientRepository ingredientRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public List<PersonDTO> listAll() {
@@ -176,6 +182,48 @@ public class PersonServiceJpa implements PersonService {
         return personRepository.findAll().stream()
                 .map(PersonMapper::toPersonInfoDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void promotePerson(Long personId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + personId + " does not exist."));
+
+        Roles currentRole = person.getRole().getName();
+
+        if (currentRole.equals(Roles.ADMIN)) {
+            throw new IllegalArgumentException("Cannot promote. User is already ADMIN.");
+        }
+
+        if (currentRole.equals(Roles.USER)) {
+            Role chefRole = roleRepository.findByName(Roles.CHEF);
+            person.setRole(chefRole);
+        } else if (currentRole.equals(Roles.CHEF)) {
+            Role adminRole = roleRepository.findByName(Roles.ADMIN);
+            person.setRole(adminRole);
+        }
+        personRepository.save(person);
+    }
+
+    @Override
+    public void demotePerson(Long personId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + personId + " does not exist."));
+
+        Roles currentRole = person.getRole().getName();
+
+        if (currentRole.equals(Roles.USER)) {
+            throw new IllegalArgumentException("Cannot demote. User is already at the lowest role (USER).");
+        }
+
+        if (currentRole.equals(Roles.ADMIN)) {
+            Role chefRole = roleRepository.findByName(Roles.CHEF);
+            person.setRole(chefRole);
+        } else if (currentRole.equals(Roles.CHEF)) {
+            Role userRole = roleRepository.findByName(Roles.USER);
+            person.setRole(userRole);
+        }
+        personRepository.save(person);
     }
 
 }

@@ -98,6 +98,7 @@ public class PersonMapper {
 
     public static PersonInfoDTO toPersonInfoDTO(Person person) {
         PersonInfoDTO dto = new PersonInfoDTO();
+        dto.setPersonId(person.getPersonId());
         dto.setImage(person.getImage());
         dto.setFirstName(person.getFirstName());
         dto.setLastName(person.getLastName());

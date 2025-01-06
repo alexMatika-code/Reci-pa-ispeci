@@ -36,4 +36,8 @@ public interface PersonService {
     void setFavoriteIngredients(Long personId, List<Long> ingredientIds);
 
     List<PersonInfoDTO> listAllPersonInfo();
+
+    void demotePerson(Long personId);
+
+    void promotePerson(Long personId);
 }
