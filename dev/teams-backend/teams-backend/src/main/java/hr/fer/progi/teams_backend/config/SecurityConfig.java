@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,46 +43,18 @@ public class SecurityConfig {
     private String frontendUrl;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        log.info("Starting SecurityFilterChain");
-        log.info("HttpSecurity configuration: {}", http);
-        return http.cors(cors -> {
-            log.info("Configuring CORS with allowed origins: {}", frontendUrl);
-            cors.configurationSource(corsConfigurationSource());
-            })
+    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(registry -> {
-                    log.info("Configuring authorization rules");
-                    registry.requestMatchers("/","/api/oauth2/authorization/**", "/recipes/public", "/people/profile/{username}", "/api/login", "/login","/recipes/**").permitAll();
-                    log.info("Publicly accessible endpoints configured");
-                    registry.anyRequest().authenticated();
+                .authorizeHttpRequests(auth -> {
+                    auth.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
-                    log.info("Configuring OAuth2 login");
-                    oauth2.authorizationEndpoint(Customizer.withDefaults());
-                    oauth2.successHandler(new CustomAuthenticationSuccessHandler());
+                    oauth2
+                            .successHandler(new CustomAuthenticationSuccessHandler());
                 })
+                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        log.info("Starting CORS configuration");
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(frontendUrl, "http://localhost:3000")); // Frontend URL-ovi
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-
-        log.info("CORS allowed origins: {}", configuration.getAllowedOrigins());
-        log.info("CORS allowed methods: {}", configuration.getAllowedMethods());
-        log.info("CORS allowed headers: {}", configuration.getAllowedHeaders());
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/", configuration);
-
-        log.info("CORS configuration completed");
-        return source;
     }
 
     private class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
