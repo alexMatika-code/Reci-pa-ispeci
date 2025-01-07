@@ -29,7 +29,7 @@ function Navbar() {
     };
 
     const handleLoginClick = async () => {
-        navigate('/api/login')
+        location.href="api/oauth2/authorization/google"
     };
 
     return (
