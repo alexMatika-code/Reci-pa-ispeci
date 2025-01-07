@@ -33,7 +33,6 @@ const App = () => {
                 <Route path='/recipe/:recipeId' element={<RecipePage />} />
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
                 <Route path='/card' element={<RecipeCard />} />
-                <Route path="/recipe/:recipeId/edit" element={<EditRecipePage />} />
                 {/* User related pages */}
                 {/*<Route path='/profile' element={<ProfilePage />} />*/}
                 <Route path='/profile/:username' element={<ProfilePage />} />
