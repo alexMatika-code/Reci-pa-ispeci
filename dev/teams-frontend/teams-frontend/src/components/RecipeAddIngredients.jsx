@@ -54,6 +54,7 @@ const RecipeAddIngredients = ({ingredients, setIngredients}) => {
 
             <IngredientsModal show={show}
                               handleClose={handleClose}
+                              handleSave={() => {setShow(false);}}
                               update={update}
                               ingredients={ingredients}
                               setIngredients={setIngredients}/>

@@ -9,6 +9,7 @@ import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import IngredientsPage from "./pages/IngredientsPage";
+import UserControlPage from "./pages/UserControlPage.jsx";
 
 const App = () => {
     // Recipe manipulation
@@ -32,10 +33,11 @@ const App = () => {
                 <Route path='/recipe/:recipeId' element={<RecipePage />} />
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
                 <Route path='/card' element={<RecipeCard />} />
-                <Route path="/recipe/:recipeId/edit" element={<EditRecipePage />} />
                 {/* User related pages */}
                 {/*<Route path='/profile' element={<ProfilePage />} />*/}
                 <Route path='/profile/:username' element={<ProfilePage />} />
+                {/* User control page */}
+                <Route path='/user-control' element={<UserControlPage />} />
                 {/* Not found page */}
                 <Route path='*' element={<NotFoundPage />} />
             </Route>

@@ -5,7 +5,7 @@ import IngredientCardDeleteModal from "./IngredientCardDeleteModal.jsx";
 import {useRef, useState} from "react";
 import IngredientCardEditModal from "./IngredientCardEditModal.jsx";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const IngredientCard = ({ingredientName, id}) => {
@@ -93,19 +93,6 @@ const IngredientCard = ({ingredientName, id}) => {
                                      disable={disableButtons}
                                      handleEdit={() => editIngredient(id)}
                                      handleClose={() => setShowEdit(false)}
-            />
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover={false}
-                theme="colored"
-                transition: Slide
             />
         </div>
     );

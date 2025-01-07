@@ -2,6 +2,7 @@ import {Badge, Row} from "react-bootstrap";
 import placeholder from "../assets/placeholder.jpg";
 import {BsClipboard2HeartFill, BsClipboard2PulseFill} from "react-icons/bs";
 import StarRating from "./StarRating.jsx";
+import RoleBadge from "./RoleBadge.jsx";
 
 const ProfileCard = ({user}) => {
     return (
@@ -12,7 +13,7 @@ const ProfileCard = ({user}) => {
                  className={'border border-4 rounded-circle max-w-85 min-w-85 mt-3 shadow-sm'}
             />
             <h2 className={"mb-2 px-1 mt-4 color-dsg bold"}>{(user.firstName || "") + " " + (user.lastName || "")}</h2>
-            <h5 className={"color-lsg"}>@{user.username} <Badge bg="info">{user.role}</Badge></h5>
+            <h5 className={"color-lsg"}>@{user.username} <RoleBadge role={user.role}/></h5>
             <Row className={'w-75 m-auto mt-5'}>
                 <div className={'col-md-3 col-lg-6 mb-3 color-dsg'}>
                     <h4 className={"bold"}>{user.recipeCount}</h4>

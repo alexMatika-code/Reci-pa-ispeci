@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "../Contexts.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Spinner from "../components/Spinner.jsx";
+import {ToastContainer} from "react-toastify";
 
 const MainLayout = () => {
     const [currentUser, setCurrentUser] = useState(null);
@@ -35,6 +36,19 @@ const MainLayout = () => {
                     <Navbar />
                     {/*Ovdje se moze napravit provjera za prikaz auth pageova */}
                     <Outlet />
+                    <ToastContainer
+                        position="bottom-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss={false}
+                        draggable={false}
+                        pauseOnHover={false}
+                        theme="colored"
+                        transition: Slide
+                    />
                 </>
             )}
 
