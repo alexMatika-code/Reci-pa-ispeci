@@ -6,7 +6,7 @@ import Spinner from "./Spinner.jsx";
 
 const IngredientsModal = ({ingredients, setIngredients, update, show, disableButtons, handleClose, handleSave}) => {
     const selectRef = useRef(null);
-    const [allIngredients, setAllIngredients] = useState({});
+    const [allIngredients, setAllIngredients] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
