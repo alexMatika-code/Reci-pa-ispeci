@@ -61,19 +61,6 @@ const IngredientsPage = () => {
                 </div>
             </div>
             <IngredientCards search={ingredientName} limit={6} key={seed}/>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover={false}
-                theme="colored"
-                transition: Slide
-            />
         </div>
     );
 };
