@@ -54,23 +54,10 @@ public class SecurityConfig {
                     registry.requestMatchers("/", "/recipes/public", "/people/profile/{username}", "/api/login", "/login","/recipes/**").permitAll();
                     log.info("Publicly accessible endpoints configured");
                     registry.anyRequest().authenticated();
-                    log.info("All other requests require authentication");
                 })
                 .oauth2Login(oauth2 -> {
                     log.info("Configuring OAuth2 login");
                     oauth2.successHandler(new CustomAuthenticationSuccessHandler());
-                })
-                .logout(logout -> {
-                    log.info("Configuring logout settings");
-                    logout.logoutUrl("/logout")
-                            .logoutSuccessUrl(frontendUrl + "/logout-success")
-                            .invalidateHttpSession(true)
-                            .clearAuthentication(true);
-                })
-                .sessionManagement(ses -> {
-                    log.info("Configuring session management with session fixation protection");
-                    ses.sessionFixation().migrateSession();
-                    log.info("SecurityFilterChain configuration complete");
                 })
                 .build();
     }
@@ -104,12 +91,6 @@ public class SecurityConfig {
             log.info("Authentication succes for email: {}", email);
             log.info("OAuth2 User details: {}", oauth2User.getAttributes());
 
-            log.info("JSESSIONID before change: {}", request.getSession().getId());
-
-            // Regenerate the session ID after successful login
-            request.changeSessionId();
-
-            log.error("JSESSIONID after change: {}", request.getSession().getId());
             if (!personRepository.existsByEmail(email)) {
                 log.info("Email not found in database. Creating new user with email: {}", email);
                 Person newUser = new Person();
