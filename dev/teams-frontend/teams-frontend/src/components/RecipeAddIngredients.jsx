@@ -52,13 +52,15 @@ const RecipeAddIngredients = ({ingredients, setIngredients}) => {
                 <div>Sastojci ({ingredients.length})</div>
             </Button>
 
-            <IngredientsModal show={show}
-                              handleClose={handleClose}
-                              handleSave={() => {setShow(false);}}
-                              update={update}
-                              ingredients={ingredients}
-                              setIngredients={setIngredients}/>
-            <>
+            {/*<IngredientsModal show={show}*/}
+            {/*                  handleClose={handleClose}*/}
+            {/*                  handleSave={() => {setShow(false);}}*/}
+            {/*                  update={update}*/}
+            {/*                  ingredients={ingredients}*/}
+            {/*                  setIngredients={setIngredients}/>*/}
+
+
+
                 {/* Modal popup */}
                 {/*<Modal show={show}*/}
                 {/*       onHide={handleClose}*/}
@@ -97,7 +99,6 @@ const RecipeAddIngredients = ({ingredients, setIngredients}) => {
                 {/*        </Button>*/}
                 {/*    </Modal.Footer>*/}
                 {/*</Modal>*/}
-            </>
         </>
     );
 };
