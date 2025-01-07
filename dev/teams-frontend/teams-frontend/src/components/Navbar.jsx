@@ -26,7 +26,7 @@ function Navbar() {
 
     const handleLoginClick =async () => {
         var response = await fetch('/api/login', {
-            method: 'GET',
+            method: 'POST',
             credentials: "include"
         });
         if (response.redirected) {
