@@ -29,6 +29,7 @@ const RecipeNameAndRating = ({ recipe }) => {
                     </div>
                 </Row>
             </div>
+            <div className="font-0-8rem text-white mt-2">{recipe.timeToCook || 0 }min</div>
         </div>
     )
         ;
