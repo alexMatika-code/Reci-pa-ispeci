@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
@@ -130,11 +131,11 @@ public class PersonController {
     }
 
     @GetMapping("/getAuthUser")
-    public ResponseEntity<?> getAuthUser(Authentication authentication) {
+    public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal User user) {
         log.info("GetAuthUser");
-        log.info("Principal: {}", authentication.getPrincipal());
-        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
-        PersonDTO person = personService.findByEmail(email);
+        log.info("Principal: {}", user.getUsername());
+        String username = user.getUsername();
+        PersonDTO person = personService.findByUsername(username);
 
         if (person != null) {
             PersonAuthInfoDTO personAuthInfo = personService.GetAuthUserInfo(person.getPersonId());
