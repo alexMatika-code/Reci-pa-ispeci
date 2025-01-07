@@ -21,7 +21,7 @@ const IngredientsModal = ({ingredients, setIngredients, update, show, disableBut
                 setLoading(false);
             }
         };
-        fetchIngredients();
+        // fetchIngredients();
     }, []);
 
     const addIngredient = (ingredient) => {
