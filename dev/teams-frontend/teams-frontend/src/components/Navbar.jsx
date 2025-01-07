@@ -24,8 +24,10 @@ function Navbar() {
         navigate(`/`);
     };
 
-    const handleLoginClick = () => {
-        location.href = "/api/login"
+    const handleLoginClick =async () => {
+        await fetch('/api/login', {
+            method: 'POST',
+        });
     }
 
     return (
