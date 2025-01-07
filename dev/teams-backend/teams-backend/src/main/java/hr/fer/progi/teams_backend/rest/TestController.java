@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @RestController
 public class TestController {
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public RedirectView redirectToGoogleLogin() {
         log.info("Login started, redirect to google login");
         return new RedirectView("/api/oauth2/authorization/google");
