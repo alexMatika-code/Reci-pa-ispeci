@@ -52,12 +52,12 @@ const RecipeAddIngredients = ({ingredients, setIngredients}) => {
                 <div>Sastojci ({ingredients.length})</div>
             </Button>
 
-            {/*<IngredientsModal show={show}*/}
-            {/*                  handleClose={handleClose}*/}
-            {/*                  handleSave={() => {setShow(false);}}*/}
-            {/*                  update={update}*/}
-            {/*                  ingredients={ingredients}*/}
-            {/*                  setIngredients={setIngredients}/>*/}
+            <IngredientsModal show={show}
+                              handleClose={handleClose}
+                              handleSave={() => {setShow(false);}}
+                              update={update}
+                              ingredients={ingredients}
+                              setIngredients={setIngredients}/>
 
 
 
