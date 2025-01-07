@@ -94,7 +94,7 @@ const RecipePage = () => {
                         <Row className={"d-flex"}>
                             <Container className={"col-md-10 col-lg-4 col-xl-3"}>
                                 <RecipePageImage recipe={recipe}/>
-                                <ProfileIcon authorId={recipe.userId} />
+                                <ProfileIcon username={recipe.userName} />
                             </Container>
 
                             <Container className={"col-md-12 col-lg-7 col-xl-8"}>
