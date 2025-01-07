@@ -94,8 +94,8 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                                           onChange={displaySelectedImage}/>
                         </div>
 
-                        <RecipeAddIngredients ingredients={ingredients}
-                                              setIngredients={setIngredients}/>
+                        {/*<RecipeAddIngredients ingredients={ingredients}*/}
+                        {/*                      setIngredients={setIngredients}/>*/}
 
                         <Form.Floating className={"mb-4"}>
                             <Form.Select id="publicitySelect"
