@@ -29,24 +29,7 @@ function Navbar() {
     };
 
     const handleLoginClick = async () => {
-        try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                const googleAuthUrl = await response.text();
-                console.log(googleAuthUrl);
-                window.location.href = googleAuthUrl;
-            } else {
-                console.error('Failed to initiate login process');
-            }
-        } catch (error) {
-            console.error('Error during login request:', error);
-        }
+        location.href="api/oauth2/authorization/google"
     };
 
     return (
