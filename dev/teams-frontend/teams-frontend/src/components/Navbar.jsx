@@ -29,7 +29,7 @@ function Navbar() {
     };
 
     const handleLoginClick = async () => {
-        navigate("/api/login")
+        navigate('/api/login')
     };
 
     return (
