@@ -29,4 +29,5 @@ public interface RecipeService {
 
     Page<RecipeDTO> listPublicRecipes(SearchRecipesDTO searchRecipesDTO, int page, int size);
 
+    Page<RecipeDTO> listRecommendedRecipes(int page, int size);
 }
