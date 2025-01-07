@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -57,6 +58,7 @@ public class SecurityConfig {
                 })
                 .oauth2Login(oauth2 -> {
                     log.info("Configuring OAuth2 login");
+                    oauth2.authorizationEndpoint(Customizer.withDefaults());
                     oauth2.successHandler(new CustomAuthenticationSuccessHandler());
                 })
                 .build();
