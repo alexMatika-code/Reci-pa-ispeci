@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Profile;
@@ -128,16 +130,15 @@ public class PersonController {
     }
 
     @GetMapping("/getAuth")
-    public OAuth2User getAuth(@AuthenticationPrincipal OAuth2User authUser) {
-        return authUser;
+    public OAuth2User getAuth() {
+        return getAuthenticatedUser();
     }
 
     @GetMapping("/getAuthUser")
-    public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal User user) {
+    public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal OAuth2User user) {
         log.info("GetAuthUser");
-        log.info("Principal: {}", user.getUsername());
-        String username = user.getUsername();
-        PersonDTO person = personService.findByUsername(username);
+        String email = user.getAttribute("email");
+        PersonDTO person = personService.findByEmail(email);
 
         if (person != null) {
             PersonAuthInfoDTO personAuthInfo = personService.GetAuthUserInfo(person.getPersonId());
@@ -181,4 +182,12 @@ public class PersonController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    public OAuth2User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            return (OAuth2User) authentication.getPrincipal();
+        }
+        return null;
+    }
+
 }
