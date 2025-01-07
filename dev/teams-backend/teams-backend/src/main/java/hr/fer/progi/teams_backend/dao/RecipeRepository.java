@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
@@ -32,21 +33,32 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             Pageable pageable);
 
     @Query("""
-       SELECT r
-       FROM Recipe r
-            JOIN r.ingredients i
-       WHERE r.publicity = true
-         AND r.waitingApproval = false
-         AND (LOWER(r.title) LIKE :searchText OR LOWER(r.description) LIKE :searchText)
-         AND r.timeToCook <= :maxTimeToCook
-         AND i.ingredientId IN :ingredientIds
-       GROUP BY r
-       HAVING COUNT(DISTINCT i.ingredientId) = :ingredientCount
-       """)
+            SELECT r
+            FROM Recipe r
+                 JOIN r.ingredients i
+            WHERE r.publicity = true
+              AND r.waitingApproval = false
+              AND (LOWER(r.title) LIKE :searchText OR LOWER(r.description) LIKE :searchText)
+              AND r.timeToCook <= :maxTimeToCook
+              AND i.ingredientId IN :ingredientIds
+            GROUP BY r
+            HAVING COUNT(DISTINCT i.ingredientId) = :ingredientCount
+            """)
     Page<Recipe> findByIngredientsAndSearchCriteria(
             @Param("searchText") String searchText,
             @Param("maxTimeToCook") Integer maxTimeToCook,
             @Param("ingredientIds") List<Long> ingredientIds,
             @Param("ingredientCount") long ingredientCount,
+            Pageable pageable);
+
+    @Query("""
+            SELECT r
+            FROM Recipe r
+                JOIN r.ingredients i
+            WHERE r.publicity = true AND i.ingredientId IN :ingredientIds
+            GROUP BY r
+            """)
+    Page<Recipe> findByPersonFavouriteIngredients(
+            @Param("ingredientIds") List<Long> ingredientIds,
             Pageable pageable);
 }

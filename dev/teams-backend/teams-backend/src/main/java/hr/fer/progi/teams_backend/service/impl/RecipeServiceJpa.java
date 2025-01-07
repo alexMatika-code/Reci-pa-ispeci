@@ -2,6 +2,7 @@ package hr.fer.progi.teams_backend.service.impl;
 
 import hr.fer.progi.teams_backend.constants.Roles;
 import hr.fer.progi.teams_backend.dao.IngredientRepository;
+import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Person;
@@ -13,12 +14,17 @@ import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import javax.security.sasl.SaslServer;
+import java.io.Console;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +35,9 @@ public class RecipeServiceJpa implements RecipeService {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @Autowired
     private IngredientRepository ingredientRepository;
@@ -158,6 +167,33 @@ public class RecipeServiceJpa implements RecipeService {
             return recipeRepository.findByIngredientsAndSearchCriteria(
                     searchText, maxTimeToCook, ingIds, ingIds.size(), pageable
             ).map(RecipeMapper::toDTO);
+        }
+    }
+
+    @Override
+    public Page<RecipeDTO> listRecommendedRecipes(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+        final Page<RecipeDTO>[] result = new Page[1];
+
+        personRepository.findByEmail(email).ifPresentOrElse(
+                person -> {
+                    result[0] = recipeRepository.findByPersonFavouriteIngredients(
+                            person.getFavoriteIngredients()
+                                    .stream()
+                                    .map(Ingredient::getIngredientId)
+                                    .collect(Collectors.toList()), pageable
+                    ).map(RecipeMapper::toDTO);
+                },
+                () -> {
+                    throw new RuntimeException("User not found: " + email);
+                }
+        );
+        if (result[0] != null) {
+            return result[0];
+        }else{
+            return recipeRepository.findByPublicityTrueAndWaitingApprovalFalse(pageable).map(RecipeMapper::toDTO);
         }
     }
 

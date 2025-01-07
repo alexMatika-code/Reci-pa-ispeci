@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import hr.fer.progi.teams_backend.domain.dto.SearchRecipesDTO;
 
 import java.io.IOException;
@@ -103,5 +102,13 @@ public class RecipeController {
                 ingredientIds
         );
         return ResponseEntity.ok(recipeService.listPublicRecipes(searchRecipesDTO,page, size));
+    }
+
+    @GetMapping("/recommended")
+    public ResponseEntity<?> getRecommendedRecipes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+            ) {
+        return ResponseEntity.ok(recipeService.listRecommendedRecipes(page, size));
     }
 }
