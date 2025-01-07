@@ -24,18 +24,26 @@ function Navbar() {
         navigate(`/`);
     };
 
-    const handleLoginClick =async () => {
-        var response = await fetch('/api/login', {
-            method: 'POST',
-            credentials: "include"
-        });
-        if (response.redirected) {
-            window.open(response.url, '_self'); // Opens the Google login flow in the same tab.
-        }
-        const data = await response.json();
-        console.log(data);
+    const handleLoginClick = async () => {
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-    }
+            if (response.ok) {
+                const googleAuthUrl = await response.text();
+                console.log(googleAuthUrl);
+                window.location.href = googleAuthUrl;
+            } else {
+                console.error('Failed to initiate login process');
+            }
+        } catch (error) {
+            console.error('Error during login request:', error);
+        }
+    };
 
     return (
         <div className={"navbar-container h-100 nav-custom d-flex justify-content-between"}>
