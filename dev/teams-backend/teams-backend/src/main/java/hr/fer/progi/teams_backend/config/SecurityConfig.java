@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
                     log.info("Configuring authorization rules");
-                    registry.requestMatchers("/", "/recipes/public", "/people/profile/{username}", "/api/login", "/login","/recipes/**").permitAll();
+                    registry.requestMatchers("/","/api/oauth2/authorization/**", "/recipes/public", "/people/profile/{username}", "/api/login", "/login","/recipes/**").permitAll();
                     log.info("Publicly accessible endpoints configured");
                     registry.anyRequest().authenticated();
                 })
