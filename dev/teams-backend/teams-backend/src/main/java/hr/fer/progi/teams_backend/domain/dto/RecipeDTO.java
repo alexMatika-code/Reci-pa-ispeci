@@ -17,6 +17,7 @@ public class RecipeDTO {
 
     private Long chefId;
     private Long userId;
+    private String userName;
     private List<RatingDTO> ratings;
 
     private String imageBase64;

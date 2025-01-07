@@ -1,10 +1,12 @@
 package hr.fer.progi.teams_backend.domain.mapper;
 
+import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.SearchRecipesDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
@@ -18,6 +20,7 @@ public class RecipeMapper {
 
     public static RecipeDTO toDTO(Recipe recipe) {
         RecipeDTO dto = new RecipeDTO();
+        dto.setUserName(recipe.getUser().getUsername());
         dto.setRecipeId(recipe.getRecipeId());
         dto.setTitle(recipe.getTitle());
         dto.setDescription(recipe.getDescription());

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class RatingMapper {
     public static RatingDTO toDTO(Rating rating) {
         RatingDTO dto = new RatingDTO();
+        dto.setPersonName(rating.getPerson().getUsername());
         dto.setRatingId(rating.getRatingId());
         dto.setGrade(rating.getGrade());
         dto.setComment(rating.getComment());
