@@ -1,75 +1,51 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import placeholder from "../assets/placeholder.jpg";
 import { Link } from 'react-router-dom';
 
-const ProfileIcon = ({ authorId }) => {
+const ProfileIcon = ({ username }) => {
     const [author, setAuthor] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchAuthor = async () => {
             try {
-                if (!authorId) {
+                if (!username) {
                     throw new Error('No author ID provided');
                 }
-                
-                const response = await fetch(`/api/people/${authorId}`, {
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
+
+                console.log(`/api/people/profile/${username}`);
+                const response = await fetch(`/api/people/profile/${username}`);
+                console.log('this is the response');
+                console.log(response);
                 if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error('Author not found');
-                    }
                     throw new Error('Failed to fetch author data');
                 }
                 
-                const personDTO = await response.json();
-                setAuthor({
-                    username: personDTO.username,
-                    image: personDTO.image,
-                    personId: personDTO.personId
-                });
+                const data = await response.json();
+                console.log(data);
+                setAuthor(data);
+
             } catch (error) {
                 console.error('Error fetching author:', error);
-                setError(error.message);
                 setAuthor(null);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchAuthor();
-    }, [authorId]);
-
-    if (loading) {
-        return (
-            <div className="d-inline-flex mt-3 px-3 py-1 d-flex align-items-center rounded-pill bg-white shadow-sm">
-                <div className="spinner-border spinner-border-sm" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="d-inline-flex mt-3 px-3 py-1 d-flex align-items-center rounded-pill bg-white shadow-sm">
-                <span className="text-muted">Author unavailable</span>
-            </div>
-        );
-    }
+        if (username) {
+            fetchAuthor();
+        }
+    }, [username]);
 
     return (
         <Link 
-            to={`/profile/${author?.username || ''}`}
+            to={`/profile/${username}`}
             className="text-decoration-none"
         >
-            <div className="d-inline-flex mt-3 px-3 py-1 d-flex align-items-center rounded-pill bg-white cursor-pointer shadow-sm">
+            <div className="d-inline-flex mt-3 px-3 py-1 d-flex align-items-center
+             rounded-pill bg-white cursor-pointer b-radius-30 shadow-sm"
+                 >
                 <img 
                     src={author?.image ? `data:image/jpeg;base64,${author.image}` : placeholder}
                     alt="profile"
@@ -81,7 +57,7 @@ const ProfileIcon = ({ authorId }) => {
                     className="rounded-circle"
                 />
                 <span className="ms-2 fw-bold color-dsg">
-                    {author?.username || 'name'}
+                    {username}
                 </span>
             </div>
         </Link>
