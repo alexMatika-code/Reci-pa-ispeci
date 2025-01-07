@@ -25,9 +25,11 @@ function Navbar() {
     };
 
     const handleLoginClick =async () => {
-        await fetch('/api/login', {
-            method: 'POST',
+        var response = await fetch('/api/login', {
+            method: 'GET',
         });
+        const data = await response.json();
+        console.log(data);
     }
 
     return (
