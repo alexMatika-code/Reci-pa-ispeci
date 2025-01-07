@@ -47,13 +47,18 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/recipes/public", "/").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
                     oauth2
                             .successHandler(new CustomAuthenticationSuccessHandler());
                 })
-                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
+                .exceptionHandling(handling ->
+                {
+                    log.error("I have error" + handling.toString());
+                    handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint());
+                })
                 .build();
     }
 
