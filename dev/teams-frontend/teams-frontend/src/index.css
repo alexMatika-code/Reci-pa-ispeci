@@ -55,12 +55,20 @@
     margin-top: 100px;
 }
 
+.mb-8{
+    margin-bottom: 8px;
+}
+
 .ml-4{
     margin-left: 4px;
 }
 
 .ml-5{
     margin-left: 5px;
+}
+
+.ml-10{
+    margin-left: 10px;
 }
 
 .ml-16{

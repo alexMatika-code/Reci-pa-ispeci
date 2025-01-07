@@ -12,6 +12,10 @@ function Navbar() {
         navigate(`/recipe/add`);
     };
 
+    const navigateToUserControl = () => {
+        navigate('/user-control');
+    }
+
     const navigateToIngredients = () => {
         navigate(`/ingredients`);
     }
@@ -63,7 +67,8 @@ function Navbar() {
                     <div className={"nav-links align-items-center mr-16"}>
                         <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
                                        onClick={navigateToIngredients} />
-                        <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"} />
+                        <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                        onClick={navigateToUserControl} />
                         <BsClipboard2PlusFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
                                               onClick={navigateToAddNew} />
                     </div>

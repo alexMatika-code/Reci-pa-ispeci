@@ -9,6 +9,7 @@ import EditRecipePage from './pages/EditRecipePage';
 import RecipeCard from "./components/RecipeCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import IngredientsPage from "./pages/IngredientsPage";
+import UserControlPage from "./pages/UserControlPage.jsx";
 
 const App = () => {
     // Recipe manipulation
@@ -36,6 +37,8 @@ const App = () => {
                 {/* User related pages */}
                 {/*<Route path='/profile' element={<ProfilePage />} />*/}
                 <Route path='/profile/:username' element={<ProfilePage />} />
+                {/* User control page */}
+                <Route path='/user-control' element={<UserControlPage />} />
                 {/* Not found page */}
                 <Route path='*' element={<NotFoundPage />} />
             </Route>
