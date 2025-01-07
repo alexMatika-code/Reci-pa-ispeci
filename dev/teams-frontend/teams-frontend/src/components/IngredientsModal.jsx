@@ -21,7 +21,7 @@ const IngredientsModal = ({ingredients, setIngredients, update, show, disableBut
                 setLoading(false);
             }
         };
-        // fetchIngredients();
+        fetchIngredients();
     }, []);
 
     const addIngredient = (ingredient) => {
@@ -74,9 +74,9 @@ const IngredientsModal = ({ingredients, setIngredients, update, show, disableBut
                             <div className={"form-outline col-12"}>
                                 <select ref={selectRef} id="select-ing" placeholder="Pretraži sastojke..." autoComplete="off">
                                     <option value="">Pretraži sastojke...</option>
-                                    {allIngredients.map((ing) => (
-                                        <option key={ing.ingredientId} value={JSON.stringify(ing)}>{ing.name}</option>
-                                    ))}
+                                    {/*{allIngredients.map((ing) => (*/}
+                                    {/*    <option key={ing.ingredientId} value={JSON.stringify(ing)}>{ing.name}</option>*/}
+                                    {/*))}*/}
                                 </select>
                             </div>
                         </div>
