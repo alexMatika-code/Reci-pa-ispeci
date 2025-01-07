@@ -27,9 +27,14 @@ function Navbar() {
     const handleLoginClick =async () => {
         var response = await fetch('/api/login', {
             method: 'GET',
+            credentials: "include"
         });
+        if (response.redirected) {
+            window.open(response.url, '_self'); // Opens the Google login flow in the same tab.
+        }
         const data = await response.json();
         console.log(data);
+
     }
 
     return (
