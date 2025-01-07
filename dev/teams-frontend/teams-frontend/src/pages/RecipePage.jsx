@@ -8,7 +8,7 @@ import RecipeNameAndRating from "../components/RecipeNameAndRating.jsx";
 import ProfileIcon from "../components/ProfileIcon.jsx";
 import RecipeComment from "../components/RecipeComment.jsx";
 import AddReviewForm from "../components/AddReviewForm.jsx";
-import RecipeIngredients from "../components/RecipeIngredients.jsx";
+import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
 
 const RecipePage = () => {
     const [loading, setLoading] = useState(true);
@@ -100,7 +100,7 @@ const RecipePage = () => {
                             <Container className={"col-md-12 col-lg-7 col-xl-8"}>
                                 <RecipeNameAndRating recipe={recipe}/>
                                 <RecipePageTextBox header={"Opis:"} text={recipe.description}/>
-                                <RecipeIngredients ingredients={recipe.ingredients} />
+                                <RecipePageIngredients ingredients={recipe.ingredients} />
                                 <RecipePageTextBox header={"Postupak:"} text={recipe.procedure}/>
                                 
                                 {/* Comments Section */}

@@ -1,7 +1,7 @@
 import RecipePageTextBox from "./RecipePageTextBox.jsx";
 
 
-const RecipeIngredients = ({ ingredients }) => {
+const RecipePageIngredients = ({ ingredients }) => {
     const ingredientsList = ingredients && ingredients.length > 0 
         ? ingredients.map((ingredient) => (
             `• ${ingredient.name}`
@@ -16,4 +16,4 @@ const RecipeIngredients = ({ ingredients }) => {
     );
 };
 
-export default RecipeIngredients; 
+export default RecipePageIngredients;
