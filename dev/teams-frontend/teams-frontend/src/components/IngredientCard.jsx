@@ -5,7 +5,7 @@ import IngredientCardDeleteModal from "./IngredientCardDeleteModal.jsx";
 import {useRef, useState} from "react";
 import IngredientCardEditModal from "./IngredientCardEditModal.jsx";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const IngredientCard = ({ingredientName, id}) => {
