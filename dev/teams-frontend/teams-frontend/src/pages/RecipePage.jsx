@@ -8,6 +8,7 @@ import RecipeNameAndRating from "../components/RecipeNameAndRating.jsx";
 import ProfileIcon from "../components/ProfileIcon.jsx";
 import RecipeComment from "../components/RecipeComment.jsx";
 import AddReviewForm from "../components/AddReviewForm.jsx";
+import RecipeIngredients from "../components/RecipeIngredients.jsx";
 
 const RecipePage = () => {
     const [loading, setLoading] = useState(true);
@@ -80,7 +81,7 @@ const RecipePage = () => {
             ) : (
                 recipe ? (
                     <div className={"justify-content-center align-items-center p-5 pt-80 pl-80"}>
-                        {currentUser?.id === recipe.userId && (
+                        {currentUser?.id === recipe.userId && currentUser?.id != null && (
                             <div className="w-100 hiding mb-4 p-3 d-flex justify-content-end">
                                 <button 
                                     className="btn btn-primary"
@@ -99,6 +100,7 @@ const RecipePage = () => {
                             <Container className={"col-md-12 col-lg-7 col-xl-8"}>
                                 <RecipeNameAndRating recipe={recipe}/>
                                 <RecipePageTextBox header={"Opis:"} text={recipe.description}/>
+                                <RecipeIngredients ingredients={recipe.ingredients} />
                                 <RecipePageTextBox header={"Postupak:"} text={recipe.procedure}/>
                                 
                                 {/* Comments Section */}
