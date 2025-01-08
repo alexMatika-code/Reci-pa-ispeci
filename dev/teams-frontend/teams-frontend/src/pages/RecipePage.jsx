@@ -1,7 +1,7 @@
 import {useParams, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../components/Spinner.jsx";
-import {Container, Row} from "react-bootstrap";
+import {Button, Container, Row} from "react-bootstrap";
 import RecipePageImage from "../components/RecipePageImage.jsx";
 import RecipePageTextBox from "../components/RecipePageTextBox.jsx";
 import RecipeNameAndRating from "../components/RecipeNameAndRating.jsx";
@@ -9,8 +9,11 @@ import ProfileIcon from "../components/ProfileIcon.jsx";
 import RecipeComment from "../components/RecipeComment.jsx";
 import AddReviewForm from "../components/AddReviewForm.jsx";
 import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
+import {toast} from "react-toastify";
 
 const RecipePage = () => {
+    const [disableButtons, setDisableButtons] = useState(false);
+
     const [loading, setLoading] = useState(true);
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState({});
@@ -74,6 +77,44 @@ const RecipePage = () => {
         }
     };
 
+    const approve = async () => {
+        try {
+            setDisableButtons(true);
+            const response = await fetch(`/api/chef/approve/${recipeId}`, {method: "PUT"})
+            if(response.ok) {
+                toast.success("Recept odobren!");
+            }
+            else{
+                toast.error("Ups! Dogodila se greška.");
+            }
+        } catch (error) {
+            console.error("Error approving:", error);
+        }
+        finally {
+            navigate('/recipe/approve');
+            setDisableButtons(false);
+        }
+    }
+
+    const reject = async () => {
+        try {
+            setDisableButtons(true);
+            const response = await fetch(`/api/chef/reject/${recipeId}`, {method: "DELETE"})
+            if(response.ok) {
+                toast.success("Recept odbijen!");
+            }
+            else{
+                toast.error("Ups! Dogodila se greška.");
+            }
+        } catch (error) {
+            console.error("Error rejecting:", error);
+        }
+        finally {
+            navigate('/recipe/approve');
+            setDisableButtons(false);
+        }
+    }
+
     return (
         <div>
             {loading ? (
@@ -95,6 +136,13 @@ const RecipePage = () => {
                             <Container className={"col-md-10 col-lg-4 col-xl-3"}>
                                 <RecipePageImage recipe={recipe}/>
                                 <ProfileIcon username={recipe.userName} />
+
+                                {recipe.waitingApproval ? (
+                                    <>
+                                        <Button variant="success" className={"w-100 mt-4"} disabled={disableButtons} onClick={approve}>Prihvati</Button>
+                                        <Button variant="danger" className={"w-100 mt-2"} disabled={disableButtons} onClick={reject}>Odbij</Button>
+                                    </>
+                                ) : (<></>)}
                             </Container>
 
                             <Container className={"col-md-12 col-lg-7 col-xl-8"}>

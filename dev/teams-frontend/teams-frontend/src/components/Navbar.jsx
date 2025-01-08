@@ -1,5 +1,5 @@
 import logo from "../assets/logo.png";
-import { BsFillGearFill, BsBasket2Fill, BsClipboard2PlusFill, BsPersonCircle } from "react-icons/bs";
+import { BsFillGearFill, BsBasket2Fill, BsClipboard2PlusFill, BsPersonCircle, BsClipboard2CheckFill  } from "react-icons/bs";
 import {AuthContext} from "../Contexts.jsx";
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
@@ -20,6 +20,10 @@ function Navbar() {
         navigate(`/ingredients`);
     }
 
+    const navigateToApproveal = () => {
+        navigate(`/recipe/approve`);
+    }
+
     const navigateToProfilePage = () => {
         navigate(`/profile/${currentUser.username}`);
     }
@@ -29,7 +33,7 @@ function Navbar() {
     };
 
     const handleLoginClick = async () => {
-        location.href="https://reci-pa-ispeci-2.onrender.com/api/oauth2/authorization/google"
+        location.href="http://localhost:8080/api/oauth2/authorization/google"
     };
 
     return (
@@ -48,10 +52,12 @@ function Navbar() {
                 {currentUser ? (
                     // dodat provjeru za rolse
                     <div className={"nav-links align-items-center mr-16"}>
-                        <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
-                                       onClick={navigateToIngredients} />
                         <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
                                         onClick={navigateToUserControl} />
+                        <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                       onClick={navigateToIngredients} />
+                        <BsClipboard2CheckFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                        onClick={navigateToApproveal} />
                         <BsClipboard2PlusFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
                                               onClick={navigateToAddNew} />
                     </div>
