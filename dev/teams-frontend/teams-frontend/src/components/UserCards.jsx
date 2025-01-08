@@ -11,6 +11,7 @@ const UserCards = () => {
     useEffect(() => {
         const fetchUsersInfo = async () => {
             try {
+                setLoading(true);
                 const response = await fetch(`/api/people/info`);
                 const data = await response.json();
                 setUsers(data);
