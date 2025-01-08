@@ -111,4 +111,13 @@ public class RecipeController {
             ) {
         return ResponseEntity.ok(recipeService.listRecommendedRecipes(page, size));
     }
+
+    @GetMapping("/similarity/{recipeId}")
+    public ResponseEntity<?> getSimilarRecipes(@PathVariable Long recipeId) {
+        List<RecipeDTO> similarRecipes = recipeService.findSimilarRecipes(recipeId);
+        if (similarRecipes.isEmpty()) {
+            return ResponseEntity.ok("No similar recipes found");
+        }
+        return ResponseEntity.ok(similarRecipes);
+    }
 }

@@ -197,4 +197,23 @@ public class RecipeServiceJpa implements RecipeService {
         }
     }
 
+    @Override
+    public List<RecipeDTO> findSimilarRecipes(Long id) {
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + id));
+
+        Set<Long> ingredientIds = recipe.getIngredients().stream().map(Ingredient::getIngredientId).collect(Collectors.toSet());
+        List<Recipe> allRecipes = recipeRepository.findAll();
+
+        List<Recipe> similarRecipes = allRecipes.stream()
+                .filter(otherRecipe -> !otherRecipe.getRecipeId().equals(id))
+                .filter(otherRecipe -> {
+                    Set<Long> otherIngredientIds = otherRecipe.getIngredients().stream().map(Ingredient::getIngredientId).collect(Collectors.toSet());
+                    long numberOfCommonIngredients = ingredientIds.stream().filter(otherIngredientIds::contains).count();
+                    return ((double) numberOfCommonIngredients / ingredientIds.size()) >= 0.8;
+                })
+                .toList();
+
+        return similarRecipes.stream().map(RecipeMapper::toDTO).collect(Collectors.toList());
+    }
+
 }
