@@ -4,20 +4,23 @@ import SearchBar from "../components/SearchBar.jsx";
 import FilterRecipes from "../components/FilterRecipes.jsx";
 import RecipeCards from "../components/RecipeCards.jsx";
 import Spinner from "../components/Spinner.jsx";
+import HomePageTab from "../components/HomePageTab.jsx";
 // import axios from "axios";
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
-    const [showChat, setShowChat] = useState(false);
-    const [ingredients, setIngredients] = useState([]);
+    const [changeTab, setChangeTab] = useState(false);
+
     const [recipes, setRecipes] = useState([]);
+    const [recommendedRecipes, setRecommendedRecipes] = useState([]);
+
     const [size] = useState(10);
     const [loading, setLoading] = useState(true);
+    const [loadingRecommended, setLoadingRecommended] = useState(true);
+
+    const [ingredients, setIngredients] = useState([]);
     const [timeToCook, setTimeToCook] = useState("");
 
-    const toggleChat = () => {
-        setShowChat((prev) => !prev);
-    };
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -34,45 +37,60 @@ const HomePage = () => {
         fetchRecipes();
     }, [size]);
 
-    const filteredRecipes = recipes.filter((recipe) => {
-        const matchesQuery = query
-            ? recipe.title.toLowerCase().includes(query.toLowerCase())
-            || recipe.description.toLowerCase().includes(query.toLowerCase())
-            : true;
-        // const matchesTime = timeToCook ? recipe.timeToCook <= parseInt(timeToCook, 10) : true;
-        return matchesQuery;
-    });
+    useEffect(() => {
+        const fetchRecommendedRecipes = async () => {
+            try {
+                const response = await fetch(`/api/recipes/recommended`);
+                const data = await response.json();
+                setRecommendedRecipes(data.content);
+            } catch (error) {
+                console.error("Error fetching recipes:", error);
+            } finally {
+                setLoadingRecommended(false);
+            }
+        };
+        fetchRecommendedRecipes();
+    }, [size]);
+
+
 
     return (
         <div>
-            {loading ? (
+            <div className={"search-bar-container"}>
+                {/*<div className={"rounded-circle filter-div"}>*/}
+                {/*    <FilterRecipes ingredients={ingredients}*/}
+                {/*                   setIngredients={setIngredients}*/}
+                {/*                   timeToCook={timeToCook}*/}
+                {/*                   setTimeToCook={setTimeToCook}/>*/}
+                {/*</div>*/}
+                <SearchBar query={query} setQuery={setQuery}/>
+            </div>
+
+            <HomePageTab setShowRecommended={setChangeTab} showRecommended={changeTab} />
+
+            {loading && loadingRecommended ? (
                 <Spinner loading={loading}/>
             ) : (
-                <div>
-                    <div className={"search-bar-container"}>
-                        <div className={"rounded-circle filter-div"}>
-                            <FilterRecipes ingredients={ingredients}
-                                           setIngredients={setIngredients}
-                                           timeToCook={timeToCook}
-                                           setTimeToCook={setTimeToCook}/>
-                        </div>
-                        <SearchBar query={query} setQuery={setQuery}/>
-                        <div className={"chat-icon-container"}>
-                            {showChat ? (
-                                <BsChatDotsFill className={"chat-icon"} onClick={toggleChat}/>
-                            ) : (
-                                <BsChatDots className={"chat-icon"} onClick={toggleChat}/>
-                            )}
-                        </div>
-                    </div>
+                <div className={"max-w-92-5 mx-auto home-recipes-container"}>
 
-                    <div className={"max-w-92-5 mx-auto home-recipes-container"}>
-                        {filteredRecipes.length > 0 ? (
-                            <RecipeCards filteredRecipes={filteredRecipes}/>
-                        ) : (
-                            <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
-                        )}
-                    </div>
+                    {changeTab ? (
+                        <>
+                            {recommendedRecipes.length > 0 ? (
+                                <RecipeCards filteredRecipes={recommendedRecipes}/>
+                            ) : (
+                                <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
+                            )}
+                        </>
+                    ):(
+                        <>
+                            {recipes.length > 0 ? (
+                                <RecipeCards filteredRecipes={recipes}/>
+                            ) : (
+                                <div className={"align-content-center no-recipes-message"}>Nema recepata za prikaz</div>
+                            )}
+                        </>
+                    )}
+
                 </div>
             )}
         </div>

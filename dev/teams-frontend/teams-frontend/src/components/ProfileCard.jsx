@@ -29,10 +29,10 @@ const ProfileCard = ({user}) => {
                 </div>
                 <div className={"mb-5 col-md-6 col-lg-12 color-dsg"}>
                     <div className={'mb-2 font-1-4rem'}>
-                        <StarRating rating={user.ratingAverage}/>
+                        <StarRating rating={user.ratingAverage} />
                     </div>
                     <div>
-                        Prosječna ocjena: <span className={"bold"}>{user.ratingAverage || '0'}</span> od <span className={"bold"}>5</span>
+                        Prosječna ocjena: <span className={"bold"}>{Math.round(user.ratingAverage * 100) / 100  || '0'}</span> od <span className={"bold"}>5</span>
                     </div>
                 </div>
             </Row>
