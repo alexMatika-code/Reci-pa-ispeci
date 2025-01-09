@@ -33,7 +33,7 @@ function Navbar() {
     };
 
     const handleLoginClick = async () => {
-        location.href="http://localhost:8080/api/oauth2/authorization/google"
+        location.href="https://reci-pa-ispeci-qzxc.onrender.com/api/oauth2/authorization/google"
     };
 
     return (
