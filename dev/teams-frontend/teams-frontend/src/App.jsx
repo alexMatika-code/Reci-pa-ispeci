@@ -6,7 +6,6 @@ import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
 import RecipePage from './pages/RecipePage';
 import EditRecipePage from './pages/EditRecipePage';
-import RecipeCard from "./components/RecipeCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import IngredientsPage from "./pages/IngredientsPage";
 import UserControlPage from "./pages/UserControlPage.jsx";

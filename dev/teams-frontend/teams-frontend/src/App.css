@@ -40,10 +40,14 @@ input:focus {
     padding: 12px;
     border-radius: 12px;
     border: 1px solid #ccc;
-    width: 40%;
     height: 4%;
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.searchbar-button{
+    width: 50px;
+    height: 50px;
 }
 
 .search-input {
