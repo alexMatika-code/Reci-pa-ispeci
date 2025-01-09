@@ -45,13 +45,13 @@ public class RatingController {
         return ratingService.updateRating(id, rating);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'USER')")
     @PostMapping
     public Rating createRating(@RequestBody Rating rating) {
         return ratingService.createRating(rating);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'USER')")
     @PostMapping("/create")
     public ResponseEntity<?> createRating(@RequestBody CreateRatingDTO createRatingDTO, Authentication authentication) {
         String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");

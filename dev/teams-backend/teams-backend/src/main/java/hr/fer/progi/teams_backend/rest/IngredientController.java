@@ -6,6 +6,9 @@ import hr.fer.progi.teams_backend.service.IngredientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,19 +33,32 @@ public class IngredientController {
         return ingredientService.fetchIngredient(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @DeleteMapping("/{id}")
     public void deleteIngredient(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Print the roles of the authenticated user
+        if (authentication != null) {
+            System.out.println("User: " + authentication.getName());
+            System.out.println("Roles: ");
+            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                System.out.println(authority.getAuthority());
+            }
+        } else {
+            System.out.println("No user is authenticated.");
+        }
+
         ingredientService.deleteIngredient(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @PutMapping("/{id}")
     public Ingredient updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredient) {
         return ingredientService.updateIngredient(id, ingredient);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @PostMapping
     public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
         return ingredientService.createIngredient(ingredient);

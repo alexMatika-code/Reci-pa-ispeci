@@ -29,7 +29,7 @@ public class RecipeController {
     @Autowired
     private PersonService personService;
 
-    @PreAuthorize("hasAnyRole('ADMIN','CHEF', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CHEF', 'USER')")
     @GetMapping("")
     public List<RecipeDTO> listRecipes() {
         return recipeService.listAll();
@@ -107,7 +107,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.listPublicRecipes(searchRecipesDTO, page, size));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','CHEF', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CHEF', 'USER')")
     @GetMapping("/recommended")
     public ResponseEntity<?> getRecommendedRecipes(
             @RequestParam(defaultValue = "0") int page,
