@@ -29,7 +29,7 @@ function Navbar() {
     };
 
     const handleLoginClick = async () => {
-        location.href="https://reci-pa-ispeci-2-v32w.onrender.com/api/oauth2/authorization/google"
+        location.href="https://reci-pa-ispeci-qzxc.onrender.com/api/oauth2/authorization/google"
     };
 
     return (
