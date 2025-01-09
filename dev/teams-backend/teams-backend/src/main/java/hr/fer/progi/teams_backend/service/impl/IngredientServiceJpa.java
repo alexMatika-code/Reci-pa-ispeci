@@ -70,4 +70,13 @@ public class IngredientServiceJpa implements IngredientService {
                 .map(IngredientMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<IngredientDTO> getIngredientsByRecipeId(Long recipeId) {
+        List<Ingredient> ingredients = ingredientRepository.findByRecipesRecipeId(recipeId);
+
+        return ingredients.stream()
+                .map(IngredientMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
