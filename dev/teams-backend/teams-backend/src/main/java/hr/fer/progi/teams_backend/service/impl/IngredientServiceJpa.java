@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class IngredientServiceJpa implements IngredientService {
     public List<IngredientDTO> listAll() {
         return ingredientRepository.findAll().stream()
                 .map(IngredientMapper::toDTO)
+                .sorted(Comparator.comparing(IngredientDTO::getName))
                 .collect(Collectors.toList());
     }
 

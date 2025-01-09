@@ -8,21 +8,21 @@ import hr.fer.progi.teams_backend.domain.Role;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
@@ -31,6 +31,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -139,12 +142,30 @@ public class WebSecurityBasic {
     }
 
     private GrantedAuthoritiesMapper authorityMapper() {
-        final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
+        return authorities -> {
+            List<GrantedAuthority> mappedAuthorities = new ArrayList<>();
 
-        authorityMapper.setDefaultAuthority("USER");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
 
-        return authorityMapper;
+                if (principal instanceof OAuth2User) {
+                    OAuth2User oauth2User = (OAuth2User) principal;
+                    String email = oauth2User.getAttribute("email");
+
+                    Person user = personRepository.findByEmail(email)
+                            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+                    String roleName = user.getRole().getName().toString();
+                    mappedAuthorities.add(new SimpleGrantedAuthority(roleName));
+                }
+            }
+            mappedAuthorities.addAll(authorities);
+            return mappedAuthorities;
+        };
     }
+
+
 
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults() {

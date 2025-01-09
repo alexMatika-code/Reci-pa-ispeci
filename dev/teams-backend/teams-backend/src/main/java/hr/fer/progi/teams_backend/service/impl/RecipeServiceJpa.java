@@ -14,6 +14,7 @@ import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -147,7 +148,7 @@ public class RecipeServiceJpa implements RecipeService {
 
     @Override
     public Page<RecipeDTO> listPublicRecipes(SearchRecipesDTO searchRecipesDTO, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "recipeId"));
 
         String searchText = (searchRecipesDTO.getSearchText() != null)
                 ? "%" + searchRecipesDTO.getSearchText().toLowerCase() + "%"
@@ -174,7 +175,7 @@ public class RecipeServiceJpa implements RecipeService {
 
     @Override
     public Page<RecipeDTO> listRecommendedRecipes(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size,Sort.by(Sort.Direction.DESC, "recipeId"));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
         final Page<RecipeDTO>[] result = new Page[1];
