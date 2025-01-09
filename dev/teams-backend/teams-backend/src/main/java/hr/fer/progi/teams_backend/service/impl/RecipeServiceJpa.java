@@ -14,6 +14,7 @@ import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -22,6 +23,7 @@ import org.springframework.util.Assert;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.security.sasl.SaslServer;
 import java.io.Console;
@@ -198,22 +200,22 @@ public class RecipeServiceJpa implements RecipeService {
     }
 
     @Override
-    public List<RecipeDTO> findSimilarRecipes(Long id) {
-        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + id));
+    public List<RecipeDTO> findSimilarRecipes(Long recipeId) {
 
-        Set<Long> ingredientIds = recipe.getIngredients().stream().map(Ingredient::getIngredientId).collect(Collectors.toSet());
-        List<Recipe> allRecipes = recipeRepository.findAll();
+        if (recipeId == null || recipeId <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid recipe ID");
+        }
 
-        List<Recipe> similarRecipes = allRecipes.stream()
-                .filter(otherRecipe -> !otherRecipe.getRecipeId().equals(id))
-                .filter(otherRecipe -> {
-                    Set<Long> otherIngredientIds = otherRecipe.getIngredients().stream().map(Ingredient::getIngredientId).collect(Collectors.toSet());
-                    long numberOfCommonIngredients = ingredientIds.stream().filter(otherIngredientIds::contains).count();
-                    return ((double) numberOfCommonIngredients / ingredientIds.size()) >= 0.8;
-                })
-                .toList();
+        boolean recipeExists = recipeRepository.existsById(recipeId);
+        if (!recipeExists) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipe not found");
+        }
 
-        return similarRecipes.stream().map(RecipeMapper::toDTO).collect(Collectors.toList());
+        List<Recipe> similarRecipes = recipeRepository.findSimilarRecipes(recipeId);
+
+        return similarRecipes.stream()
+                .map(RecipeMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
 }

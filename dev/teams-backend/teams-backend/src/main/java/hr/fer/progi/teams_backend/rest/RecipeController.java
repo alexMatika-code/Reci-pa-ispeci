@@ -116,7 +116,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.listRecommendedRecipes(page, size));
     }
 
-    @GetMapping("/similarity/{recipeId}")
+    @GetMapping("/checkSimilarity/{recipeId}")
     public ResponseEntity<?> getSimilarRecipes(@PathVariable Long recipeId) {
         List<RecipeDTO> similarRecipes = recipeService.findSimilarRecipes(recipeId);
         if (similarRecipes.isEmpty()) {
