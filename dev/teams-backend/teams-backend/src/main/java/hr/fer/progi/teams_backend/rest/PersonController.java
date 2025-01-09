@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +44,7 @@ public class PersonController {
         personService.deletePerson(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF', 'USER')")
     @PutMapping("/about")
     public void updatePerson(@RequestBody String about) {
         personService.updatePerson(about);
@@ -52,7 +54,7 @@ public class PersonController {
     public Person createPerson(@RequestBody Person person) {
         return personService.createPerson(person);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF', 'USER')")
     @PostMapping("/favoriteIngredient/{ingredientId}")
     public ResponseEntity<?> addFavoriteIngredient(@PathVariable Long ingredientId, Authentication authentication) {
         String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
@@ -64,7 +66,7 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF', 'USER')")
     @PostMapping("/favoriteIngredients")
     public ResponseEntity<?> addFavoriteIngredients(@RequestBody List<Long> ingredientIds, Authentication authentication) {
         String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
@@ -80,7 +82,7 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF', 'USER')")
     @DeleteMapping("favoriteIngredient/{ingredientId}")
     public ResponseEntity<?> removeFavoriteIngredient(@PathVariable Long ingredientId, Authentication authentication) {
         String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
@@ -92,7 +94,7 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF', 'USER')")
     @PutMapping("/favoriteIngredients")
     public ResponseEntity<?> setFavoriteIngredients(@RequestBody List<Long> ingredientIds,
                                                     Authentication authentication) {
@@ -134,6 +136,7 @@ public class PersonController {
         return getAuthenticatedUser();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'CHEF')")
     @GetMapping("/getAuthUser")
     public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal OAuth2User user) {
         log.info("GetAuthUser");
@@ -148,11 +151,13 @@ public class PersonController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/info")
     public List<PersonInfoDTO> getAllPeopleInfo() {
         return personService.listAllPersonInfo();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/promote")
     public ResponseEntity<?> promotePerson(@RequestBody PromoteDemoteRequestDTO request) {
         Long personId = request.getPersonId();
@@ -167,7 +172,7 @@ public class PersonController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/demote")
     public ResponseEntity<?> demotePerson(@RequestBody PromoteDemoteRequestDTO request) {
         Long personId = request.getPersonId();

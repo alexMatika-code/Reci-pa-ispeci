@@ -10,6 +10,7 @@ import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,12 @@ public class RecipeController {
     @Autowired
     private PersonService personService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','CHEF', 'USER')")
     @GetMapping("")
     public List<RecipeDTO> listRecipes() {
         return recipeService.listAll();
     }
+
 
     @GetMapping("/{id}")
     public RecipeDTO getRecipe(@PathVariable Long id) {
@@ -101,14 +104,15 @@ public class RecipeController {
                 maxTimeToCook,
                 ingredientIds
         );
-        return ResponseEntity.ok(recipeService.listPublicRecipes(searchRecipesDTO,page, size));
+        return ResponseEntity.ok(recipeService.listPublicRecipes(searchRecipesDTO, page, size));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','CHEF', 'USER')")
     @GetMapping("/recommended")
     public ResponseEntity<?> getRecommendedRecipes(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
-            ) {
+    ) {
         return ResponseEntity.ok(recipeService.listRecommendedRecipes(page, size));
     }
 

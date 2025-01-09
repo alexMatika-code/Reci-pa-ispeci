@@ -61,7 +61,12 @@ public class WebSecurityBasic {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/recipes/public", "/").permitAll();
+                    auth.requestMatchers("/recipes/public",
+                                    "/",
+                                    "ingredients",
+                                    "people/profile/{username}",
+                                    "recipes/{recipeId}")
+                            .permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {

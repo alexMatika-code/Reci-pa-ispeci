@@ -4,6 +4,7 @@ import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.dto.IngredientDTO;
 import hr.fer.progi.teams_backend.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,16 +26,19 @@ public class IngredientController {
         return ingredientService.fetchIngredient(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
     @DeleteMapping("/{id}")
     public void deleteIngredient(@PathVariable Long id) {
         ingredientService.deleteIngredient(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
     @PutMapping("/{id}")
     public Ingredient updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredient) {
         return ingredientService.updateIngredient(id, ingredient);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
     @PostMapping
     public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
         return ingredientService.createIngredient(ingredient);

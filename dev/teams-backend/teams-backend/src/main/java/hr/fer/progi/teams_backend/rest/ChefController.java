@@ -5,6 +5,7 @@ import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
 import hr.fer.progi.teams_backend.service.ChefService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
 public class ChefController {
     private final ChefService chefService;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
+
     @PutMapping("/approve/{recipeId}")
     public ResponseEntity<String> approveRecipe(@PathVariable Long recipeId) {
         boolean success = chefService.approveRecipe(recipeId);
@@ -24,6 +27,7 @@ public class ChefController {
             return ResponseEntity.badRequest().body("Recipe approval failed.");
         }
     }
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
 
     @DeleteMapping("/reject/{recipeId}")
     public ResponseEntity<String> rejectRecipe(@PathVariable Long recipeId) {
@@ -34,6 +38,7 @@ public class ChefController {
             return ResponseEntity.badRequest().body("Recipe rejection failed (not found or not awaiting approval).");
         }
     }
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
 
     @GetMapping("/waitingApproval")
     public ResponseEntity<List<RecipeDTO>> getAllWaitingRecipes() {
