@@ -5,7 +5,7 @@ import InputGroupText from "react-bootstrap/InputGroupText";
 
 const SearchBar = ({showModal, setQuery, query, setTimeToCook, timeToCook, search}) => {
     return (
-        <Row className={"w-60 mx-auto py-5 d-flex justify-content-center align-items-center"}>
+        <Row className={"w-60 mx-auto py-5 d-flex justify-content-center align-items-center responsive-width"}>
             <div className={"col-xl-7 col-lg-6 col-sm-12 mb-2"}>
                 <InputGroup>
                     <InputGroupText><BsSearch /></InputGroupText>
