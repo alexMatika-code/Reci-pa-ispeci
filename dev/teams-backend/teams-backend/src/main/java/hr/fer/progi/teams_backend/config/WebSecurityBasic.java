@@ -70,6 +70,31 @@ public class WebSecurityBasic {
                                     userInfoEndpoint -> userInfoEndpoint.userAuthoritiesMapper(this.authorityMapper()))
                             .successHandler(
                                     (request, response, authentication) -> {
+                                        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+                                        String email = oauth2User.getAttribute("email");
+
+
+                                        if (!personRepository.existsByEmail(email)) {
+                                            Person newUser = new Person();
+                                            newUser.setEmail(email);
+                                            newUser.setFirstName(oauth2User.getAttribute("given_name"));
+                                            newUser.setLastName(oauth2User.getAttribute("family_name"));
+                                            newUser.setImage(oauth2User.getAttribute("picture"));
+
+                                            String username = email.contains("@") ? email.substring(0, email.indexOf("@")) : email;
+                                            newUser.setUsername(username);
+
+
+                                            Role role = roleRepository.findByName(Roles.USER);
+                                            if (role == null) {
+                                                role = new Role();
+                                                role.setName(Roles.USER);
+                                                roleRepository.save(role);
+                                            }
+                                            newUser.setRole(role);
+                                            personRepository.save(newUser);
+                                        }
+
                                         response.sendRedirect(frontendUrl);
                                     });
                 })
@@ -109,7 +134,7 @@ public class WebSecurityBasic {
     private GrantedAuthoritiesMapper authorityMapper() {
         final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
 
-        authorityMapper.setDefaultAuthority("ADMIN");
+        authorityMapper.setDefaultAuthority("USER");
 
         return authorityMapper;
     }
