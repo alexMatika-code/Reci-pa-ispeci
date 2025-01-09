@@ -65,7 +65,8 @@ public class WebSecurityBasic {
                                     "/",
                                     "ingredients",
                                     "people/profile/{username}",
-                                    "recipes/{recipeId}")
+                                    "recipes/{recipeId}",
+                                    "ingredients/recipe/{recipeId}")
                             .permitAll();
                     auth.anyRequest().authenticated();
                 })
