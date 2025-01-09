@@ -75,6 +75,13 @@ public class PersonServiceJpa implements PersonService {
     }
 
     @Override
+    public PersonDTO findByUsername(String username) {
+        Person person = personRepository.findByUsername(username).orElse(null);
+        return person != null ? PersonMapper.toDTO(person) : null;
+
+    }
+
+    @Override
     public Person createPerson(Person person) {
         Assert.notNull(person, "Person object must be given");
         return personRepository.save(person);

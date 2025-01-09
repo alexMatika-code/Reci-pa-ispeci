@@ -9,12 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 import java.util.Objects;
 
+@Profile({"form-security", "oauth-security"})
 @Slf4j
 @RestController
 @RequestMapping("/people")
@@ -125,15 +130,14 @@ public class PersonController {
     }
 
     @GetMapping("/getAuth")
-    public OAuth2User getAuth(@AuthenticationPrincipal OAuth2User authUser) {
-        return authUser;
+    public OAuth2User getAuth() {
+        return getAuthenticatedUser();
     }
 
     @GetMapping("/getAuthUser")
-    public ResponseEntity<?> getAuthUser(Authentication authentication) {
+    public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal OAuth2User user) {
         log.info("GetAuthUser");
-        log.info("Principal: {}", authentication.getPrincipal());
-        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+        String email = user.getAttribute("email");
         PersonDTO person = personService.findByEmail(email);
 
         if (person != null) {
@@ -178,4 +182,12 @@ public class PersonController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    public OAuth2User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            return (OAuth2User) authentication.getPrincipal();
+        }
+        return null;
+    }
+
 }

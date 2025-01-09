@@ -25,6 +25,8 @@ public interface PersonService {
 
     PersonDTO findByEmail(String email);
 
+    PersonDTO findByUsername(String username);
+
     public Person getPerson(Long id);
 
     PersonProfileDTO getPersonProfileByUsername(String username,boolean isOwner);
