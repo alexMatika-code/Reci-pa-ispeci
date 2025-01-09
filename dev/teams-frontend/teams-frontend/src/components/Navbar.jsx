@@ -50,14 +50,19 @@ function Navbar() {
 
             <span className={"d-flex align-items-center mr-16"}>
                 {currentUser ? (
-                    // dodat provjeru za rolse
                     <div className={"nav-links align-items-center mr-16"}>
-                        <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
-                                        onClick={navigateToUserControl} />
-                        <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
-                                       onClick={navigateToIngredients} />
-                        <BsClipboard2CheckFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
-                                        onClick={navigateToApproveal} />
+                        {currentUser.role === "ADMIN" ? (
+                            <BsFillGearFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                            onClick={navigateToUserControl} />
+                        ) : (<></>)}
+                        {currentUser.role === "ADMIN" || currentUser.role === "CHEF" ? (
+                            <>
+                                <BsBasket2Fill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                               onClick={navigateToIngredients} />
+                                <BsClipboard2CheckFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
+                                                       onClick={navigateToApproveal} />
+                            </>
+                        ) : (<></>)}
                         <BsClipboard2PlusFill className={"font-2rem mx-2 cursor-pointer color-dsg clickable-icon"}
                                               onClick={navigateToAddNew} />
                     </div>
