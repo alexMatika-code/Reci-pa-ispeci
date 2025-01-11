@@ -14,7 +14,7 @@ const LiveChat = () => {
 
     useEffect(() => {
         const connect = () => {
-            const sock = new SockJS("https://reci-pa-ispeci.onrender.com/api/message");
+            const sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/message");
             stompClient = over(sock);
 
             stompClient.connect({}, onConnected, onError);
