@@ -42,9 +42,8 @@ const RecipePage = () => {
                 console.log(recipeId)
                 const res = await fetch(`/api/recipes/${recipeId}`);
                 const data = await res.json();
-                console.log(data)
+                console.log('Recipe data:', data)
                 setRecipe(data);
-
             } catch (error) {
                 console.log(`Error fetching data - no recipe found - ${recipeId}`, error);
             } finally {
@@ -148,7 +147,7 @@ const RecipePage = () => {
                             <Container className={"col-md-12 col-lg-7 col-xl-8"}>
                                 <RecipeNameAndRating recipe={recipe}/>
                                 <RecipePageTextBox header={"Opis:"} text={recipe.description}/>
-                                <RecipePageIngredients ingredients={recipe.ingredients} />
+                                <RecipePageIngredients recipeId={recipe.recipeId} />
                                 <RecipePageTextBox header={"Postupak:"} text={recipe.procedure}/>
                                 
                                 {/* Comments Section */}
