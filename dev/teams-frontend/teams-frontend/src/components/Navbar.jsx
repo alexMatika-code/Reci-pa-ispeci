@@ -103,15 +103,16 @@ function Navbar() {
                 </span>
             </div>
             {currentUser ? (
-                <div className={`${show ? "d-block" : "d-none"} d-sm-none nav-mobile-menu shadow-sm w-100 text-white m-0 py-1 font-weight-600`}>
+                <div className={`${show ? "d-block" : "d-none"} d-md-none nav-mobile-menu shadow-sm w-100 text-white m-0 py-1 font-weight-600`}>
                     <p className={"font-1-4rem m-0 cursor-pointer d-flex align-items-center py-3 px-5"}
-                       onClick={navigateToProfilePage}>
+                       onClick={() => {navigateToUserControl(); setShow(false);}}
+                           >
                         <BsPersonCircle className={"mr-10"}/>
                         <span>{currentUser.username || "username"}</span>
                     </p>
                     {currentUser.role === "ADMIN" ? (
                         <p className={"font-1-4rem m-0 cursor-pointer d-flex align-items-center py-3 px-5"}
-                           onClick={navigateToUserControl}>
+                           onClick={() => {navigateToUserControl(); setShow(false);}}>
                             <BsFillGearFill className={"mr-10"}/>
                             <span>Kontrola korisnika</span>
                         </p>
@@ -119,19 +120,19 @@ function Navbar() {
                     {currentUser.role === "ADMIN" || currentUser.role === "CHEF"? (
                         <>
                             <p className={"font-1-4rem m-0 cursor-pointer d-flex align-items-center py-3 px-5"}
-                               onClick={navigateToIngredients}>
+                               onClick={() => {navigateToIngredients(); setShow(false);}}>
                                 <BsBasket2Fill className={"mr-10"}/>
                                 <span>Kontrola sastojaka</span>
                             </p>
                             <p className={"font-1-4rem m-0 cursor-pointer d-flex align-items-center py-3 px-5"}
-                               onClick={navigateToApproveal}>
+                               onClick={() => {navigateToApproveal(); setShow(false);}}>
                                 <BsClipboard2CheckFill className={"mr-10"}/>
                                 <span>Predlozeni recepti</span>
                             </p>
                         </>
                     ) : (<></>)}
                     <p className={`font-1-4rem m-0 cursor-pointer d-flex align-items-center py-3 px-5`}
-                       onClick={navigateToAddNew}>
+                       onClick={() => {navigateToAddNew(); setShow(false);}}>
                         <BsClipboard2PlusFill className={"mr-10"}/>
                         <span>Novi recept</span>
                     </p>
