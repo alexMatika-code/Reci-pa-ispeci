@@ -103,7 +103,7 @@ function Navbar() {
                 </span>
             </div>
             {currentUser ? (
-                <div className={`nav-mobile-menu shadow-sm w-100 text-white m-0 py-1 font-weight-600 d-md-none ${show ? "d-sm-block" : "d-sm-none"}`}>
+                <div className={`${show ? "d-block" : "d-none"} d-sm-none nav-mobile-menu shadow-sm w-100 text-white m-0 py-1 font-weight-600`}>
                     <p className={"font-1-4rem m-0 cursor-pointer d-flex align-items-center py-3 px-5"}
                        onClick={navigateToProfilePage}>
                         <BsPersonCircle className={"mr-10"}/>
