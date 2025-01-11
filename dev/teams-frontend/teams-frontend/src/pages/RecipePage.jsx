@@ -1,5 +1,6 @@
 import {useParams, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
+import {AuthContext} from "../Contexts.jsx";
 import Spinner from "../components/Spinner.jsx";
 import {Button, Container, Row} from "react-bootstrap";
 import RecipePageImage from "../components/RecipePageImage.jsx";
@@ -12,29 +13,13 @@ import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
 import {toast} from "react-toastify";
 
 const RecipePage = () => {
+    const currentUser = useContext(AuthContext);
     const [disableButtons, setDisableButtons] = useState(false);
-
     const [loading, setLoading] = useState(true);
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState({});
-    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
     const [showReviewForm, setShowReviewForm] = useState(false);
-
-    useEffect(() => {
-        // Fetch current user
-        const fetchCurrentUser = async () => {
-            try {
-                const response = await fetch('/api/auth/current');
-                const data = await response.json();
-                setCurrentUser(data);
-            } catch (error) {
-                console.error('Error fetching current user:', error);
-            }
-        };
-
-        fetchCurrentUser();
-    }, []);
 
     useEffect(() => {
         const fetchRecipe = async () => {
