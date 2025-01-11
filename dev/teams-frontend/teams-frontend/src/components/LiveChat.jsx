@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { over } from "stompjs";
-import SockJS from 'sockjs-client/dist/sockjs';
+import SockJS from "sockjs-client";
 import { AuthContext } from "../Contexts.jsx";
 
 const LiveChat = () => {
