@@ -4,6 +4,7 @@ import { AuthContext } from "../Contexts.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Spinner from "../components/Spinner.jsx";
 import {ToastContainer} from "react-toastify";
+import ChatTab from '../components/ChatTab';
 
 const MainLayout = () => {
     const [currentUser, setCurrentUser] = useState(null);
@@ -36,6 +37,7 @@ const MainLayout = () => {
                     <Navbar />
                     {/*Ovdje se moze napravit provjera za prikaz auth pageova */}
                     <Outlet />
+                    {currentUser && <ChatTab />}
                     <ToastContainer
                         position="bottom-right"
                         autoClose={3000}
@@ -51,7 +53,6 @@ const MainLayout = () => {
                     />
                 </>
             )}
-
         </AuthContext.Provider>
     );
 };
