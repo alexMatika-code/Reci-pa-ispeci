@@ -61,10 +61,17 @@ public class WebSecurityBasic {
     public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/recipes/public", "/").permitAll();
-                    auth.anyRequest().authenticated();
-                })
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/recipes/public",
+                                "/",
+                                "/ingredients",
+                                "/people/profile/{username}",
+                                "/recipes/{recipeId}",
+                                "/ingredients/recipe/{recipeId}",
+                                "/message"
+                        ).permitAll()
+                        .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> {
                     oauth2
                             .userInfoEndpoint(
