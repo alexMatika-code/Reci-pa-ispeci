@@ -2,7 +2,7 @@ import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } 
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import MainLayout from "./layouts/MainLayout.jsx";
-import NotFoundPage from './pages/NotFoundPage';
+import ErrorPage from './pages/ErrorPage.jsx';
 import HomePage from './pages/HomePage';
 import RecipePage from './pages/RecipePage';
 import EditRecipePage from './pages/EditRecipePage';
@@ -38,7 +38,7 @@ const App = () => {
                 {/* User control page */}
                 <Route path='/user-control' element={<UserControlPage />} />
                 {/* Not found page */}
-                <Route path='*' element={<NotFoundPage />} />
+                <Route path='*' element={<ErrorPage code={404} text={"Page not found :("} />} />
             </Route>
         )
     );

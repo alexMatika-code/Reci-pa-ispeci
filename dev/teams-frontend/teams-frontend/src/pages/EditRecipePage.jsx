@@ -7,6 +7,7 @@ import InputGroupText from "react-bootstrap/InputGroupText";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {AuthContext} from "../Contexts.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 
 const EditRecipePage = ({addRecipeSubmit}) => {
     const currentUser = useContext(AuthContext);
@@ -165,7 +166,7 @@ const EditRecipePage = ({addRecipeSubmit}) => {
                 </div>
             ) : (
                 <>
-                    ne moze
+                    <ErrorPage code={401} text={"Unauthorized :("} />
                 </>
             )}
         </>

@@ -11,6 +11,7 @@ import RecipeComment from "../components/RecipeComment.jsx";
 import AddReviewForm from "../components/AddReviewForm.jsx";
 import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
 import {toast} from "react-toastify";
+import ErrorPage from "./ErrorPage.jsx";
 
 const RecipePage = () => {
     const currentUser = useContext(AuthContext);
@@ -176,7 +177,7 @@ const RecipePage = () => {
                         </Row>
                     </div>
                 ) : (
-                    <div>ne postoji</div>
+                    <ErrorPage code={404} text={"Page not found :("} />
                 )
             )}
         </div>

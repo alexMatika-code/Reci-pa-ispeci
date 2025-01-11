@@ -260,6 +260,18 @@ a {
     transition: 0.05s ;
 }
 
+.nav-mobile{
+    display: none;
+}
+
+.nav-mobile-menu{
+    background-color: darkslategray;
+}
+
+.nav-mobile-menu p:hover{
+    background-color: lightslategray;
+}
+
 .responsive-width{
     width: 50%;
 }
@@ -281,7 +293,7 @@ a {
 
 /* md */
 @media screen and (max-width: 768px){
-    .nav-links{
+    .nav-links, .nav-profile{
         display: none !important;
     }
     .responsive-width{
@@ -294,6 +306,9 @@ a {
     .nav-logo{
         display: none;
     }
+    .nav-mobile{
+        display: block;
+    }
     .title-navbar{
         font-size: 32px;
     }
@@ -302,7 +317,6 @@ a {
         font-size: 40px;
     }
 }
-/*navbar*/
 
 /*ingredients page*/
 .clickable-icon:hover {
