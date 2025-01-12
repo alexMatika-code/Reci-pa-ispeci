@@ -20,7 +20,7 @@ const RecipeSimilarityWarning = ({id}) => {
             }
         };
         fetchAwaitingRecipes();
-    }, );
+    }, []);
 
 
     return (
