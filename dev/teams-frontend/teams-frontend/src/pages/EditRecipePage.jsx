@@ -2,12 +2,11 @@ import {useContext, useState, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import placeholder from "../assets/placeholder.jpg";
 import RecipeAddIngredients from '../components/RecipeAddIngredients';
-import {Form, Row, Button, InputGroup} from "react-bootstrap";
+import {Form, Row, Button, InputGroup, Spinner} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {AuthContext} from "../Contexts.jsx";
-import Spinner from "../components/Spinner.jsx";
 
 const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
     const { recipeId } = useParams();
@@ -53,6 +52,7 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
                         const file = new File([blob], 'recipe.jpg', { type: 'image/jpeg' });
                         setImage(file);
                         
+                        // Display the image
                         const selectedImage = document.getElementById('recipeImg');
                         if (selectedImage) {
                             selectedImage.src = `data:image/jpeg;base64,${recipeData.imageBase64}`;
@@ -131,12 +131,14 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
                 navigate('/');
             }
         } catch (error) {
-            toast.error('Error saving recipe: ' + error);
+            toast.error('Error saving recipe');
         }
     }
 
     if (loading) {
-            return <Spinner loading={loading}/>
+        return <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+        </Spinner>;
     }
 
     return (
