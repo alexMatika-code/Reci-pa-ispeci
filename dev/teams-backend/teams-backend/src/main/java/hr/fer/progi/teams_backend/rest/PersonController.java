@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Profile;
@@ -210,16 +211,28 @@ public class PersonController {
         List<GrantedAuthority> updatedAuthorities = List.of(
                 new SimpleGrantedAuthority(person.getRole().getName().name())
         );
-
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        var updatedAuth = new UsernamePasswordAuthenticationToken(
-                authentication.getPrincipal(),
-                authentication.getCredentials(),
-                updatedAuthorities
-        );
+        OAuth2AuthenticationToken updatedAuth = getOAuth2AuthenticationToken(updatedAuthorities);
 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
+
+        SecurityContextHolder.getContext().setAuthentication(updatedAuth);
+    }
+
+    private static OAuth2AuthenticationToken getOAuth2AuthenticationToken(List<GrantedAuthority> updatedAuthorities) {
+        var currentAuth = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        OAuth2User currentOAuth2User = currentAuth.getPrincipal();
+        OAuth2User updatedOAuth2User = new DefaultOAuth2User(
+                updatedAuthorities,
+                currentOAuth2User.getAttributes(),
+                "email"
+        );
+
+        return new OAuth2AuthenticationToken(
+                updatedOAuth2User,
+                updatedAuthorities,
+                currentAuth.getAuthorizedClientRegistrationId()
+        );
     }
 
 }
