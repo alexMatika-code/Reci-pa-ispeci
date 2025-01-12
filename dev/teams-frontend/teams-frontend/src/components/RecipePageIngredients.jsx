@@ -5,14 +5,14 @@ import {useEffect, useState} from "react";
 const RecipePageIngredients = ({ recipeId }) => {
     const [ingredients, setIngredients] = useState([]);
     const [loading, setLoading] = useState(true);
-    //console.log(recipeId);
+    console.log(recipeId);
     useEffect(() => {
-        const fetchIngredients = async () => {
+        const fetchRecipe = async () => {
             try {
-                //console.log(recipeId)
+                console.log(recipeId)
                 const res = await fetch(`/api/ingredients/recipe/${recipeId}`);
                 const data = await res.json();
-                //console.log(data)
+                console.log(data)
                 setIngredients(data);
 
             } catch (error) {
@@ -23,15 +23,15 @@ const RecipePageIngredients = ({ recipeId }) => {
         };
         if (recipeId){
             setLoading(true);
-            fetchIngredients();
+            fetchRecipe();
         }
     }, [recipeId]);
-    //console.log(recipeId);
-    //console.log(ingredients);
+    console.log(recipeId);
+    console.log(ingredients);
     const ingredientsList = ingredients && ingredients.length > 0 
         ? ingredients.map((ingredient) => (
             `• ${ingredient.name}`
-        )).join(' ')
+        )).join('\n')
         : 'Nema navedenih sastojaka';
 
     return (

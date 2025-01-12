@@ -22,14 +22,6 @@ const App = () => {
         return res.json();
     }
 
-    const editRecipe = async (recipeId, formData) => {
-        const res = await fetch(`/api/recipes/${recipeId}`, {
-            method: 'PUT',
-            body: formData
-        });
-        return res.json();
-    }
-
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<MainLayout />}>
@@ -41,7 +33,6 @@ const App = () => {
                 <Route path='/recipe/:recipeId' element={<RecipePage />} />
                 <Route path='/recipe/add' element={<EditRecipePage addRecipeSubmit={addRecipe} />} />
                 <Route path='/recipe/approve' element={<ApproveRecipesPage />} />
-                <Route path='/recipe/:recipeId/edit' element={<EditRecipePage editRecipeSubmit={editRecipe} />} />
                 {/* User related pages */}
                 <Route path='/profile/:username' element={<ProfilePage />} />
                 {/* User control page */}

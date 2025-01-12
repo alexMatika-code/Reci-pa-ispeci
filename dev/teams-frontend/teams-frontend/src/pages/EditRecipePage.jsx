@@ -1,17 +1,15 @@
-import {useContext, useState, useEffect} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useContext, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import placeholder from "../assets/placeholder.jpg";
 import RecipeAddIngredients from '../components/RecipeAddIngredients';
-import {Form, Row, Button, InputGroup, Spinner} from "react-bootstrap";
+import {Form, Row, Button, InputGroup} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {AuthContext} from "../Contexts.jsx";
 
-const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
-    const { recipeId } = useParams();
+const EditRecipePage = ({addRecipeSubmit}) => {
     const currentUser = useContext(AuthContext);
-    const navigate = useNavigate();
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -21,54 +19,8 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
     const [ingredients, setIngredients] = useState([]);
     const [image, setImage] = useState(null);
     const [hasImage, setHasImage] = useState(false);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (recipeId) {
-                setLoading(true);
-                try {
-                    const [recipeResponse, ingredientsResponse] = await Promise.all([
-                        fetch(`/api/recipes/${recipeId}`),
-                        fetch(`/api/ingredients/recipe/${recipeId}`)
-                    ]);
-
-                    const recipeData = await recipeResponse.json();
-                    const ingredientsData = await ingredientsResponse.json();
-
-                    // Set recipe data
-                    setTitle(recipeData.title);
-                    setDescription(recipeData.description);
-                    setProcedure(recipeData.procedure);
-                    setTimeToCook(recipeData.timeToCook);
-                    setPublicity(recipeData.publicity ? "public" : "private");
-                    setIngredients(ingredientsData);
-                    setHasImage(true);
-                    
-                    // Handle image
-                    if (recipeData.imageBase64) {
-                        const response = await fetch(`data:image/jpeg;base64,${recipeData.imageBase64}`);
-                        const blob = await response.blob();
-                        const file = new File([blob], 'recipe.jpg', { type: 'image/jpeg' });
-                        setImage(file);
-                        
-                        // Display the image
-                        const selectedImage = document.getElementById('recipeImg');
-                        if (selectedImage) {
-                            selectedImage.src = `data:image/jpeg;base64,${recipeData.imageBase64}`;
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                    toast.error('Error loading recipe data');
-                } finally {
-                    setLoading(false);
-                }
-            }
-        };
-
-        fetchData();
-    }, [recipeId]);
+    const navigate = useNavigate();
 
     const displaySelectedImage = (event) => {
         const selectedImage = document.getElementById('recipeImg');
@@ -120,25 +72,10 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
         const ingIds = ingredients.map(item => item.ingredientId);
         formData.append('ingredientIds', ingIds);
 
-        try {
-            if (recipeId) {
-                editRecipeSubmit(recipeId, formData);
-                toast.success('Recipe updated successfully');
-                navigate(`/recipe/${recipeId}`);
-            } else {
-                addRecipeSubmit(formData);
-                toast.success('Recipe added successfully');
-                navigate('/');
-            }
-        } catch (error) {
-            toast.error('Error saving recipe');
-        }
-    }
+        console.log(formData);
 
-    if (loading) {
-        return <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-        </Spinner>;
+        addRecipeSubmit(formData);
+        return navigate('/');
     }
 
     return (
@@ -219,7 +156,7 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
                                         2MB
                                     </div>
                                     <Button type="submit" variant="primary" className="w-25">
-                                        {recipeId ?  'Uredi' : (publicity === "private" ? 'Dodaj' : 'Predloži')} recept
+                                        {publicity === "private" ? 'Dodaj' : 'Predloži'} recept
                                     </Button>
                                 </div>
                             </div>
