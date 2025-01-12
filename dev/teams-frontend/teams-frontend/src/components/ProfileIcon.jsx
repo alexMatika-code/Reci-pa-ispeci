@@ -43,7 +43,7 @@ const ProfileIcon = ({ username }) => {
             to={`/profile/${username}`}
             className="text-decoration-none"
         >
-            <div className="d-inline-flex mt-3 px-3 py-1 d-flex align-items-center
+            <div className="d-inline-flex mt-1 px-3 py-1 d-flex align-items-center
              rounded-pill bg-white cursor-pointer b-radius-30 shadow-sm"
                  >
                 <img 
