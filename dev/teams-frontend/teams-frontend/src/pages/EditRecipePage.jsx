@@ -13,7 +13,6 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
     const { recipeId } = useParams();
     const currentUser = useContext(AuthContext);
     const navigate = useNavigate();
-    const isEditing = Boolean(recipeId);
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -23,55 +22,53 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
     const [ingredients, setIngredients] = useState([]);
     const [image, setImage] = useState(null);
     const [hasImage, setHasImage] = useState(false);
-    const [loading, setLoading] = useState(isEditing);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!isEditing) {
-                setLoading(false);
-                return;
-            }
+            if (recipeId) {
+                setLoading(true);
+                try {
+                    const [recipeResponse, ingredientsResponse] = await Promise.all([
+                        fetch(`/api/recipes/${recipeId}`),
+                        fetch(`/api/ingredients/recipe/${recipeId}`)
+                    ]);
 
-            try {
-                const [recipeResponse, ingredientsResponse] = await Promise.all([
-                    fetch(`/api/recipes/${recipeId}`),
-                    fetch(`/api/ingredients/recipe/${recipeId}`)
-                ]);
+                    const recipeData = await recipeResponse.json();
+                    const ingredientsData = await ingredientsResponse.json();
 
-                const recipeData = await recipeResponse.json();
-                const ingredientsData = await ingredientsResponse.json();
-
-                // Set recipe data
-                setTitle(recipeData.title);
-                setDescription(recipeData.description);
-                setProcedure(recipeData.procedure);
-                setTimeToCook(recipeData.timeToCook);
-                setPublicity(recipeData.publicity ? "public" : "private");
-                setIngredients(ingredientsData);
-                setHasImage(true);
-                
-                // Handle image
-                if (recipeData.imageBase64) {
-                    const response = await fetch(`data:image/jpeg;base64,${recipeData.imageBase64}`);
-                    const blob = await response.blob();
-                    const file = new File([blob], 'recipe.jpg', { type: 'image/jpeg' });
-                    setImage(file);
+                    // Set recipe data
+                    setTitle(recipeData.title);
+                    setDescription(recipeData.description);
+                    setProcedure(recipeData.procedure);
+                    setTimeToCook(recipeData.timeToCook);
+                    setPublicity(recipeData.publicity ? "public" : "private");
+                    setIngredients(ingredientsData);
+                    setHasImage(true);
                     
-                    const selectedImage = document.getElementById('recipeImg');
-                    if (selectedImage) {
-                        selectedImage.src = `data:image/jpeg;base64,${recipeData.imageBase64}`;
+                    // Handle image
+                    if (recipeData.imageBase64) {
+                        const response = await fetch(`data:image/jpeg;base64,${recipeData.imageBase64}`);
+                        const blob = await response.blob();
+                        const file = new File([blob], 'recipe.jpg', { type: 'image/jpeg' });
+                        setImage(file);
+                        
+                        const selectedImage = document.getElementById('recipeImg');
+                        if (selectedImage) {
+                            selectedImage.src = `data:image/jpeg;base64,${recipeData.imageBase64}`;
+                        }
                     }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    toast.error('Error loading recipe data');
+                } finally {
+                    setLoading(false);
                 }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                toast.error('Error loading recipe data');
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchData();
-    }, [recipeId, isEditing]);
+    }, [recipeId]);
 
     const displaySelectedImage = (event) => {
         const selectedImage = document.getElementById('recipeImg');
