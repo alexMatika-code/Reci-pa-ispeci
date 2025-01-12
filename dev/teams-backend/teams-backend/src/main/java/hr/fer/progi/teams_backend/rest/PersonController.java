@@ -1,5 +1,6 @@
 package hr.fer.progi.teams_backend.rest;
 
+import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.*;
 import hr.fer.progi.teams_backend.service.PersonService;
@@ -8,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -27,6 +31,9 @@ public class PersonController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @GetMapping
     public List<PersonDTO> getPeople() {
@@ -164,6 +171,8 @@ public class PersonController {
 
         try {
             personService.promotePerson(personId);
+            PersonDTO person = personService.fetchPerson(personId);
+            updateSecurityContext(person.getEmail());
             return ResponseEntity.ok("User with ID " + personId + " has been promoted.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -179,6 +188,8 @@ public class PersonController {
 
         try {
             personService.demotePerson(personId);
+            PersonDTO person = personService.fetchPerson(personId);
+            updateSecurityContext(person.getEmail());
             return ResponseEntity.ok("User with ID " + personId + " has been demoted.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -190,6 +201,25 @@ public class PersonController {
             return (OAuth2User) authentication.getPrincipal();
         }
         return null;
+    }
+
+    public void updateSecurityContext(String email) {
+
+        Person person = personRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        List<GrantedAuthority> updatedAuthorities = List.of(
+                new SimpleGrantedAuthority(person.getRole().getName().name())
+        );
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        var updatedAuth = new UsernamePasswordAuthenticationToken(
+                authentication.getPrincipal(),
+                authentication.getCredentials(),
+                updatedAuthorities
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(updatedAuth);
     }
 
 }
