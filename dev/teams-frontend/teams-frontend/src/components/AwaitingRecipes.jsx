@@ -21,7 +21,7 @@ const AwaitingRecipes = () => {
             }
         };
         fetchAwaitingRecipes();
-    }, );
+    }, []);
 
     return (
         <Row>
