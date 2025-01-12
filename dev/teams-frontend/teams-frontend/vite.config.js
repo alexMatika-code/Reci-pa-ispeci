@@ -8,9 +8,13 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
+        // target: 'https://reci-pa-ispeci-2-v32w.onrender.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       }
     }
-  }
+  },
+  define: {
+    global: {},
+  },
 })
