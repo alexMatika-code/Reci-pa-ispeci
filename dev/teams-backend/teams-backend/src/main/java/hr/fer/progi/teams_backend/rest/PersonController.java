@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Profile({"form-security", "oauth-security"})
-@Slf4j
 @RestController
 @RequestMapping("/people")
 public class PersonController {
@@ -127,7 +126,6 @@ public class PersonController {
         }
 
         boolean isOwner = (usernameAuth != null && usernameAuth.equals(username));
-        log.info("Fetching profile: loggedInUser={}, requestedProfile={}", usernameAuth, username);
         return personService.getPersonProfileByUsername(username,isOwner);
     }
 
@@ -139,7 +137,6 @@ public class PersonController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'CHEF')")
     @GetMapping("/getAuthUser")
     public ResponseEntity<?> getAuthUser(@AuthenticationPrincipal OAuth2User user) {
-        log.info("GetAuthUser");
         String email = user.getAttribute("email");
         PersonDTO person = personService.findByEmail(email);
 

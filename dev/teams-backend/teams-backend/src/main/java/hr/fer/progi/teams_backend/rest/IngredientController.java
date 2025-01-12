@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/ingredients")
 public class IngredientController {
@@ -71,15 +70,11 @@ public class IngredientController {
 
     @GetMapping("/recipe/{recipeId}")
     public List<IngredientDTO> searchIngredientsByRecipe(@PathVariable Long recipeId) {
-        log.info("Fetching ingredients for recipe ID: {}", recipeId);
         List<IngredientDTO> ingredientDTOs = ingredientService.getIngredientsByRecipeId(recipeId);
 
         if (ingredientDTOs.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No ingredients found for the given recipe ID");
-        } else {
-            log.info("Fetched {} ingredients for recipe ID: {}", ingredientDTOs.size(), recipeId);
         }
-
         return ingredientDTOs;
     }
 
