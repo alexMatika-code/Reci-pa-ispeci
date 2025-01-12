@@ -214,8 +214,6 @@ public class PersonController {
         OAuth2AuthenticationToken updatedAuth = getOAuth2AuthenticationToken(updatedAuthorities);
 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
-
-        SecurityContextHolder.getContext().setAuthentication(updatedAuth);
     }
 
     private static OAuth2AuthenticationToken getOAuth2AuthenticationToken(List<GrantedAuthority> updatedAuthorities) {
