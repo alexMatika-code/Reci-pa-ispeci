@@ -97,6 +97,8 @@ const RecipePage = () => {
             navigate('/recipe/approve');
             setDisableButtons(false);
         }
+
+        console.log("Curren user: " + currentUser.personId);
     }
 
     return (
@@ -106,7 +108,7 @@ const RecipePage = () => {
             ) : (
                 recipe ? (
                     <div className={"justify-content-center align-items-center p-5 pt-80 pl-80"}>
-                        {currentUser?.id === recipe.userId && currentUser?.id != null && (
+                        {currentUser?.personId === recipe.userId && currentUser?.personId != null && (
                             <div className="w-100 hiding mb-4 p-3 d-flex justify-content-end">
                                 <button 
                                     className="btn btn-primary"
@@ -139,7 +141,7 @@ const RecipePage = () => {
                                 <div className="mt-5">
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                         <h4 className="mb-0">Komentari</h4>
-                                        {currentUser && currentUser.id !== recipe.userId && !showReviewForm && (
+                                        {currentUser && currentUser.personId != recipe.userId && !showReviewForm && (
                                             <button 
                                                 className="btn btn-primary"
                                                 onClick={() => setShowReviewForm(true)}
