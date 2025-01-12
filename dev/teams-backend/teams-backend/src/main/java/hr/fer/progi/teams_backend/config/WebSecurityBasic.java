@@ -21,9 +21,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -31,6 +34,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import javax.swing.text.html.Option;
+import java.io.Console;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -140,12 +150,32 @@ public class WebSecurityBasic {
     }
 
     private GrantedAuthoritiesMapper authorityMapper() {
-        final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
+        return (authorities) -> {
+            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
-        authorityMapper.setDefaultAuthority("USER");
+            authorities.forEach(authority -> {
+                if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
+                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
+                    String email = (String) userAttributes.get("email");
+                    System.out.println("Email: " + email);
 
-        return authorityMapper;
+                    Person person = personRepository.findByEmail(email).orElse(null);
+
+                    if (person != null) {
+                        String roleName = person.getRole().getName().name();
+                        System.out.println("Role: " + roleName);
+                        mappedAuthorities.add(new SimpleGrantedAuthority(roleName));
+                    } else {
+                        mappedAuthorities.add(new SimpleGrantedAuthority(""));
+                    }
+                }
+            });
+
+            System.out.println("Mapped Authorities: " + mappedAuthorities);
+            return mappedAuthorities;
+        };
     }
+
 
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults() {
