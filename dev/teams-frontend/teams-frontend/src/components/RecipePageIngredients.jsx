@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 
 const RecipePageIngredients = ({ recipeId }) => {
     const [ingredients, setIngredients] = useState([]);
-    const [loading, setLoading] = useState(true);
     //console.log(recipeId);
     useEffect(() => {
         const fetchIngredients = async () => {
@@ -17,12 +16,9 @@ const RecipePageIngredients = ({ recipeId }) => {
 
             } catch (error) {
                 console.log(`Error fetching data - no ingredients found - ${recipeId}`, error);
-            } finally {
-                setLoading(false);
             }
         };
         if (recipeId){
-            setLoading(true);
             fetchIngredients();
         }
     }, [recipeId]);
