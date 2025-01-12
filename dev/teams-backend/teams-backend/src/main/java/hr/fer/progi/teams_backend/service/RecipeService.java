@@ -17,7 +17,7 @@ public interface RecipeService {
 
     void deleteRecipe(Long id);
 
-    Recipe updateRecipe(Long id, Recipe recipe);
+    Recipe updateRecipe(Long id, CreateRecipeDTO recipe) throws IOException;
 
     Recipe createRecipe(Recipe recipe);
 

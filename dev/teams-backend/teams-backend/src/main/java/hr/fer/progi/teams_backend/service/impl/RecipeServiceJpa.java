@@ -64,22 +64,26 @@ public class RecipeServiceJpa implements RecipeService {
     }
 
     @Override
-    public Recipe updateRecipe(Long id, Recipe recipe) {
+    public Recipe updateRecipe(Long id, CreateRecipeDTO recipe) throws IOException {
         Assert.notNull(recipe, "Recipe object must be given");
 
         Recipe updateRecipe = recipeRepository.findById(id).orElse(null);
         Assert.notNull(updateRecipe, "Recipe by the ID of " + id + " does not exist");
 
-        updateRecipe.setIngredients(recipe.getIngredients());
+        Set<Ingredient> ingredients = recipe.getIngredientIds().stream()
+                .map(id_ingr -> ingredientRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Ingredient not found with ID: " + id_ingr)))
+                .collect(Collectors.toSet());
+
+        updateRecipe.setIngredients(ingredients);
         updateRecipe.setProcedure(recipe.getProcedure());
         updateRecipe.setPublicity(recipe.isPublicity());
         updateRecipe.setTimeToCook(recipe.getTimeToCook());
         updateRecipe.setTitle(recipe.getTitle());
         updateRecipe.setDescription(recipe.getDescription());
-        updateRecipe.setWaitingApproval(recipe.isWaitingApproval());
-        updateRecipe.setChef(recipe.getChef());
-        updateRecipe.setUser(recipe.getUser());
-
+        if (recipe.getImage() != null && !recipe.getImage().isEmpty()) {
+            updateRecipe.setImage(recipe.getImage().getBytes());
+        }
         return recipeRepository.save(updateRecipe);
     }
 

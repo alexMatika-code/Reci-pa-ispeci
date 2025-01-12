@@ -47,8 +47,18 @@ public class RecipeController {
     }
 
     @PutMapping("/{id}")
-    public Recipe updateRecipe(@PathVariable Long id, @RequestBody Recipe recipe) {
-        return recipeService.updateRecipe(id, recipe);
+    public ResponseEntity<?>  updateRecipe(@PathVariable Long id, @RequestBody CreateRecipeDTO recipe) {
+        try {
+            Recipe updatedRecipe = recipeService.updateRecipe(id, recipe);
+
+            if (updatedRecipe == null || updatedRecipe.getRecipeId() == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save recipe in the database");
+            }
+
+            return ResponseEntity.ok("Recipe updated successfully with ID: " + updatedRecipe.getRecipeId());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to upload image");
+        }
     }
 
     @PostMapping
