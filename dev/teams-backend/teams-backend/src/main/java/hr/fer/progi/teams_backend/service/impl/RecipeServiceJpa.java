@@ -29,6 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.security.sasl.SaslServer;
 import java.io.Console;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -70,12 +71,16 @@ public class RecipeServiceJpa implements RecipeService {
         Recipe updateRecipe = recipeRepository.findById(id).orElse(null);
         Assert.notNull(updateRecipe, "Recipe by the ID of " + id + " does not exist");
 
+        updateRecipe.setIngredients(new HashSet<>());
+        recipeRepository.saveAndFlush(updateRecipe);
+
         Set<Ingredient> ingredients = recipe.getIngredientIds().stream()
                 .map(id_ingr -> ingredientRepository.findById(id_ingr)
                         .orElseThrow(() -> new RuntimeException("Ingredient not found with ID: " + id_ingr)))
                 .collect(Collectors.toSet());
 
         updateRecipe.setIngredients(ingredients);
+
         updateRecipe.setProcedure(recipe.getProcedure());
         updateRecipe.setPublicity(recipe.isPublicity());
         updateRecipe.setTimeToCook(recipe.getTimeToCook());
@@ -84,7 +89,7 @@ public class RecipeServiceJpa implements RecipeService {
         if (recipe.getImage() != null && !recipe.getImage().isEmpty()) {
             updateRecipe.setImage(recipe.getImage().getBytes());
         }
-        return recipeRepository.save(updateRecipe);
+        return recipeRepository.saveAndFlush(updateRecipe);
     }
 
     @Override
