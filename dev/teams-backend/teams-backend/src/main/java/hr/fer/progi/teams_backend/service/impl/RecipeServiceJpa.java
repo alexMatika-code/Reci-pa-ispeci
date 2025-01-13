@@ -71,7 +71,7 @@ public class RecipeServiceJpa implements RecipeService {
         Assert.notNull(updateRecipe, "Recipe by the ID of " + id + " does not exist");
 
         Set<Ingredient> ingredients = recipe.getIngredientIds().stream()
-                .map(id_ingr -> ingredientRepository.findById(id)
+                .map(id_ingr -> ingredientRepository.findById(id_ingr)
                         .orElseThrow(() -> new RuntimeException("Ingredient not found with ID: " + id_ingr)))
                 .collect(Collectors.toSet());
 
