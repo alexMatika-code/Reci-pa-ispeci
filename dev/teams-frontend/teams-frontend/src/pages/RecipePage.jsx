@@ -11,8 +11,6 @@ import RecipeComment from "../components/RecipeComment.jsx";
 import AddReviewForm from "../components/AddReviewForm.jsx";
 import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
 import {toast} from "react-toastify";
-import ErrorPage from "./ErrorPage.jsx";
-import RecipeSimilarityWarning from "../components/RecipeSimilarityWarning.jsx";
 
 const RecipePage = () => {
     const currentUser = useContext(AuthContext);
@@ -57,7 +55,7 @@ const RecipePage = () => {
             const data = await res.json();
             setRecipe(data);
         } catch (error) {
-            console.error('Error refreshing recipe: ', error);
+            console.error('Error refreshing recipe:', error);
         } finally {
             setLoading(false);
         }
@@ -99,6 +97,8 @@ const RecipePage = () => {
             navigate('/recipe/approve');
             setDisableButtons(false);
         }
+
+        console.log("Curren user: " + currentUser.personId);
     }
 
     return (
@@ -108,9 +108,9 @@ const RecipePage = () => {
             ) : (
                 recipe ? (
                     <div className={"justify-content-center align-items-center p-5 pt-80 pl-80"}>
-                        {currentUser?.id === recipe.userId && currentUser?.id != null && (
+                        {currentUser?.personId === recipe.userId && currentUser?.personId != null && (
                             <div className="w-100 hiding mb-4 p-3 d-flex justify-content-end">
-                                <button 
+                                <button
                                     className="btn btn-primary"
                                     onClick={handleEditClick}
                                 >
@@ -127,7 +127,6 @@ const RecipePage = () => {
                                     <>
                                         <Button variant="success" className={"w-100 mt-4"} disabled={disableButtons} onClick={approve}>Prihvati</Button>
                                         <Button variant="danger" className={"w-100 mt-2"} disabled={disableButtons} onClick={reject}>Odbij</Button>
-                                        <RecipeSimilarityWarning id={recipeId} />
                                     </>
                                 ) : (<></>)}
                             </Container>
@@ -137,13 +136,13 @@ const RecipePage = () => {
                                 <RecipePageTextBox header={"Opis:"} text={recipe.description}/>
                                 <RecipePageIngredients recipeId={recipe.recipeId} />
                                 <RecipePageTextBox header={"Postupak:"} text={recipe.procedure}/>
-                                
+
                                 {/* Comments Section */}
                                 <div className="mt-5">
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                         <h4 className="mb-0">Komentari</h4>
-                                        {currentUser && currentUser.id !== recipe.userId && !showReviewForm && (
-                                            <button 
+                                        {currentUser && currentUser.personId != recipe.userId && !showReviewForm && (
+                                            <button
                                                 className="btn btn-primary"
                                                 onClick={() => setShowReviewForm(true)}
                                             >
@@ -153,7 +152,7 @@ const RecipePage = () => {
                                     </div>
 
                                     {showReviewForm && (
-                                        <AddReviewForm 
+                                        <AddReviewForm
                                             recipeId={recipeId}
                                             onReviewAdded={handleReviewAdded}
                                             onCancel={() => setShowReviewForm(false)}
@@ -163,8 +162,8 @@ const RecipePage = () => {
                                     <div className="bg-white p-4 rounded shadow-sm">
                                         {recipe.ratings && recipe.ratings.length > 0 ? (
                                             recipe.ratings.map((rating, index) => (
-                                                <RecipeComment 
-                                                    key={index} 
+                                                <RecipeComment
+                                                    key={index}
                                                     rating={rating}
                                                 />
                                             ))
@@ -179,7 +178,7 @@ const RecipePage = () => {
                         </Row>
                     </div>
                 ) : (
-                    <ErrorPage code={404} text={"Page not found :("} />
+                    <div>ne postoji</div>
                 )
             )}
         </div>

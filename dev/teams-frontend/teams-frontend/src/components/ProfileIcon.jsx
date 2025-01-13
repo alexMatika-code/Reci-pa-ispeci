@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import placeholder from "../assets/placeholder.jpg";
 import { Link } from 'react-router-dom';
 
 const ProfileIcon = ({ username }) => {
     const [author, setAuthor] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchAuthor = async () => {
@@ -28,8 +27,6 @@ const ProfileIcon = ({ username }) => {
             } catch (error) {
                 console.error('Error fetching author:', error);
                 setAuthor(null);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -43,7 +40,7 @@ const ProfileIcon = ({ username }) => {
             to={`/profile/${username}`}
             className="text-decoration-none"
         >
-            <div className="d-inline-flex mt-3 px-3 py-1 d-flex align-items-center
+            <div className="d-inline-flex mt-1 px-3 py-1 d-flex align-items-center
              rounded-pill bg-white cursor-pointer b-radius-30 shadow-sm"
                  >
                 <img 
