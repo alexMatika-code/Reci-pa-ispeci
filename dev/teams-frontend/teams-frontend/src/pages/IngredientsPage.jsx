@@ -5,6 +5,7 @@ import {useContext, useState} from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {AuthContext} from "../Contexts.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 
 const IngredientsPage = () => {
     const currentUser = useContext(AuthContext);
@@ -69,7 +70,7 @@ const IngredientsPage = () => {
                 </>
             ) : (
                 <>
-                    ne moze
+                    <ErrorPage code={401} text={"Unauthorized :("} />
                 </>
             )}
         </>

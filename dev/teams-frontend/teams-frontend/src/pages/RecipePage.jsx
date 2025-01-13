@@ -11,6 +11,8 @@ import RecipeComment from "../components/RecipeComment.jsx";
 import AddReviewForm from "../components/AddReviewForm.jsx";
 import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
 import {toast} from "react-toastify";
+import ErrorPage from "./ErrorPage.jsx";
+import RecipeSimilarityWarning from "../components/RecipeSimilarityWarning.jsx";
 
 const RecipePage = () => {
     const currentUser = useContext(AuthContext);
@@ -55,7 +57,7 @@ const RecipePage = () => {
             const data = await res.json();
             setRecipe(data);
         } catch (error) {
-            console.error('Error refreshing recipe:', error);
+            console.error('Error refreshing recipe: ', error);
         } finally {
             setLoading(false);
         }
@@ -125,6 +127,7 @@ const RecipePage = () => {
                                     <>
                                         <Button variant="success" className={"w-100 mt-4"} disabled={disableButtons} onClick={approve}>Prihvati</Button>
                                         <Button variant="danger" className={"w-100 mt-2"} disabled={disableButtons} onClick={reject}>Odbij</Button>
+                                        <RecipeSimilarityWarning id={recipeId} />
                                     </>
                                 ) : (<></>)}
                             </Container>
@@ -176,7 +179,7 @@ const RecipePage = () => {
                         </Row>
                     </div>
                 ) : (
-                    <div>ne postoji</div>
+                    <ErrorPage code={404} text={"Page not found :("} />
                 )
             )}
         </div>

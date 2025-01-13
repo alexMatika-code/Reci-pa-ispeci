@@ -5,7 +5,6 @@ import AwaitingRecipe from "./AwaitingRecipe.jsx";
 
 const AwaitingRecipes = () => {
     const [recipes, setRecipes] = useState([]);
-    const [reload, setReload] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -22,7 +21,7 @@ const AwaitingRecipes = () => {
             }
         };
         fetchAwaitingRecipes();
-    }, [reload]);
+    }, []);
 
     return (
         <Row>

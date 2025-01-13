@@ -5,6 +5,7 @@ import ProfileCard from "../components/ProfileCard.jsx";
 import ProfileInfoCards from "../components/ProfileInfoCards.jsx";
 import Spinner from "../components/Spinner.jsx";
 import RecipeCards from "../components/RecipeCards.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 
 const ProfilePage = () => {
     const [user, setUser] = useState([]);
@@ -54,7 +55,7 @@ const ProfilePage = () => {
                         </Row>
                     </div>
                 ) : (
-                    <div>ne postoji</div>
+                    <ErrorPage code={404} text={"Page not found :("} />
                 )
             )}
         </div>

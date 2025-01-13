@@ -1,6 +1,7 @@
 import {useContext} from "react";
 import {AuthContext} from "../Contexts.jsx";
 import UserCards from "../components/UserCards.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 
 const UserControlPage = () => {
     const currentUser = useContext(AuthContext);
@@ -14,7 +15,7 @@ const UserControlPage = () => {
                 </div>
             ) : (
                 <div>
-                ne moze
+                    <ErrorPage code={401} text={"Unauthorized :("} />
                 </div>
             )}
         </>
