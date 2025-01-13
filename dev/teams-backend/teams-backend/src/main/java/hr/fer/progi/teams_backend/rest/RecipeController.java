@@ -8,6 +8,7 @@ import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.PersonService;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +48,7 @@ public class RecipeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>  updateRecipe(@PathVariable Long id, @RequestBody CreateRecipeDTO recipe) {
+    public ResponseEntity<?>  updateRecipe(@PathVariable Long id, @ModelAttribute CreateRecipeDTO recipe) {
         try {
             Recipe updatedRecipe = recipeService.updateRecipe(id, recipe);
 
