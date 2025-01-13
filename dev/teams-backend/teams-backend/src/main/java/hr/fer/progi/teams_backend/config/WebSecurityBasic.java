@@ -79,7 +79,8 @@ public class WebSecurityBasic {
                                 "/people/profile/{username}",
                                 "/recipes/{recipeId}",
                                 "/ingredients/recipe/{recipeId}",
-                                "/message"
+                                "/ms",
+                                "/ms/**"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> {
