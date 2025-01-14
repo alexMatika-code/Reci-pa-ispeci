@@ -1,12 +1,12 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import ChatWindow from './ChatWindow';
 import { AuthContext } from "../Contexts.jsx";
+import { BsFillChatFill } from 'react-icons/bs';
 
 const ChatTab = () => {
     const currentUser = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
 
-    // If no user is logged in, don't render anything
     if (!currentUser) return null;
 
     return (
@@ -16,8 +16,9 @@ const ChatTab = () => {
                 <button 
                     className="chat-tab-button"
                     onClick={() => setIsOpen(!isOpen)}
+                    title={isOpen ? 'Zatvori razgovor' : 'Otvori razgovor'}
                 >
-                    {isOpen ? 'Zatvori razgovor' : 'Otvori razgovor'}
+                    <BsFillChatFill size={24} />
                 </button>
                 <ChatWindow isOpen={isOpen} onClose={() => setIsOpen(false)} />
             </div>

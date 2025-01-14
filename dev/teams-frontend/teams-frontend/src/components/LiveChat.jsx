@@ -5,11 +5,12 @@ import {AuthContext} from "../Contexts.jsx";
 
 
 const LiveChat = () => {
+    const currentUser = useContext(AuthContext);
     const [messages, setMessages] = useState(() => {
         const savedMessages = localStorage.getItem("chatMessages");
         return savedMessages ? JSON.parse(savedMessages) : [];
     });    const [userData, setUserData] = useState({
-        username: useContext(AuthContext).username,
+        username: currentUser.username,
         message: "",
         connected: false,
     });
@@ -82,20 +83,28 @@ const LiveChat = () => {
         <div className="chat-content">
             <div className="chat-messages">
                 {messages.map((msg, index) => (
-                    <div key={index} className="message">
-                        <strong>{msg.senderName}:</strong> {msg.message}
+                    <div 
+                        key={index} 
+                        className={`message ${msg.senderName === userData.username ? 'user' : 'ai'}`}
+                    >
+                        {msg.senderName !== userData.username && (
+                            <strong>{msg.senderName}: </strong>
+                        )}
+                        {msg.message}
                     </div>
                 ))}
             </div>
-                <input
-                    type="text"
-                    value={userData.message}
-                    onChange={handleMessageInput}
-                    placeholder="Unesite poruku..."
-                />
-                <button onClick={sendPublicMessage}>Pošalji</button>
+                <div className="chat-input">
+                    <input
+                        type="text"
+                        value={userData.message}
+                        onChange={handleMessageInput}
+                        placeholder="Unesite poruku..."
+                    />
+                    <button onClick={sendPublicMessage}>Pošalji</button>
+                </div>
         </div>
-    );
+);
 }
 
 export default LiveChat;
