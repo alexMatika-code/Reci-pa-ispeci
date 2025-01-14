@@ -55,7 +55,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             SELECT r
             FROM Recipe r
                 JOIN r.ingredients i
-            WHERE r.publicity = true AND i.ingredientId IN :ingredientIds
+            WHERE r.publicity = true AND r.waitingApproval = false AND i.ingredientId IN :ingredientIds
             GROUP BY r
             """)
     Page<Recipe> findByPersonFavouriteIngredients(
