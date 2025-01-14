@@ -1,5 +1,5 @@
 import {useContext, useEffect, useRef, useState} from "react";
-import { Stomp } from "stompjs";
+import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import {AuthContext} from "../Contexts.jsx";
 
@@ -31,10 +31,10 @@ const LiveChat = () => {
     const connect = () => {
         console.log("Attempting to connect to Live...");
         console.log(SockJS);
-        console.log(Stomp.Stomp.over());
+        console.log(over());
         let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/ms");
 
-        stompClient.current = Stomp.Stomp.over(sock);
+        stompClient.current = over(sock);
 
         stompClient.current.connect({}, onConnected, onError)
     };
