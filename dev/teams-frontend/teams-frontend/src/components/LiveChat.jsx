@@ -1,5 +1,5 @@
 import {useContext, useEffect, useRef, useState} from "react";
-import { over } from "stompjs";
+import {over} from "stompjs";
 import SockJS from "sockjs-client";
 import {AuthContext} from "../Contexts.jsx";
 
@@ -37,7 +37,7 @@ const LiveChat = () => {
     const onConnected = () => {
 
         console.log("connected");
-        setUserData({ ...userData, connected: true });
+        setUserData({...userData, connected: true});
 
         stompClient.current.subscribe("/chatroom/public", onMessageReceived);
     };
@@ -53,21 +53,21 @@ const LiveChat = () => {
     };
 
     const handleMessageInput = (event) => {
-        const { value } = event.target;
-        setUserData({ ...userData, message: value });
+        const {value} = event.target;
+        setUserData({...userData, message: value});
     };
 
     const sendPublicMessage = () => {
-        if (stompClient.current){
+        if (stompClient.current) {
             let chatMessage = {
                 senderName: userData.username,
                 message: userData.message,
                 status: "MESSAGE",
             };
 
-            stompClient.current.send( "/app/message", {}, JSON.stringify(chatMessage));
+            stompClient.current.send("/app/message", {}, JSON.stringify(chatMessage));
 
-            setUserData({ ...userData, message: "" });
+            setUserData({...userData, message: ""});
         }
 
     };
@@ -75,18 +75,25 @@ const LiveChat = () => {
         <div className="chat-content">
             <div className="chat-messages">
                 {messages.map((msg, index) => (
-                    <div key={index} className="message">
-                        <strong>{msg.senderName}:</strong> {msg.message}
+                    <div
+                        key={index}
+                        className={`message ${msg.senderName === userData.username ? 'user' : 'ai'}`}>
+                        {msg.senderName !== userData.username && (
+                            <strong>{msg.senderName}: </strong>
+                        )}
+                        {msg.message}
                     </div>
                 ))}
             </div>
-            <input
-                type="text"
-                value={userData.message}
-                onChange={handleMessageInput}
-                placeholder="Unesite poruku..."
-            />
-            <button onClick={sendPublicMessage}>Pošalji</button>
+            <div className="chat-input">
+                <input
+                    type="text"
+                    value={userData.message}
+                    onChange={handleMessageInput}
+                    placeholder="Unesite poruku..."
+                />
+                <button onClick={sendPublicMessage}>Pošalji</button>
+            </div>
         </div>
     );
 }
