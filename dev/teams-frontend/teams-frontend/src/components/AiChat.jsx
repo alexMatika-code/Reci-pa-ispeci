@@ -1,21 +1,57 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const AiChat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        // Initialize WebSocket connection
+        const socket = new WebSocket("ws://reci-pa-ispeci-2-v32w.onrender.com/aichat");
+
+        socket.onopen = () => {
+            console.log("Connected to WebSocket server.");
+            setSocket(socket);
+        };
+
+        socket.onmessage = (event) => {
+            console.log("Message received from server:", event.data);
+            // Handle plain text response
+            setMessages(prev => [...prev, { text: event.data, sender: 'ai' }]);
+        };
+
+        socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        socket.onclose = () => {
+            console.log("WebSocket connection closed.");
+        };
+
+        // Cleanup on component unmount
+        return () => {
+            if (socket) {
+                socket.close();
+            }
+        };
+    }, []);
 
     const handleSend = async (e) => {
         e.preventDefault();
-        if (newMessage.trim()) {
-            const userMessage = { text: newMessage, sender: 'user' };
-            setMessages(prev => [...prev, userMessage]);
+        if (newMessage.trim() && socket) {
+            const message = {
+                role: "user",
+                content: newMessage
+            };
+
+            // Add user message to chat
+            setMessages(prev => [...prev, { text: newMessage, sender: 'user' }]);
+
+            // Send message through WebSocket
+            socket.send(JSON.stringify(message));
+            console.log("Message sent:", message);
+
             setNewMessage('');
-
-
-            const aiResponse = { text: 'This is a simulated AI response.', sender: 'ai' };
-            setTimeout(() => {
-                setMessages(prev => [...prev, aiResponse]);
-            }, 1000);
         }
     };
 
