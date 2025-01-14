@@ -31,7 +31,7 @@ const LiveChat = () => {
     const connect = () => {
         console.log("Attempting to connect to Live...");
 
-        let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/ms");
+        let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/ms");
 
         stompClient.current = over(sock);
 
@@ -74,7 +74,7 @@ const LiveChat = () => {
                 status: "MESSAGE",
             };
 
-            stompClient.current.send( "/app/message", {}, JSON.stringify(chatMessage));
+            stompClient.current.send( "/api/app/message", {}, JSON.stringify(chatMessage));
 
             setUserData({ ...userData, message: "" });
         }
