@@ -1,6 +1,6 @@
 import {useContext, useEffect, useRef, useState} from "react";
-import { over } from "stompjs";
 import SockJS from "sockjs-client";
+import { Client } from '@stomp/stompjs';
 import {AuthContext} from "../Contexts.jsx";
 
 
@@ -14,6 +14,7 @@ const LiveChat = () => {
         message: "",
         connected: false,
     });
+
     const stompClient = useRef(null);
     const hasRegistered = useRef(false);
 
@@ -30,25 +31,26 @@ const LiveChat = () => {
 
     const connect = () => {
         console.log("Attempting to connect to Live...");
-        console.log(SockJS);
+
         let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/ms");
 
-        stompClient.current = over(sock);
-
-        stompClient.current.connect({}, onConnected, onError)
-    };
-
-
-    const onConnected = () => {
-
-        console.log("connected");
-        setUserData({ ...userData, connected: true });
-
-        stompClient.current.subscribe("/chatroom/public", onMessageReceived);
-    };
-
-    const onError = (error) => {
-        console.error("WebSocket connection error:", error);
+        const stompClientRef = new Client({
+            webSocketFactory: () => sock,
+            reconnectDelay: 5000,
+            debug: (str) => {
+                console.log(str);
+            },
+            onConnect: () => {
+                console.log("Connected to Live Chat");
+                setUserData({ ...userData, connected: true });
+                stompClientRef.subscribe("/chatroom/public", onMessageReceived);
+            },
+            onStompError: (frame) => {
+                console.error(frame);
+            }
+        })
+        stompClientRef.activate();
+        stompClient.current = stompClientRef;
     };
 
     const onMessageReceived = (payload) => {
@@ -67,14 +69,15 @@ const LiveChat = () => {
     };
 
     const sendPublicMessage = () => {
-        if (stompClient.current){
+        const client = stompClient.current;
+        if (client && client.connected){
             let chatMessage = {
                 senderName: userData.username,
                 message: userData.message,
                 status: "MESSAGE",
             };
 
-            stompClient.current.send( "/api/app/message", {}, JSON.stringify(chatMessage));
+            client.send( "/api/app/message", {}, JSON.stringify(chatMessage));
 
             setUserData({ ...userData, message: "" });
         }
