@@ -30,8 +30,9 @@ const LiveChat = () => {
 
     const connect = () => {
         console.log("Attempting to connect to Live...");
-
-        let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/ms");
+        console.log(SockJS);
+        console.log(over);
+        let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/ms");
 
         stompClient.current = over(sock);
 
