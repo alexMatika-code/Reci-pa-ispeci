@@ -1,6 +1,6 @@
 import {useContext, useEffect, useRef, useState} from "react";
-import {over} from "stompjs";
-import {SockJS} from "sockjs-client/dist/sockjs";
+import { over } from "stompjs";
+import SockJS from "sockjs-client/dist/sockjs";
 import {AuthContext} from "../Contexts.jsx";
 
 
