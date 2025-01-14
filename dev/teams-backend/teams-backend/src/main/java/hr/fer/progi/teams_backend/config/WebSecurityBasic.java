@@ -80,7 +80,9 @@ public class WebSecurityBasic {
                                 "/recipes/{recipeId}",
                                 "/ingredients/recipe/{recipeId}",
                                 "/ms",
-                                "/ms/**"
+                                "/ms/**",
+                                "/aichat",
+                                "/aichat/**"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> {
