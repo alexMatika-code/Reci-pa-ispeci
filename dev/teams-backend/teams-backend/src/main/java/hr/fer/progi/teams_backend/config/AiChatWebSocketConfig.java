@@ -18,6 +18,6 @@ public class AiChatWebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(aiChatWebSocketHandler, "/aichat").setAllowedOrigins("*");
+        registry.addHandler(aiChatWebSocketHandler, "/aichat").setAllowedOrigins("https://reci-pa-ispeci.onrender.com");
     }
 }
