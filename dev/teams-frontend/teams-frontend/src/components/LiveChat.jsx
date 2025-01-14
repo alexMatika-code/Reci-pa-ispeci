@@ -1,97 +1,111 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { over } from "stompjs";
-import SockJS from "sockjs-client";
-import { AuthContext } from "../Contexts.jsx";
+import {useContext, useEffect, useRef, useState} from "react";
+import {over} from "stompjs";
+import SockJS from "sockjs-client/dist/sockjs";
+import {AuthContext} from "../Contexts.jsx";
+
 
 const LiveChat = () => {
-    const [messages, setMessages] = useState([]);
-    const [userData, setUserData] = useState({
-        username: useContext(AuthContext).username,
+    const currentUser = useContext(AuthContext);
+    const [messages, setMessages] = useState(() => {
+        const savedMessages = localStorage.getItem("chatMessages");
+        return savedMessages ? JSON.parse(savedMessages) : [];
+    });    const [userData, setUserData] = useState({
+        username: currentUser.username,
         message: "",
         connected: false,
     });
-    let stompClient = null;
+    const stompClient = useRef(null);
+    const hasRegistered = useRef(false);
 
-    useEffect(() => {
-        const connect = () => {
-            const sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/message");
-            stompClient = over(sock);
-
-            stompClient.connect({}, onConnected, onError);
-        };
-
+    const registerUser = () => {
         connect();
+    };
+    useEffect(() => {
+        if (!hasRegistered.current) {
+            hasRegistered.current = true;
+            registerUser();
+        }
 
-        return () => {
-            if (stompClient) {
-                stompClient.disconnect();
-            }
-        };
     }, []);
 
+    const connect = () => {
+
+        let sock = new SockJS("http://localhost:8080/ms");
+
+        stompClient.current = over(sock);
+
+        stompClient.current.connect({}, onConnected, onError)
+    };
+
+
     const onConnected = () => {
-        setUserData((prevState) => ({ ...prevState, connected: true }));
 
-        // Subscribe to public chatroom
-        stompClient.subscribe("/chatroom/public", onMessageReceived);
+        setUserData({ ...userData, connected: true });
 
-        userJoin();
+        stompClient.current.subscribe("/chatroom/public", onMessageReceived);
     };
 
     const onError = (error) => {
-        console.error("Connection error:", error);
+        console.error("WebSocket connection error:", error);
     };
 
-    const onMessageReceived = (data) => {
-        const payloadData = JSON.parse(data.body);
-        setMessages((prevMessages) => [...prevMessages, payloadData]);
+    const onMessageReceived = (payload) => {
+        var payloadData = JSON.parse(payload.body);
+
+        setMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages, payloadData];
+            localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
+            return updatedMessages;
+        });
     };
 
-    const userJoin = () => {
-        const chatMessage = {
-            senderName: userData.username,
-            status: "JOIN",
-        };
-        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+    const handleMessageInput = (event) => {
+        const { value } = event.target;
+        setUserData({ ...userData, message: value });
     };
 
-    const sendPublicMessage = (event) => {
-        event.preventDefault();
-        if (stompClient && userData.message.trim()) {
-            const chatMessage = {
+    const sendPublicMessage = () => {
+        if (stompClient.current){
+            let chatMessage = {
                 senderName: userData.username,
                 message: userData.message,
                 status: "MESSAGE",
             };
-            stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+
+            stompClient.current.send( "/chatroom/public", {}, JSON.stringify(chatMessage));
+
             setUserData({ ...userData, message: "" });
         }
-    };
 
-    const handleMessageInput = (event) => {
-        setUserData({ ...userData, message: event.target.value });
     };
-
     return (
         <div className="chat-content">
             <div className="chat-messages">
                 {messages.map((msg, index) => (
-                    <div key={index} className="message">
-                        <strong>{msg.senderName}:</strong> {msg.message}
+                    <div
+                        key={index}
+                        className={`message ${msg.senderName === userData.username ? 'user' : 'ai'}`}
+                    >
+                        {msg.senderName !== userData.username && (
+                            <strong>{msg.senderName}: </strong>
+                        )}
+                        {msg.message}
                     </div>
                 ))}
             </div>
-            <form onSubmit={sendPublicMessage} className="chat-input">
-                <input
-                    type="text"
-                    value={userData.message}
-                    onChange={handleMessageInput}
-                    placeholder="Unesite poruku..."
-                />
-                <button type="submit">Pošalji</button>
-            </form>
+                <div className="chat-input">
+                    <input
+                        type="text"
+                        value={userData.message}
+                        onChange={handleMessageInput}
+                        placeholder="Unesite poruku..."
+                    />
+                    <button onClick={sendPublicMessage}>Pošalji</button>
+                </div>
         </div>
-    );
-};
+);
+}
 
 export default LiveChat;
+
+

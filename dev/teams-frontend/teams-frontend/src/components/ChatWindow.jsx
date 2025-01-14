@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import LiveChat from './LiveChat';
 import AiChat from './AiChat';
@@ -19,7 +19,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
                 onSelect={(k) => setKey(k)}
                 className="mb-3"
             >
-                <Tab eventKey="live" title="Razgovor sa svima!">
+                <Tab eventKey="live" title="Live Razgovor!">
                     <LiveChat />
                 </Tab>
                 <Tab eventKey="ai" title="Tvoj AI asistent!">
