@@ -51,13 +51,12 @@ const LiveChat = () => {
 
     const onMessageReceived = (payload) => {
         var payloadData = JSON.parse(payload.body);
-        messages.push(payloadData);
+
         setMessages((prevMessages) => {
             const updatedMessages = [...prevMessages, payloadData];
             localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
             return updatedMessages;
         });
-
     };
 
     const handleMessageInput = (event) => {
