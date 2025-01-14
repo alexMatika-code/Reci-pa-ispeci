@@ -32,8 +32,7 @@ const LiveChat = () => {
     const connect = () => {
         console.log("Attempting to connect to Live...");
 
-        let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/ms");
-
+        let sock = new SockJS("wss://reci-pa-ispeci-2-v32w.onrender.com/api/ms");
         const stompClientRef = new Client({
             webSocketFactory: () => sock,
             reconnectDelay: 5000,
