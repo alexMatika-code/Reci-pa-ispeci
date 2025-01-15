@@ -26,7 +26,7 @@ const LiveChat = () => {
 
     const connect = () => {
 
-        let sock = new SockJS("https://reci-pa-ispeci.onrender.com/ws/ms");
+        let sock = new SockJS("https://reci-pa-ispeci-2-v32w.onrender.com/api/ms");
 
         stompClient.current = over(sock);
 
