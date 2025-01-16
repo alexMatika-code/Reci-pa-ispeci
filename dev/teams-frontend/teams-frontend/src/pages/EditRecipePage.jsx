@@ -10,7 +10,7 @@ import {AuthContext} from "../Contexts.jsx";
 import Spinner from "../components/Spinner.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
-const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
+const EditRecipePage = () => {
     const { recipeId } = useParams();
     const currentUser = useContext(AuthContext);
     const navigate = useNavigate();
@@ -24,6 +24,7 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
     const [ingredients, setIngredients] = useState([]);
     const [image, setImage] = useState(null);
     const [hasImage, setHasImage] = useState(false);
+
     const [loading, setLoading] = useState(isEditing);
 
     useEffect(() => {
@@ -73,6 +74,50 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
 
         fetchData();
     }, [recipeId, isEditing]);
+
+    const addRecipe = async (formData) => {
+        try {
+            setLoading(true);
+            const response = await fetch('/api/recipes/create', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok){
+                toast.success('Recept uspješno spremljen!');
+            }
+            else{
+                toast.error('Greška prilikom spremanja recepta.');
+            }
+        } catch (error) {
+            console.error('Error adding recipe:', error);
+        }
+        finally {
+            setLoading(false);
+            navigate('/');
+        }
+    }
+
+    const editRecipe = async (recipeId, formData) => {
+        try {
+            setLoading(true);
+            const response = await fetch(`/api/recipes/${recipeId}`, {
+                method: 'PUT',
+                body: formData
+            });
+            if (response.ok){
+                toast.success('Recept uspješno uređen!');
+            }
+            else{
+                toast.error('Greška prilikom spremanja recepta.');
+            }
+        } catch (error) {
+            console.error('Error editing recipe:', error);
+        }
+        finally {
+            setLoading(false);
+            navigate(`/recipe/${recipeId}`);
+        }
+    }
 
     const displaySelectedImage = (event) => {
         const selectedImage = document.getElementById('recipeImg');
@@ -126,13 +171,11 @@ const EditRecipePage = ({addRecipeSubmit, editRecipeSubmit}) => {
 
         try {
             if (recipeId) {
-                editRecipeSubmit(recipeId, formData);
-                toast.success('Recipe updated successfully');
-                navigate(`/recipe/${recipeId}`);
+                editRecipe(recipeId, formData);
+
             } else {
-                addRecipeSubmit(formData);
-                toast.success('Recipe added successfully');
-                navigate('/');
+                addRecipe(formData);
+
             }
         } catch (error) {
             toast.error('Error saving recipe: ' + error);
