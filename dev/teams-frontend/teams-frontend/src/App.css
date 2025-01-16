@@ -409,9 +409,7 @@ a {
     overflow: hidden;
     z-index: 999;
     animation: slideIn 0.3s ease-out;
-    overflow-y:auto;
-    scrollbar-width: thin;
-    scrollbar-color: #FF0037 #f0f0f0;
+
 }
 
 @keyframes slideIn {
@@ -449,17 +447,20 @@ a {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    /*overflow: hidden;*/
     position: relative;
+    overflow-y: auto;
+    scrollbar-width: none; /* Sakriva scrollbar u Firefoxu */
+    -ms-overflow-style: none;
+    height: 390px;
+
 }
 
 .chat-messages {
     flex: 1;
-    overflow-y: auto;
-    padding: 15px;
-    padding-bottom: 70px;
-    scrollbar-width: thin;
-    scrollbar-color: #FF0037 #f0f0f0;
+    padding: 15px 15px 70px 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .message {
@@ -487,7 +488,7 @@ a {
 }
 
 .chat-input {
-    position: absolute;
+    position: sticky;
     bottom: 0;
     left: 0;
     right: 0;
@@ -519,7 +520,6 @@ a {
     background: #cc002c;
 }
 
-/* Add these styles for the tabs */
 .nav-tabs {
     border-bottom: 1px solid #dee2e6;
     padding: 0 10px;
@@ -548,7 +548,6 @@ a {
     font-weight: 500;
 }
 
-/* Update the chat header to match the new style */
 .chat-header {
     padding: 10px;
     background: #e0ffff;

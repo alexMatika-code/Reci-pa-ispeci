@@ -5,6 +5,17 @@ const AiChat = () => {
     const [newMessage, setNewMessage] = useState('');
     const [socket, setSocket] = useState(null);
 
+    // Add welcome message when component mounts
+    useEffect(() => {
+        setMessages([{ 
+            text: "Pozdrav! 👋 Ja sam vaš AI asistent za recepte. Ovdje sam da vam pomognem pronaći" +
+                " savršen recept za svaki obrok, priliku ili želju. Bilo da tražite ideje za brzi ručak, savjete " +
+                "za pečenje kolača ili nešto egzotično za isprobati, samo me pitajte! " +
+                "Recite mi što imate na umu, a ja ću vam poslati recept koji najbolje odgovara vašim željama. 🍴😊",
+            sender: 'ai' 
+        }]);
+    }, []); // Empty dependency array means this runs once on mount
+
     useEffect(() => {
         // Initialize WebSocket connection
         const socket = new WebSocket("https://reci-pa-ispeci-2-v32w.onrender.com/api/aichat");
