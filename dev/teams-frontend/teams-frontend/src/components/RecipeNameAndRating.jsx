@@ -22,16 +22,16 @@ const RecipeNameAndRating = ({ recipe }) => {
             <div>
                 <Row className={'w-90 m-auto'}>
                     <div className={"col-md-10 col-lg-12 text-white d-flex align-items-center justify-content-center object-fit-contain"}>
-
-                        <span className={"bold mr-5"}>{averageRating.toFixed(1) || '0'}</span>
-
                         {recipe.publicity && !recipe.waitingApproval ? (
-                            <StarRating rating={averageRating}/>
-                        ):(<></>)}
+                            <>
+                                <span className={"bold mr-5"}>{averageRating.toFixed(1) || '0'}</span>
+                                <StarRating rating={averageRating}/>
+                            </>
+                        ) : (<></>)}
                     </div>
                 </Row>
             </div>
-            <div className="font-0-8rem text-white mt-2">{recipe.timeToCook || 0 }min</div>
+            <div className="font-0-8rem text-white mt-2">{recipe.timeToCook || 0}min</div>
         </div>
     )
         ;
