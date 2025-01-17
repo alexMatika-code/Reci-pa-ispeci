@@ -25,7 +25,9 @@ const RecipeNameAndRating = ({ recipe }) => {
 
                         <span className={"bold mr-5"}>{averageRating.toFixed(1) || '0'}</span>
 
-                        <StarRating rating={averageRating}/>
+                        {!recipe.publicity || recipe.waitingApproval ? (
+                            <StarRating rating={averageRating}/>
+                        ):(<></>)}
                     </div>
                 </Row>
             </div>

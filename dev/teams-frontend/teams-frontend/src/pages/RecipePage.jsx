@@ -1,5 +1,5 @@
 import {useParams, useNavigate} from "react-router-dom";
-import {useEffect, useState, useContext} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import {AuthContext} from "../Contexts.jsx";
 import Spinner from "../components/Spinner.jsx";
 import {Button, Container, Row} from "react-bootstrap";
@@ -13,6 +13,7 @@ import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
 import {toast} from "react-toastify";
 import RecipeSimilarityWarning from "../components/RecipeSimilarityWarning.jsx";
 import ErrorPage from "./ErrorPage.jsx";
+import StarRating from "../components/StarRating.jsx";
 
 const RecipePage = () => {
     const currentUser = useContext(AuthContext);
@@ -141,42 +142,44 @@ const RecipePage = () => {
                                 <RecipePageTextBox header={"Postupak:"} text={recipe.procedure}/>
 
                                 {/* Comments Section */}
-                                <div className="mt-5">
-                                    <div className="d-flex justify-content-between align-items-center mb-4">
-                                        <h4 className="mb-0">Komentari</h4>
-                                        {currentUser && currentUser.personId != recipe.userId && !showReviewForm && (
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => setShowReviewForm(true)}
-                                            >
-                                                Dodaj Recenziju
-                                            </button>
-                                        )}
-                                    </div>
+                                {!recipe.publicity || recipe.waitingApproval ? (
+                                    <div className="mt-5">
+                                        <div className="d-flex justify-content-between align-items-center mb-4">
+                                            <h4 className="mb-0">Komentari</h4>
+                                            {currentUser && currentUser.personId != recipe.userId && !showReviewForm && (
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => setShowReviewForm(true)}
+                                                >
+                                                    Dodaj Recenziju
+                                                </button>
+                                            )}
+                                        </div>
 
-                                    {showReviewForm && (
-                                        <AddReviewForm
-                                            recipeId={recipeId}
-                                            onReviewAdded={handleReviewAdded}
-                                            onCancel={() => setShowReviewForm(false)}
-                                        />
-                                    )}
-
-                                    <div className="bg-white p-4 rounded shadow-sm">
-                                        {recipe.ratings && recipe.ratings.length > 0 ? (
-                                            recipe.ratings.map((rating, index) => (
-                                                <RecipeComment
-                                                    key={index}
-                                                    rating={rating}
-                                                />
-                                            ))
-                                        ) : (
-                                            <p className="text-muted text-center mb-0">
-                                                Još nema komentara
-                                            </p>
+                                        {showReviewForm && (
+                                            <AddReviewForm
+                                                recipeId={recipeId}
+                                                onReviewAdded={handleReviewAdded}
+                                                onCancel={() => setShowReviewForm(false)}
+                                            />
                                         )}
+
+                                        <div className="bg-white p-4 rounded shadow-sm">
+                                            {recipe.ratings && recipe.ratings.length > 0 ? (
+                                                recipe.ratings.map((rating, index) => (
+                                                    <RecipeComment
+                                                        key={index}
+                                                        rating={rating}
+                                                    />
+                                                ))
+                                            ) : (
+                                                <p className="text-muted text-center mb-0">
+                                                    Još nema komentara
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
+                                ):(<></>)}
                             </Container>
                         </Row>
                     </div>

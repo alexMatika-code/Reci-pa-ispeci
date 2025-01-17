@@ -264,7 +264,7 @@ const EditRecipePage = () => {
                                         2MB
                                     </div>
                                     <Button type="submit" variant="primary" className="w-25">
-                                        {recipeId ?  'Uredi' : (publicity === "private" ? 'Dodaj' : 'Predloži')} recept
+                                        {publicity === "private" ? (recipeId ?  'Uredi' : 'Dodaj') : 'Predloži'} recept
                                     </Button>
                                 </div>
                             </div>
