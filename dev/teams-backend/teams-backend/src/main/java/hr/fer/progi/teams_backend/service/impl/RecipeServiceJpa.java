@@ -89,6 +89,9 @@ public class RecipeServiceJpa implements RecipeService {
         if (recipe.getImage() != null && !recipe.getImage().isEmpty()) {
             updateRecipe.setImage(recipe.getImage().getBytes());
         }
+        if (updateRecipe.isPublicity()) {
+            updateRecipe.setWaitingApproval(true);
+        }
         return recipeRepository.saveAndFlush(updateRecipe);
     }
 
