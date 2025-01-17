@@ -142,7 +142,7 @@ const RecipePage = () => {
                                 <RecipePageTextBox header={"Postupak:"} text={recipe.procedure}/>
 
                                 {/* Comments Section */}
-                                {!recipe.publicity || recipe.waitingApproval ? (
+                                {recipe.publicity && !recipe.waitingApproval ? (
                                     <div className="mt-5">
                                         <div className="d-flex justify-content-between align-items-center mb-4">
                                             <h4 className="mb-0">Komentari</h4>
