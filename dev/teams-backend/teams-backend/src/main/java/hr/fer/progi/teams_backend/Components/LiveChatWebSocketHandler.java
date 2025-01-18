@@ -35,11 +35,9 @@ public class LiveChatWebSocketHandler extends TextWebSocketHandler {
         String sender = activeSessions.get(session);
         String userMessage = message.getPayload();
 
-        String jsonResponse = String.format("{\"sender\": \"%s\", \"content\": \"%s\"}", sender, userMessage);
-
         for (WebSocketSession s : activeSessions.keySet()) {
             if (s.isOpen()) {
-                s.sendMessage(new TextMessage(jsonResponse));
+                s.sendMessage(new TextMessage(userMessage));
             }
         }
     }
