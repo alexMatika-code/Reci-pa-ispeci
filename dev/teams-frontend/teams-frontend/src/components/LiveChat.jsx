@@ -107,8 +107,10 @@ const LiveChat = () => {
                     value={userData.message}
                     onChange={handleMessageInput}
                     onKeyDown={(e) => {
-                        if (e.key === "Enter")
+                        if (e.key === "Enter") {
+                            e.preventDefault();
                             sendPublicMessage();
+                        }
                     }}
                     placeholder="Unesite poruku..."
                 />
