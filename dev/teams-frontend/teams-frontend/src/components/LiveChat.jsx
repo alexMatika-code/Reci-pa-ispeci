@@ -1,7 +1,6 @@
 import {useContext, useEffect, useState, useRef} from "react";
 import {AuthContext} from "../Contexts.jsx";
-import { useNavigate } from "react-router-dom";
-
+import {useNavigate} from "react-router-dom";
 
 
 const LiveChat = () => {
@@ -23,7 +22,7 @@ const LiveChat = () => {
     }, [messages]);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
     };
 
     useEffect(() => {
@@ -46,7 +45,7 @@ const LiveChat = () => {
                 const data = JSON.parse(event.data);
                 console.log(data.content)
                 console.log(data.sender);
-                setMessages(prev => [...prev, { text: data.content, sender: data.sender }]);
+                setMessages(prev => [...prev, {text: data.content, sender: data.sender}]);
             } catch (error) {
                 console.error("Error parsing message:", error);
             }
@@ -57,13 +56,6 @@ const LiveChat = () => {
 
         socket.onclose = () => {
             console.log("WebSocket connection closed.");
-        };
-
-        // Cleanup on component unmount
-        return () => {
-            if (socket) {
-                socket.close();
-            }
         };
     }, []);
 
@@ -104,9 +96,9 @@ const LiveChat = () => {
                             <strong onClick={() => navigateToProfile(msg.sender)}>{msg.sender}: </strong>
                         )}
                         {msg.text}
-                        <div ref={messagesEndRef} />
+                        <div ref={messagesEndRef}/>
                     </div>
-                    
+
                 ))}
             </div>
             <div className="chat-input">
