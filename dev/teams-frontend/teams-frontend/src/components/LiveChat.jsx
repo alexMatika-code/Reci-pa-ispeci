@@ -1,17 +1,34 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState, useRef} from "react";
 import {AuthContext} from "../Contexts.jsx";
 import { useNavigate } from "react-router-dom";
 
 
 
 const LiveChat = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+        // Initialize messages from localStorage
+        const savedMessages = localStorage.getItem('liveChatMessages');
+        return savedMessages ? JSON.parse(savedMessages) : [];
+    });
     const [socket, setSocket] = useState(null);
     const [userData, setUserData] = useState({
         username: useContext(AuthContext).username,
         message: "",
         connected: false,
     });
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        localStorage.setItem('liveChatMessages', JSON.stringify(messages));
+    }, [messages]);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -87,7 +104,9 @@ const LiveChat = () => {
                             <strong onClick={() => navigateToProfile(msg.sender)}>{msg.sender}: </strong>
                         )}
                         {msg.text}
+                        <div ref={messagesEndRef} />
                     </div>
+                    
                 ))}
             </div>
             <div className="chat-input">
