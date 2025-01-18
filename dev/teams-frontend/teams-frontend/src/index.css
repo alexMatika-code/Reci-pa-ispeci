@@ -257,3 +257,26 @@
 .b-radius-10{
     border-radius: 10px;
 }
+
+/* media queries */
+/* xl */
+@media screen and (max-width: 1200px) {
+
+}
+
+/* lg */
+@media screen and (max-width: 992px) {
+
+}
+
+/* md */
+@media screen and (max-width: 768px){
+
+}
+
+/* sm */
+@media screen and (max-width: 576px){
+    .font-sm-1rem{
+        font-size: 1rem !important;
+    }
+}

@@ -9,21 +9,19 @@ const SearchBar = ({showModal, setQuery, query, setTimeToCook, timeToCook, searc
 
     return (
         <div className={"mb-4"}>
-            <Row className={"mt-5"}>
-                <div className={"mx-auto col-xl-5 col-lg-6 col-sm-8 col-10"}>
-                    <div
-                        className={"search-bar-container d-flex justify-content-center align-items-center rounded-5 p-2 shadow-sm"}>
-                        <input type="text"
-                               placeholder="U potrazi za dobrim jelom..."
-                               className={"p-2 px-4 border-0 w-100 color-dsg search-input font-1-1rem font-weight-600"}
-                               value={query}
-                               onChange={(e) => setQuery(e.target.value)}/>
-                        <div className={"p-2 search-icon cursor-pointer"} onClick={search}>
-                            <BsSearch className={"font-1-8rem color-dsg"}/>
-                        </div>
+            <div className={"mx-auto mt-5 col-xl-5 col-lg-6 col-sm-8 col-10"}>
+                <div
+                    className={"search-bar-container d-flex justify-content-center align-items-center rounded-5 p-2 shadow-sm"}>
+                    <input type="text"
+                           placeholder="U potrazi za dobrim jelom..."
+                           className={"p-2 px-4 border-0 w-100 color-dsg search-input font-1-1rem font-sm-1rem font-weight-600"}
+                           value={query}
+                           onChange={(e) => setQuery(e.target.value)}/>
+                    <div className={"p-2 search-icon cursor-pointer"} onClick={search}>
+                        <BsSearch className={"font-1-8rem color-dsg"}/>
                     </div>
                 </div>
-            </Row>
+            </div>
 
             <span className={"d-flex justify-content-center align-items-center pt-2 pb-sm-2 pb-3 color-lsg color-dsg-hover cursor-pointer"}
                  onClick={() => setShowMenu(!showMenu)}>
