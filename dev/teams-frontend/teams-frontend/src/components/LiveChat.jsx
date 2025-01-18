@@ -1,5 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../Contexts.jsx";
+import { useNavigate } from "react-router-dom";
+
 
 
 const LiveChat = () => {
@@ -11,6 +13,7 @@ const LiveChat = () => {
         connected: false,
     });
 
+    const navigate = useNavigate();
     useEffect(() => {
         const socket = new WebSocket(`https://reci-pa-ispeci-2-v32w.onrender.com/api/ms?username=${userData.username}`);
 
@@ -62,8 +65,6 @@ const LiveChat = () => {
                 content: userData.message
             };
 
-            setMessages(prev => [...prev, {text: userData.message, sender: userData.username}]);
-
             socket.send(JSON.stringify(message));
             console.log("Message sent:", message);
 
@@ -71,6 +72,10 @@ const LiveChat = () => {
         }
 
     };
+    const navigateToProfile = (sender) => {
+        navigate(`/profile/${sender}`);
+    }
+
     return (
         <div className="chat-content">
             <div className="chat-messages">
@@ -79,7 +84,7 @@ const LiveChat = () => {
                         key={index}
                         className={`message ${msg.sender === userData.username ? 'user' : 'ai'}`}>
                         {msg.sender !== userData.username && (
-                            <strong>{msg.sender}: </strong>
+                            <strong onClick={() => navigateToProfile(msg.sender)}>{msg.sender}: </strong>
                         )}
                         {msg.text}
                     </div>
