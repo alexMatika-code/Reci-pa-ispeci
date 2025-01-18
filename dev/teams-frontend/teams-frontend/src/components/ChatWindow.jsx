@@ -10,7 +10,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
     // if (!isOpen) return null;
 
     return (
-        <div className={`${isOpen ? "d-flex" : "d-none"}} chat-window`}>
+        <div className={`${isOpen ? "d-flex" : "d-none"} chat-window`}>
             <div className="chat-header">
                 <span>Razgovor</span>
                 <button className="close-btn" onClick={onClose}>×</button>

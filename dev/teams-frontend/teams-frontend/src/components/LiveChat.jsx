@@ -106,6 +106,10 @@ const LiveChat = () => {
                     type="text"
                     value={userData.message}
                     onChange={handleMessageInput}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter")
+                            sendPublicMessage();
+                    }}
                     placeholder="Unesite poruku..."
                 />
                 <button onClick={sendPublicMessage}>Pošalji</button>

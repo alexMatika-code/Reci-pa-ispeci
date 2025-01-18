@@ -37,7 +37,7 @@ const AiChat = () => {
     }, [messages]);
 
     useEffect(() => {
-        const socket = new WebSocket("http://localhost:8080/aichat");
+        const socket = new WebSocket("https://reci-pa-ispeci.onrender.com/api/aichat");
 
         socket.onopen = () => {
             console.log("Connected to WebSocket server.");
