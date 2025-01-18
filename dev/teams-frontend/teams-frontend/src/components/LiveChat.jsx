@@ -81,7 +81,7 @@ const LiveChat = () => {
                         {msg.sender !== userData.username && (
                             <strong>{msg.sender}: </strong>
                         )}
-                        {msg.message}
+                        {msg.text}
                     </div>
                 ))}
             </div>
