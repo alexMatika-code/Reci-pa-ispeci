@@ -9,6 +9,13 @@
     padding: 0;
 }
 
+.no-select{
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
 .pt-40{
     padding-top: 40px;
 }
@@ -151,7 +158,15 @@
     color: darkslategray;
 }
 
+.color-dsg-hover:hover{
+    color: darkslategray;
+}
+
 .color-lsg{
+    color: lightslategray;
+}
+
+.color.lsg-hover:hover{
     color: lightslategray;
 }
 
@@ -189,6 +204,10 @@
 
 .font-1rem{
     font-size: 1rem !important;
+}
+
+.font-1-1rem{
+    font-size: 1.1rem !important;
 }
 
 .font-1-2rem{
