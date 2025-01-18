@@ -24,7 +24,10 @@ const LiveChat = () => {
 
             try {
                 const data = JSON.parse(event.data);
-                setMessages(prev => [...prev, { text: data.content, sender: data.sender }]);
+                console.log(data)
+                console.log(data.content.content);
+                console.log(data.sender);
+                setMessages(prev => [...prev, { text: data.content.content, sender: data.sender }]);
             } catch (error) {
                 console.error("Error parsing message:", error);
             }
