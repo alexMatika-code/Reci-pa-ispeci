@@ -4,7 +4,6 @@ import {AuthContext} from "../Contexts.jsx";
 
 const LiveChat = () => {
     const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
     const [socket, setSocket] = useState(null);
     const [userData, setUserData] = useState({
         username: useContext(AuthContext).username,
@@ -54,20 +53,19 @@ const LiveChat = () => {
 
     const sendPublicMessage = async (e) => {
         e.preventDefault();
-        if (newMessage.trim() && socket) {
+        if (userData.message.trim() && socket) {
+            console.log(userData)
             const message = {
                 sender: userData.username,
-                content: newMessage
+                content: userData.message
             };
 
-            // Add user message to chat
-            setMessages(prev => [...prev, {text: newMessage, sender: userData.username}]);
+            setMessages(prev => [...prev, {text: userData.message, sender: userData.username}]);
 
-            // Send message through WebSocket
             socket.send(JSON.stringify(message));
             console.log("Message sent:", message);
 
-            setNewMessage('');
+            setUserData({...userData, message: ""});
         }
 
     };
@@ -77,7 +75,7 @@ const LiveChat = () => {
                 {messages.map((msg, index) => (
                     <div
                         key={index}
-                        className={`message ${msg.senderName === userData.username ? 'user' : 'ai'}`}>
+                        className={`message ${msg.sender === userData.username ? 'user' : 'ai'}`}>
                         {msg.sender !== userData.username && (
                             <strong>{msg.sender}: </strong>
                         )}
