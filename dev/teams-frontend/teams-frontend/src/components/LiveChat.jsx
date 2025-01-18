@@ -109,7 +109,7 @@ const LiveChat = () => {
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             e.preventDefault();
-                            sendPublicMessage();
+                            sendPublicMessage(e);
                         }
                     }}
                     placeholder="Unesite poruku..."
