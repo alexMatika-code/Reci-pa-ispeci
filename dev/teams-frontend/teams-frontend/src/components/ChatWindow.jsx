@@ -6,10 +6,11 @@ import AiChat from './AiChat';
 const ChatWindow = ({ isOpen, onClose }) => {
     const [key, setKey] = useState('live');
 
-    if (!isOpen) return null;  // Don't render if not open
+    // Don't render if not open
+    // if (!isOpen) return null;
 
     return (
-        <div className="chat-window">
+        <div className={`${isOpen ? "d-flex" : "d-none"}} chat-window`}>
             <div className="chat-header">
                 <span>Razgovor</span>
                 <button className="close-btn" onClick={onClose}>×</button>
