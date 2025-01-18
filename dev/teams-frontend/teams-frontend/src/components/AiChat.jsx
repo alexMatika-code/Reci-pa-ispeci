@@ -1,24 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+const TypingIndicator = () => (
+    <div className="message ai typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+);
 
 const AiChat = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+        const savedMessages = localStorage.getItem('aiChatMessages');
+        return savedMessages ? JSON.parse(savedMessages) : [{
+            text: "Pozdrav! 👋 Ja sam Vaš AI asistent za recepte. Ovdje sam da vam pomognem pronaći" +
+                " savršen recept za svaki obrok, priliku ili želju. Bilo da tražite ideje za brzi ručak, savjete " +
+                "za izradu kolača ili nešto egzotično za isprobati, samo me pitajte! " +
+                "Recite mi što imate na umu, a ja ću Vam poslati recept koji najbolje odgovara Vašim željama. 🍴😊",
+            sender: 'ai'
+        }];
+    });
     const [newMessage, setNewMessage] = useState('');
     const [socket, setSocket] = useState(null);
-
-    // Add welcome message when component mounts
-    useEffect(() => {
-        setMessages([{ 
-            text: "Pozdrav! 👋 Ja sam vaš AI asistent za recepte. Ovdje sam da vam pomognem pronaći" +
-                " savršen recept za svaki obrok, priliku ili želju. Bilo da tražite ideje za brzi ručak, savjete " +
-                "za pečenje kolača ili nešto egzotično za isprobati, samo me pitajte! " +
-                "Recite mi što imate na umu, a ja ću vam poslati recept koji najbolje odgovara vašim željama. 🍴😊",
-            sender: 'ai' 
-        }]);
-    }, []); // Empty dependency array means this runs once on mount
+    const [isTyping, setIsTyping] = useState(false);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        // Initialize WebSocket connection
-        const socket = new WebSocket("https://reci-pa-ispeci-2-v32w.onrender.com/api/aichat");
+        localStorage.setItem('aiChatMessages', JSON.stringify(messages));
+    }, [messages]);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    useEffect(() => {
+        const socket = new WebSocket("http://localhost:8080/aichat");
 
         socket.onopen = () => {
             console.log("Connected to WebSocket server.");
@@ -27,7 +46,7 @@ const AiChat = () => {
 
         socket.onmessage = (event) => {
             console.log("Message received from server:", event.data);
-            // Handle plain text response
+            setIsTyping(false);
             setMessages(prev => [...prev, { text: event.data, sender: 'ai' }]);
         };
 
@@ -39,7 +58,6 @@ const AiChat = () => {
             console.log("WebSocket connection closed.");
         };
 
-        // Cleanup on component unmount
         return () => {
             if (socket) {
                 socket.close();
@@ -55,10 +73,9 @@ const AiChat = () => {
                 content: newMessage
             };
 
-            // Add user message to chat
             setMessages(prev => [...prev, { text: newMessage, sender: 'user' }]);
+            setIsTyping(true);
 
-            // Send message through WebSocket
             socket.send(JSON.stringify(message));
             console.log("Message sent:", message);
 
@@ -74,6 +91,8 @@ const AiChat = () => {
                         {msg.text}
                     </div>
                 ))}
+                {isTyping && <TypingIndicator />}
+                <div ref={messagesEndRef} />
             </div>
             <form onSubmit={handleSend} className="chat-input">
                 <input

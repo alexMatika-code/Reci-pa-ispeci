@@ -100,26 +100,39 @@ input:focus {
     position: relative;
 }
 
-.recipe-card {
-    outline: 4px solid white;
+/* Container for recipe cards */
+.col-xl-3.col-lg-4.col-md-6.col-12 {
+    padding: 15px;
+    display: flex;
+}
 
+/* Recipe card styles */
+.recipe-card {
+    outline: 6px solid white;
     margin: 0;
     padding: 0;
-
     position: relative;
-    height: 85%;
+    width: 100%;
+    aspect-ratio: 1/1;  /* Makes it square */
     overflow: hidden;
     border-radius: 24px;
     cursor: pointer;
     background-color: white;
     text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .recipe-card-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform 0.3s ease;
 }
 
@@ -160,7 +173,7 @@ input:focus {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background: rgba(0, 0, 0, 0.3); /* Transparent overlay on hover */
+    background: rgba(0, 0, 0, 0.3);
     transition: background 0.3s ease;
 }
 
@@ -170,15 +183,17 @@ input:focus {
 
 .recipe-name {
     color: #333;
-
     position: absolute;
-    bottom: 0px;
-    left: 0px;
-
+    bottom: 0;
+    left: 0;
     border-top-right-radius: 15px;
     padding: 10px 15px;
-
     background-color: white;
+    width: auto;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .hover-text {
@@ -453,7 +468,7 @@ a {
 
 .chat-messages {
     flex: 1;
-    padding: 15px 15px 70px 15px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
 }
@@ -553,4 +568,36 @@ a {
     position: sticky;
     top: 0;
     z-index: 2;
+}
+
+.typing-indicator {
+    padding: 15px !important;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background: #90949c;
+    border-radius: 50%;
+    animation: bounce 1.3s linear infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-4px);
+    }
 }

@@ -17,7 +17,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
             <Tabs
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
-                className="mb-3"
+                className="shadow-sm"
             >
                 <Tab eventKey="live" title="Live Razgovor!">
                     <LiveChat />
