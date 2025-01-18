@@ -13,8 +13,7 @@ const LiveChat = () => {
     });
 
     useEffect(() => {
-        // Initialize WebSocket connection
-        const socket = new WebSocket(`https://reci-pa-ispeci-2-v32w.onrender.com/api/ms/?username=${userData.username}`);
+        const socket = new WebSocket(`https://reci-pa-ispeci-2-v32w.onrender.com/api/ms?username=${userData.username}`);
 
         socket.onopen = () => {
             console.log("Connected to live WebSocket server.");
