@@ -38,6 +38,7 @@ input:focus {
 }
 
 .search-icon{
+    z-index: 1;
     border-radius: 50%;
     background-color: #c2efeb;
     outline: 15px solid #c2efeb;
@@ -54,6 +55,43 @@ input:focus {
     width: 100%;
     background: #E3FCF9;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes slideDown {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+    to {
+        max-height: 500px;
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        max-height: 500px;
+        opacity: 1;
+    }
+    to {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+.menu-container {
+    max-height: 0;
+    opacity: 0;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+.menu-container.show {
+    animation-name: slideDown;
+}
+
+.menu-container.hide {
+    animation-name: slideUp;
 }
 
 .title-navbar{
