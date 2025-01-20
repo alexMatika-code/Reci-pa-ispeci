@@ -1,5 +1,5 @@
 import {useParams, useNavigate} from "react-router-dom";
-import React, {useEffect, useState, useContext} from "react";
+import {useEffect, useState, useContext} from "react";
 import {AuthContext} from "../Contexts.jsx";
 import Spinner from "../components/Spinner.jsx";
 import {Button, Container, Row} from "react-bootstrap";
@@ -13,7 +13,7 @@ import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
 import {toast} from "react-toastify";
 import RecipeSimilarityWarning from "../components/RecipeSimilarityWarning.jsx";
 import ErrorPage from "./ErrorPage.jsx";
-import StarRating from "../components/StarRating.jsx";
+import RecipeDeleteModal from "../components/RecipeDeleteModal.jsx";
 
 const RecipePage = () => {
     const currentUser = useContext(AuthContext);
@@ -23,6 +23,7 @@ const RecipePage = () => {
     const [recipe, setRecipe] = useState({});
     const navigate = useNavigate();
     const [showReviewForm, setShowReviewForm] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -86,7 +87,7 @@ const RecipePage = () => {
     const reject = async () => {
         try {
             setDisableButtons(true);
-            const response = await fetch(`/api/chef/reject/${recipeId}`, {method: "DELETE"})
+            const response = await fetch(`/api/chef/reject/${recipeId}`, {method: "PUT"})
             if(response.ok) {
                 toast.success("Recept odbijen!");
             }
@@ -104,17 +105,53 @@ const RecipePage = () => {
         console.log("Curren user: " + currentUser.personId);
     }
 
+    const handleDeleteClick = () => setShowDelete(true);
+
+    const deleteRecipe = async () => {
+        try {
+            setDisableButtons(true);
+            console.log("deleting");
+            const response = await fetch(`/api/chef/reject/${recipeId}`, {method: 'DELETE'});
+            console.log(response);
+            if(response.ok) {
+
+                toast.success("Recept izbrisan!");
+                navigate(`/profile/${recipe.userName}`);
+            }
+            else{
+                toast.error("Ups! Dogodila se greška.");
+            }
+        } catch (error) {
+            console.error("Error deleting recipe:", error);
+        } finally {
+            setShowDelete(false);
+            setDisableButtons(false);
+        }
+    };
+
     return (
         <div>
             {loading ? (
                 <Spinner loading={loading}/>
             ) : (
                 recipe ? (
+
                     <div className={"justify-content-center align-items-center p-5 pt-80 pl-80"}>
+                        <RecipeDeleteModal show={showDelete}
+                                                   disable={disableButtons}
+                                                   handleDelete={deleteRecipe}
+                                                   handleClose={() => setShowDelete(false)}
+                        />
                         {currentUser?.personId === recipe.userId && currentUser?.personId != null && (
-                            <div className="w-100 hiding mb-4 p-3 d-flex justify-content-end">
+                            <div className="w-100 hiding mb-4 p-3 d-flex justify-content-end gap-5">
                                 <button
-                                    className="btn btn-primary"
+                                    className="btn btn-danger"
+                                    onClick={handleDeleteClick}
+                                >
+                                    Obriši Recept
+                                </button>
+                                <button
+                                    className="btn btn-success"
                                     onClick={handleEditClick}
                                 >
                                     Uredi Recept
