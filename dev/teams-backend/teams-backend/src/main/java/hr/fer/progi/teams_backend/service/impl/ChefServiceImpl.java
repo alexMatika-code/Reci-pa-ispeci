@@ -36,10 +36,8 @@ public class ChefServiceImpl implements ChefService {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            if (recipe.isPublicity() && recipe.isWaitingApproval()) {
-                recipeRepository.delete(recipe);
-                return true;
-            }
+            recipeRepository.delete(recipe);
+            return true;
         }
         return false;
     }
