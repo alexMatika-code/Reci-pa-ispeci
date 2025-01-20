@@ -45,6 +45,21 @@ public class ChefServiceImpl implements ChefService {
     }
 
     @Override
+    public boolean declineRecipe(Long recipeId) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        if (optionalRecipe.isPresent()) {
+            Recipe recipe = optionalRecipe.get();
+            if (recipe.isPublicity() && recipe.isWaitingApproval()) {
+                recipe.setWaitingApproval(false);
+                recipe.setPublicity(false);
+                recipeRepository.save(recipe);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public List<RecipeDTO> getAllWaitingRecipes() {
         List<Recipe> waitingRecipes = recipeRepository.findByWaitingApprovalTrueAndPublicityTrue();
 

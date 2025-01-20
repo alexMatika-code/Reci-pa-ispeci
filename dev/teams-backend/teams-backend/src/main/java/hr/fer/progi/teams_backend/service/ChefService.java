@@ -10,4 +10,6 @@ public interface ChefService {
     boolean rejectRecipe(Long recipeId);
 
     List<RecipeDTO> getAllWaitingRecipes();
+
+    boolean declineRecipe(Long recipeId);
 }

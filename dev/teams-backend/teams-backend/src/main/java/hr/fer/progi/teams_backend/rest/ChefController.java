@@ -38,6 +38,19 @@ public class ChefController {
             return ResponseEntity.badRequest().body("Recipe rejection failed (not found or not awaiting approval).");
         }
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
+
+    @PutMapping("/reject/{recipeId}")
+    public ResponseEntity<String> declineRecipe(@PathVariable Long recipeId) {
+        boolean success = chefService.declineRecipe(recipeId);
+        if (success) {
+            return ResponseEntity.ok("Recipe rejected (and put in private recipes) successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Recipe rejection failed (not found or not awaiting approval).");
+        }
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN', 'CHEF')")
 
     @GetMapping("/waitingApproval")
