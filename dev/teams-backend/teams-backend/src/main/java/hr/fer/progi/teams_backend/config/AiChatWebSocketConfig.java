@@ -1,6 +1,6 @@
 package hr.fer.progi.teams_backend.config;
 
-import hr.fer.progi.teams_backend.rest.AiChatWebSocketHandler;
+import hr.fer.progi.teams_backend.Components.AiChatWebSocketHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -18,6 +18,6 @@ public class AiChatWebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(aiChatWebSocketHandler, "/aichat").setAllowedOrigins("https://reci-pa-ispeci.onrender.com");
+        registry.addHandler(aiChatWebSocketHandler, "/aichat").setAllowedOrigins("https://reci-pa-ispeci.onrender.com"/*, "http://localhost:3000"*/);
     }
 }

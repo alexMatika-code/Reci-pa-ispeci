@@ -3,11 +3,13 @@ package hr.fer.progi.teams_backend.domain.mapper;
 import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
+import hr.fer.progi.teams_backend.domain.dto.RecipeInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.SearchRecipesDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Base64;
 import java.util.List;
@@ -16,7 +18,6 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class RecipeMapper {
-
     public static RecipeDTO toDTO(Recipe recipe) {
         RecipeDTO dto = new RecipeDTO();
         dto.setUserName(recipe.getUser().getUsername());
@@ -70,6 +71,28 @@ public class RecipeMapper {
         } else {
             dto.setIngredientIds(List.of());
         }
+
+        return dto;
+    }
+
+    public static RecipeInfoDTO toInfoDTO(Recipe recipe){
+        /*final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        System.out.println("BASE URL: " + baseUrl);*/
+
+        RecipeInfoDTO dto = new RecipeInfoDTO();
+        dto.setRecipeId(recipe.getRecipeId());
+        dto.setTitle(recipe.getTitle());
+        dto.setDescription(recipe.getDescription());
+        dto.setProcedure(recipe.getProcedure());
+        dto.setTimeToCook(recipe.getTimeToCook());
+        /*dto.setIngredients(
+                recipe.getIngredients().stream()
+                        .map(IngredientMapper::toDTO)
+                        .collect(Collectors.toSet())
+        );*/
+        dto.setLink(
+                "https://reci-pa-ispeci.onrender.com/recipe/" + recipe.getRecipeId()
+        );
 
         return dto;
     }

@@ -21,6 +21,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     Page<Recipe> findByPublicityTrueAndWaitingApprovalFalse(Pageable pageable);
 
+    List<Recipe> findByPublicityTrueAndWaitingApprovalFalse();
+
     List<Recipe> findByWaitingApprovalTrueAndPublicityTrue();
 
     @Query("SELECT r FROM Recipe r " +

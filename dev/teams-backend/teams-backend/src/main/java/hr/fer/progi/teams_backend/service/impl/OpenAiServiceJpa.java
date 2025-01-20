@@ -1,8 +1,10 @@
 package hr.fer.progi.teams_backend.service.impl;
 
+import hr.fer.progi.teams_backend.domain.dto.RecipeInfoDTO;
 import hr.fer.progi.teams_backend.service.OpenAiService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hr.fer.progi.teams_backend.service.RecipeService;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -17,6 +19,12 @@ import java.util.List;
 @Service
 public class OpenAiServiceJpa implements OpenAiService {
 
+    private final RecipeService recipeService;
+
+    public OpenAiServiceJpa(RecipeService recipeService) {
+        this.recipeService = recipeService;
+    }
+
     @Value("${groq.api.key}")
     private String apiKey;
 
@@ -24,15 +32,26 @@ public class OpenAiServiceJpa implements OpenAiService {
 
     private final List<JsonNode> conversationHistory = new ArrayList<>();
 
+
+
     @Override
     public String getChatbotResponse(String userMessage) throws IOException {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost post = new HttpPost("https://api.groq.com/openai/v1/chat/completions");
 
             if (conversationHistory.isEmpty()) {
+                List<RecipeInfoDTO> publicRecipes = recipeService.listAllPublic();
+                String recipeJSON = objectMapper.writeValueAsString(publicRecipes);
+
                 conversationHistory.add(objectMapper.createObjectNode()
                         .put("role", "system")
-                        .put("content", "Ti si virtualni asistent koji piše na standardnom hrvatskom jeziku i specijaliziran si za pomoć korisnicima u pronalaženju recepata koji odgovaraju njihovim željama, preferencijama i razini kulinarskog znanja. Korisnicima pružaš kratke i jasne upute za pripremu jela, preporučuješ ideje za obroke i daješ korisne savjete za kuhanje. Uvijek koristi ispravne dijakretičke znakove."));
+                        .put("content", "You are a cooking-help providing virtual assistant." +
+                                " You speak only in standard Croatian language and correctly use Croatian diacritics, which are limited to: 'č', 'ć', 'đ' and 'ž'." +
+                                "You are never allowed to write '?' unless it is at the end of a sentence." +
+                                " Respond in short sentences, unless you are providing the user with a recipe, then you are allowed to write longer answers." +
+                                " You help users with finding the recipes which fit their wants, needs and cooking ability. " +
+                                "Try to mostly suggest recipes from the following list, and when suggesting a recipe from the list to a user send them the link attached to the recipe: "
+                                + recipeJSON));
             }
 
             conversationHistory.add(objectMapper.createObjectNode()

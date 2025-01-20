@@ -9,6 +9,7 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
+import hr.fer.progi.teams_backend.domain.dto.RecipeInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.SearchRecipesDTO;
 import hr.fer.progi.teams_backend.domain.mapper.RecipeMapper;
 import hr.fer.progi.teams_backend.service.RecipeService;
@@ -53,6 +54,13 @@ public class RecipeServiceJpa implements RecipeService {
         return recipeRepository.findAll().stream()
                 .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList());    }
+
+    @Override
+    public List<RecipeInfoDTO> listAllPublic() {
+        return recipeRepository.findByPublicityTrueAndWaitingApprovalFalse().stream()
+                .map(RecipeMapper::toInfoDTO)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public RecipeDTO fetchRecipe(Long id) {
