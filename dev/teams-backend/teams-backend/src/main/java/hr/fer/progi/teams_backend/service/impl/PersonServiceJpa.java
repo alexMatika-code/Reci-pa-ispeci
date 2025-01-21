@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -188,6 +189,7 @@ public class PersonServiceJpa implements PersonService {
     public List<PersonInfoDTO> listAllPersonInfo() {
         return personRepository.findAll().stream()
                 .map(PersonMapper::toPersonInfoDTO)
+                .sorted(Comparator.comparing(PersonInfoDTO::getRole))
                 .collect(Collectors.toList());
     }
 
