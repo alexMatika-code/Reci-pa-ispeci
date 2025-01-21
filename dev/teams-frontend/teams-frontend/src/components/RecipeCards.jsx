@@ -21,6 +21,8 @@ const RecipeCards = ({ filteredRecipes }) => {
                         name={recipe.title}
                         timeToCook={recipe.timeToCook}
                         description={recipe.description}
+                        waitingApproval={recipe.waitingApproval}
+                        publicity={recipe.publicity}
                     />
                 ))
             ) : (

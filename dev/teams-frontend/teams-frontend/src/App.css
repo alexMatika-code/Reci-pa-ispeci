@@ -660,3 +660,27 @@ a {
         transform: translateY(-4px);
     }
 }
+
+.recipe-badge {
+    position: absolute;
+    top: 5px; /* Adjust as needed */
+    right: 5px; /* Adjust as needed */
+    width: 40px; /* Adjust size */
+    height: 30px; /* Adjust size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.recipe-badge.mustard {
+    background-color: rgb(224, 182, 34);
+    box-shadow: 0 4px 10px rgb(244, 222, 143);
+}
+
+.recipe-badge.blue {
+    background-color: rgb(0, 123, 255);
+    box-shadow: 0 4px 10px rgb(128, 186, 243);
+}
