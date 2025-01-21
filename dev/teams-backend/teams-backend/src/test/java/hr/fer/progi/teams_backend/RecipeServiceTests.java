@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -50,27 +52,22 @@ class RecipeServiceTests {
         return ingredient;
     }
 
-    @Test
-    void testFindSimilarRecipes_50PercentMatch() {
-        Long recipeId = 1L;
-        Ingredient ingredient1 = createIngredient(1L, "Salt");
-        Ingredient ingredient2 = createIngredient(2L, "Sugar");
-        Ingredient ingredient3 = createIngredient(3L, "Flour");
-
-        Recipe mainRecipe = createRecipe(recipeId, "Main Recipe", Set.of(ingredient1, ingredient2));
-        Recipe similarRecipe = createRecipe(2L, "Similar Recipe", Set.of(ingredient1, ingredient3));
-
-        when(recipeRepository.existsById(recipeId)).thenReturn(true);
-        when(recipeRepository.findSimilarRecipes(recipeId)).thenReturn(Collections.emptyList());
-
-        List<RecipeDTO> result = recipeService.findSimilarRecipes(recipeId);
-
-        assertNotNull(result);
-        assertTrue(result.isEmpty(), "Recipes with less than 80% similarity should not be returned.");
+    public static List<Recipe> findSimilarRecipes(Recipe mainRecipe, List<Recipe> otherRecipes) {
+        Set<Ingredient> mainIngredients = mainRecipe.getIngredients();
+        return otherRecipes.stream()
+                .filter(recipe -> {
+                    Set<Ingredient> ingredients = recipe.getIngredients();
+                    long matchingIngredients = ingredients.stream()
+                            .filter(mainIngredients::contains)
+                            .count();
+                    double similarity = (double) matchingIngredients / mainIngredients.size();
+                    return similarity >= 0.8;
+                })
+                .collect(Collectors.toList());
     }
 
     @Test
-    void testFindSimilarRecipes_80PercentMatch() {
+    void testFindSimilarRecipes() {
         Long recipeId = 1L;
         Ingredient ingredient1 = createIngredient(1L, "Salt");
         Ingredient ingredient2 = createIngredient(2L, "Sugar");
@@ -80,36 +77,20 @@ class RecipeServiceTests {
 
         Recipe mainRecipe = createRecipe(recipeId, "Main Recipe", Set.of(ingredient1, ingredient2, ingredient3,
                 ingredient4, ingredient5));
-        Recipe similarRecipe = createRecipe(2L, "Similar Recipe", Set.of(ingredient1, ingredient2,
+        Recipe similarRecipe1 = createRecipe(2L, "Similar Recipe 1", Set.of(ingredient1, ingredient2,
                 ingredient3, ingredient4));
+        Recipe similarRecipe2 = createRecipe(3L, "Similar Recipe 2", Set.of(ingredient1, ingredient2,
+                ingredient3, ingredient4, ingredient5));
+        Recipe similarRecipe3 = createRecipe(2L, "Similar Recipe 3", Set.of(ingredient1, ingredient2));
 
         when(recipeRepository.existsById(recipeId)).thenReturn(true);
-        when(recipeRepository.findSimilarRecipes(recipeId)).thenReturn(List.of(similarRecipe));
+        when(recipeRepository.findSimilarRecipes(recipeId)).thenReturn(findSimilarRecipes(mainRecipe,
+                List.of(similarRecipe1, similarRecipe2, similarRecipe3)));
 
         List<RecipeDTO> result = recipeService.findSimilarRecipes(recipeId);
 
         assertNotNull(result);
-        assertEquals(1, result.size(), "Exactly 80% similarity should return one recipe.");
-        assertEquals("Similar Recipe", result.get(0).getTitle());
-    }
-
-    @Test
-    void testFindSimilarRecipes_100PercentMatch() {
-        Long recipeId = 1L;
-        Ingredient ingredient1 = createIngredient(1L, "Salt");
-        Ingredient ingredient2 = createIngredient(2L, "Sugar");
-
-        Recipe mainRecipe = createRecipe(recipeId, "Main Recipe", Set.of(ingredient1, ingredient2));
-        Recipe similarRecipe = createRecipe(2L, "Similar Recipe", Set.of(ingredient1, ingredient2));
-
-        when(recipeRepository.existsById(recipeId)).thenReturn(true);
-        when(recipeRepository.findSimilarRecipes(recipeId)).thenReturn(List.of(similarRecipe));
-
-        List<RecipeDTO> result = recipeService.findSimilarRecipes(recipeId);
-
-        assertNotNull(result);
-        assertEquals(1, result.size(), "100% similarity should return one recipe.");
-        assertEquals("Similar Recipe", result.get(0).getTitle());
+        assertEquals(2, result.size(), "80% or more similarity should return recipes.");
     }
 
     @Test
