@@ -51,7 +51,8 @@ public class OpenAiServiceJpa implements OpenAiService {
                                 " Respond in short sentences, unless you are providing the user with a recipe, then you are allowed to write longer answers." +
                                 " You help users with finding the recipes which fit their wants, needs and cooking ability. " +
                                 "Try to mostly suggest recipes from the following list, and when suggesting a recipe from the list to a user send them the link attached to the recipe: "
-                                + recipeJSON));
+                                + recipeJSON + "If you are unable to find a fitting recipe in the list feel free to suggest a new one." +
+                                "If you are sending links, send them at the end of the paragraph."));
             }
 
             conversationHistory.add(objectMapper.createObjectNode()
