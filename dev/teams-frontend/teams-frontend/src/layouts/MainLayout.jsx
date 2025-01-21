@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar.jsx";
 import Spinner from "../components/Spinner.jsx";
 import {ToastContainer} from "react-toastify";
 import ChatTab from '../components/ChatTab';
+import ErrorPage from "../pages/ErrorPage.jsx";
 
 const MainLayout = () => {
     const [currentUser, setCurrentUser] = useState(null);
@@ -22,11 +23,16 @@ const MainLayout = () => {
             } catch (error) {
                 console.error("Error fetching currentUser:", error);
             } finally {
+
                 setLoading(false);
             }
         };
         fetchCurrentUser();
     }, [location.pathname]);
+
+    if(currentUser === undefined){
+        return <ErrorPage code={500} text={"BE server is slow :(. Please be patient with it, and refresh the page..."} />
+    }
 
     return (
         <AuthContext.Provider value={currentUser}>
@@ -35,7 +41,6 @@ const MainLayout = () => {
             ) : (
                 <>
                     <Navbar />
-                    {/*Ovdje se moze napravit provjera za prikaz auth pageova */}
                     <Outlet />
                     {currentUser && <ChatTab />}
                     <ToastContainer
