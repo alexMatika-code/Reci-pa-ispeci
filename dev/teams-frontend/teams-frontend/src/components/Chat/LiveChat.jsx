@@ -31,7 +31,6 @@ const LiveChat = () => {
 
     const navigate = useNavigate();
     useEffect(() => {
-        // const socket = new WebSocket(`https://reci-pa-ispeci-2-v32w.onrender.com/api/ms?username=${userData.username}`);
         const socket = new WebSocket(`/api/ms?username=${userData.username}`);
 
         socket.onopen = () => {
