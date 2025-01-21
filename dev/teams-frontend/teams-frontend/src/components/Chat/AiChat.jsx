@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import Linkify from 'react-linkify';
 
 const TypingIndicator = () => (
     <div className="message ai typing-indicator">
@@ -88,7 +89,7 @@ const AiChat = () => {
             <div className="chat-messages">
                 {messages.map((msg, index) => (
                     <div key={index} className={`message ${msg.sender}`}>
-                        {msg.text}
+                        <Linkify>{msg.text}</Linkify>
                     </div>
                 ))}
                 {isTyping && <TypingIndicator />}
