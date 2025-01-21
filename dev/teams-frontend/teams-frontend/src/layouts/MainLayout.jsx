@@ -29,8 +29,11 @@ const MainLayout = () => {
         fetchCurrentUser();
     }, [location.pathname]);
 
-    if(currentUser === undefined || currentUser.username === undefined){
-        return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
+    if(currentUser === undefined) {
+        if (currentUser.username === undefined) {
+            return <ErrorPage code={500}
+                          text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."}/>
+        }
     }
 
     return (
