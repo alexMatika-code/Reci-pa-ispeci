@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {Row, Container} from "react-bootstrap";
-import ProfileCard from "../components/ProfileCard.jsx";
-import ProfileInfoCards from "../components/ProfileInfoCards.jsx";
-import Spinner from "../components/Spinner.jsx";
-import RecipeCards from "../components/RecipeCards.jsx";
+import ProfileCard from "../components/ProfilePage/ProfileCard.jsx";
+import ProfileInfoCards from "../components/ProfilePage/ProfileInfoCards.jsx";
+import Spinner from "../components/Utility/Spinner.jsx";
+import RecipeCards from "../components/Utility/RecipeCards/RecipeCards.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const ProfilePage = () => {
@@ -30,6 +30,10 @@ const ProfilePage = () => {
             fetchUser();
         }
     }, [username]);
+
+    if(user === undefined){
+        return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
+    }
 
     return (
         <div>

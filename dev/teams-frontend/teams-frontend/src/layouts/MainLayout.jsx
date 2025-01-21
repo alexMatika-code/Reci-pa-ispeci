@@ -1,10 +1,10 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AuthContext } from "../Contexts.jsx";
-import Navbar from "../components/Navbar.jsx";
-import Spinner from "../components/Spinner.jsx";
+import Navbar from "../components/Utility/Navbar.jsx";
+import Spinner from "../components/Utility/Spinner.jsx";
 import {ToastContainer} from "react-toastify";
-import ChatTab from '../components/ChatTab';
+import ChatTab from '../components/Chat/ChatTab.jsx';
 import ErrorPage from "../pages/ErrorPage.jsx";
 
 const MainLayout = () => {
@@ -23,15 +23,14 @@ const MainLayout = () => {
             } catch (error) {
                 console.error("Error fetching currentUser:", error);
             } finally {
-
                 setLoading(false);
             }
         };
         fetchCurrentUser();
     }, [location.pathname]);
 
-    if(currentUser === undefined){
-        return <ErrorPage code={500} text={"BE server is slow :(. Please be patient with it, and refresh the page..."} />
+    if(currentUser === undefined || currentUser.username === undefined){
+        return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
     }
 
     return (

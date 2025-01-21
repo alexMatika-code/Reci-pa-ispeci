@@ -1,19 +1,19 @@
 import {useParams, useNavigate} from "react-router-dom";
 import {useEffect, useState, useContext} from "react";
 import {AuthContext} from "../Contexts.jsx";
-import Spinner from "../components/Spinner.jsx";
+import Spinner from "../components/Utility/Spinner.jsx";
 import {Button, Container, Row} from "react-bootstrap";
-import RecipePageImage from "../components/RecipePageImage.jsx";
-import RecipePageTextBox from "../components/RecipePageTextBox.jsx";
-import RecipeNameAndRating from "../components/RecipeNameAndRating.jsx";
-import ProfileIcon from "../components/ProfileIcon.jsx";
-import RecipeComment from "../components/RecipeComment.jsx";
-import AddReviewForm from "../components/AddReviewForm.jsx";
-import RecipePageIngredients from "../components/RecipePageIngredients.jsx";
+import RecipePageImage from "../components/RecipePage/RecipePageImage.jsx";
+import RecipePageTextBox from "../components/RecipePage/RecipePageTextBox.jsx";
+import RecipeNameAndRating from "../components/RecipePage/RecipeNameAndRating.jsx";
+import RecipeProfileIcon from "../components/RecipePage/RecipeProfileIcon.jsx";
+import RecipeComment from "../components/RecipePage/RecipeComment.jsx";
+import AddReviewForm from "../components/RecipePage/AddReviewForm.jsx";
+import RecipePageIngredients from "../components/RecipePage/RecipePageIngredients.jsx";
 import {toast} from "react-toastify";
-import RecipeSimilarityWarning from "../components/RecipeSimilarityWarning.jsx";
+import RecipeSimilarityWarning from "../components/RecipePage/RecipeSimilarityWarning.jsx";
 import ErrorPage from "./ErrorPage.jsx";
-import RecipeDeleteModal from "../components/RecipeDeleteModal.jsx";
+import RecipeDeleteModal from "../components/RecipePage/RecipeDeleteModal.jsx";
 
 const RecipePage = () => {
     const currentUser = useContext(AuthContext);
@@ -28,10 +28,8 @@ const RecipePage = () => {
     useEffect(() => {
         const fetchRecipe = async () => {
             try {
-                console.log(recipeId)
                 const res = await fetch(`/api/recipes/${recipeId}`);
                 const data = await res.json();
-                console.log('Recipe data:', data)
                 setRecipe(data);
             } catch (error) {
                 console.log(`Error fetching data - no recipe found - ${recipeId}`, error);
@@ -101,8 +99,6 @@ const RecipePage = () => {
             navigate('/recipe/approve');
             setDisableButtons(false);
         }
-
-        console.log("Curren user: " + currentUser.personId);
     }
 
     const handleDeleteClick = () => setShowDelete(true);
@@ -110,9 +106,7 @@ const RecipePage = () => {
     const deleteRecipe = async () => {
         try {
             setDisableButtons(true);
-            console.log("deleting");
             const response = await fetch(`/api/chef/reject/${recipeId}`, {method: 'DELETE'});
-            console.log(response);
             if(response.ok) {
 
                 toast.success("Recept izbrisan!");
@@ -128,6 +122,10 @@ const RecipePage = () => {
             setDisableButtons(false);
         }
     };
+
+    if(recipe === undefined){
+        return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
+    }
 
     return (
         <div>
@@ -161,7 +159,7 @@ const RecipePage = () => {
                         <Row className={"d-flex"}>
                             <Container className={"col-md-10 col-lg-4 col-xl-3"}>
                                 <RecipePageImage recipe={recipe}/>
-                                <ProfileIcon username={recipe.userName} />
+                                <RecipeProfileIcon username={recipe.userName} />
 
                                 {recipe.waitingApproval ? (
                                     <>

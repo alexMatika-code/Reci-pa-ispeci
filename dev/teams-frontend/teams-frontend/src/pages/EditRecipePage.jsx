@@ -1,13 +1,13 @@
 import {useContext, useState, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import placeholder from "../assets/placeholder.jpg";
-import RecipeAddIngredients from '../components/RecipeAddIngredients';
+import RecipeAddIngredients from '../components/EditRecipePage/RecipeAddIngredients.jsx';
 import {Form, Row, Button, InputGroup} from "react-bootstrap";
 import InputGroupText from "react-bootstrap/InputGroupText";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {AuthContext} from "../Contexts.jsx";
-import Spinner from "../components/Spinner.jsx";
+import Spinner from "../components/Utility/Spinner.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const EditRecipePage = () => {
@@ -141,8 +141,6 @@ const EditRecipePage = () => {
     const submitForm = (e) => {
         e.preventDefault();
 
-        console.log(ingredients.count);
-        console.log(ingredients);
         if(ingredients.length === 0){
             toast.warn("Minimalan broj sastojaka je 1");
             return;
@@ -180,6 +178,10 @@ const EditRecipePage = () => {
         } catch (error) {
             toast.error('Error saving recipe: ' + error);
         }
+    }
+
+    if(title === undefined || ingredients === undefined){
+        return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
     }
 
     if (loading) {

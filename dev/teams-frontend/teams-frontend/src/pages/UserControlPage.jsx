@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import {AuthContext} from "../Contexts.jsx";
-import UserCards from "../components/UserCards.jsx";
+import UserCards from "../components/UserControlPage/UserCards.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const UserControlPage = () => {

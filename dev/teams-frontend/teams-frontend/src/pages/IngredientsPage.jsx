@@ -1,4 +1,4 @@
-import IngredientCards from "../components/IngredientCards.jsx";
+import IngredientCards from "../components/IngredientsPage/IngredientCards.jsx";
 import {Button, Form, Row} from "react-bootstrap";
 import {useContext, useState} from "react";
 
@@ -28,7 +28,6 @@ const IngredientsPage = () => {
                 }
             });
             if(response.ok) {
-                console.log(response);
                 toast.success("Sastojak dodan!");
             }
         } catch (error) {

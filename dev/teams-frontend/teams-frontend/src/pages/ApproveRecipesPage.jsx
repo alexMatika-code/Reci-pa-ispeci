@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import {AuthContext} from "../Contexts.jsx";
-import AwaitingRecipes from "../components/AwaitingRecipes.jsx";
+import AwaitingRecipes from "../components/ApproveRecipesPage/AwaitingRecipes.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const ApproveRecipesPage = () => {

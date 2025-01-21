@@ -1,9 +1,9 @@
 import {useState, useEffect} from "react";
-import SearchBar from "../components/SearchBar.jsx";
-import RecipeCards from "../components/RecipeCards.jsx";
-import Spinner from "../components/Spinner.jsx";
-import HomePageTab from "../components/HomePageTab.jsx";
-import IngredientsModal from "../components/IngredientsModal.jsx";
+import SearchBar from "../components/HomePage/SearchBar.jsx";
+import RecipeCards from "../components/Utility/RecipeCards/RecipeCards.jsx";
+import Spinner from "../components/Utility/Spinner.jsx";
+import HomePageTab from "../components/HomePage/HomePageTab.jsx";
+import IngredientsModal from "../components/Utility/IngredientsModal/IngredientsModal.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const HomePage = () => {
@@ -90,7 +90,7 @@ const HomePage = () => {
     }, []);
 
     if(recipes === undefined || recommendedRecipes === undefined){
-        return <ErrorPage code={500} text={"BE server is slow :(. Please be patient with it, and refresh the page..."} />
+        return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
     }
 
     return (
