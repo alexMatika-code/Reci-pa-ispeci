@@ -4,6 +4,7 @@ import RecipeCards from "../components/RecipeCards.jsx";
 import Spinner from "../components/Spinner.jsx";
 import HomePageTab from "../components/HomePageTab.jsx";
 import IngredientsModal from "../components/IngredientsModal.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 
 const HomePage = () => {
     const [show, setShow] = useState(false);
@@ -87,6 +88,10 @@ const HomePage = () => {
         };
         fetchRecommendedRecipes();
     }, []);
+
+    if(recipes === undefined || recommendedRecipes === undefined){
+        return <ErrorPage code={500} text={"BE server is slow :(. Please be patient with it, and refresh the page..."} />
+    }
 
     return (
         <div>
