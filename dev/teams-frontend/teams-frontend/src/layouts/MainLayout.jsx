@@ -22,6 +22,7 @@ const MainLayout = () => {
                 setCurrentUser(data);
             } catch (error) {
                 console.error("Error fetching currentUser:", error);
+                setCurrentUser(undefined);
             } finally {
                 setLoading(false);
             }

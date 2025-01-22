@@ -20,6 +20,7 @@ const ProfilePage = () => {
                 setUser(data);
             } catch (error) {
                 console.log(`Error fetching data - no user named - ${username}`, error);
+                setUser(undefined);
             } finally {
                 setLoading(false);
             }
