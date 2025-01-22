@@ -31,7 +31,7 @@ Administratori i kuhari mogu dodavati nove sastojke u bazu podataka. Administrat
 
 
 # Tehnologije
-**Dokumentacija:** Visual Paradigm Online, Wiki
+**Dokumentacija:** Visual Paradigm Online, Wiki, draw.io
 
 **Frontend:** React 18.3.1 - JavaScript, Figma, CSS, HTML 
 
