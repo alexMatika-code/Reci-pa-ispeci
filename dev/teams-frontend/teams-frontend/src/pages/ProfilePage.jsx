@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {Row, Container} from "react-bootstrap";
-import Navbar from "../components/Navbar.jsx";
-import ProfileCard from "../components/ProfileCard.jsx";
-import ProfileInfoCards from "../components/ProfileInfoCards.jsx";
-import Spinner from "../components/Spinner.jsx";
-import RecipeCards from "../components/RecipeCards.jsx";
+import ProfileCard from "../components/ProfilePage/ProfileCard.jsx";
+import ProfileInfoCards from "../components/ProfilePage/ProfileInfoCards.jsx";
+import Spinner from "../components/Utility/Spinner.jsx";
+import RecipeCards from "../components/Utility/RecipeCards/RecipeCards.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 
 const ProfilePage = () => {
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
     const { username } = useParams();
 
@@ -17,10 +17,11 @@ const ProfilePage = () => {
             try {
                 const res = await fetch(`/api/people/profile/${username}`);
                 const data = await res.json();
-                setUser(data);
-                console.log(data); // Log the fetched user data
+                console.log(data);
+                res.status === 500 ? setUser(undefined) : setUser(data);
             } catch (error) {
                 console.log(`Error fetching data - no user named - ${username}`, error);
+                setUser(undefined);
             } finally {
                 setLoading(false);
             }
@@ -32,9 +33,13 @@ const ProfilePage = () => {
         }
     }, [username]);
 
+    if(user === undefined){
+        console.log("user: " + user);
+        return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
+    }
+
     return (
         <div>
-            <Navbar/>
             {loading ? (
                 <Spinner loading={loading} />
             ) : (
@@ -57,7 +62,7 @@ const ProfilePage = () => {
                         </Row>
                     </div>
                 ) : (
-                    <div>ne postoji</div>
+                    <ErrorPage code={404} text={"Page not found :("} />
                 )
             )}
         </div>
