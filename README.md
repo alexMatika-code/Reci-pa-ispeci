@@ -41,7 +41,7 @@ Administratori i kuhari mogu dodavati nove sastojke u bazu podataka. Administrat
 
 **Razvojni alat:** Intellij IDEA, WebStorm
 
-**Testiranje:** Selenium 4.27.0
+**Testiranje:** Selenium 4.27.0, JUnit 5
 
 **Deployment:** Render
 
