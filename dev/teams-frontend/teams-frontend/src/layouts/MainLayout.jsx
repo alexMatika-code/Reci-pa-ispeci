@@ -31,6 +31,7 @@ const MainLayout = () => {
 
     if(currentUser === undefined) {
         if (currentUser.username === undefined) {
+            console.log(currentUser);
             return <ErrorPage code={500}
                           text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."}/>
         }

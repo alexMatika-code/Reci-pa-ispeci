@@ -8,7 +8,7 @@ import RecipeCards from "../components/Utility/RecipeCards/RecipeCards.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const ProfilePage = () => {
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
     const { username } = useParams();
 
@@ -32,6 +32,7 @@ const ProfilePage = () => {
     }, [username]);
 
     if(user === undefined){
+        console.log("user: " + user);
         return <ErrorPage code={500} text={"BE je jako spor :( - Molim vas, budite strpljivi s njime i osvježite stranicu..."} />
     }
 
