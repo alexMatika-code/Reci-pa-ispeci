@@ -21,4 +21,3 @@ public class Role {
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     protected List<Person> persons;
 }
-

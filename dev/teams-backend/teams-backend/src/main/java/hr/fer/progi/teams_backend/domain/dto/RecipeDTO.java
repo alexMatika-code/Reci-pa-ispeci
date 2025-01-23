@@ -12,10 +12,12 @@ public class RecipeDTO {
     private String description;
     private String procedure;
     private boolean publicity;
+    private boolean waitingApproval;
     private int timeToCook;
 
     private Long chefId;
     private Long userId;
+    private String userName;
     private List<RatingDTO> ratings;
 
     private String imageBase64;

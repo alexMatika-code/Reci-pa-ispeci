@@ -3,6 +3,8 @@ package hr.fer.progi.teams_backend.service;
 import hr.fer.progi.teams_backend.domain.Recipe;
 import hr.fer.progi.teams_backend.domain.dto.CreateRecipeDTO;
 import hr.fer.progi.teams_backend.domain.dto.RecipeDTO;
+import hr.fer.progi.teams_backend.domain.dto.RecipeInfoDTO;
+import hr.fer.progi.teams_backend.domain.dto.SearchRecipesDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.io.IOException;
@@ -12,11 +14,13 @@ public interface RecipeService {
 
     List<RecipeDTO> listAll();
 
+    List<RecipeInfoDTO> listAllPublic();
+
     RecipeDTO fetchRecipe(Long id);
 
     void deleteRecipe(Long id);
 
-    Recipe updateRecipe(Long id, Recipe recipe);
+    Recipe updateRecipe(Long id, CreateRecipeDTO recipe) throws IOException;
 
     Recipe createRecipe(Recipe recipe);
 
@@ -26,6 +30,9 @@ public interface RecipeService {
 
     Recipe createRecipeWithImage(CreateRecipeDTO createRecipeDTO,Long personId) throws IOException;
 
-    Page<RecipeDTO> listPublicRecipes(int page, int size);
+    Page<RecipeDTO> listPublicRecipes(SearchRecipesDTO searchRecipesDTO, int page, int size);
 
+    Page<RecipeDTO> listRecommendedRecipes(int page, int size);
+
+    List<RecipeDTO> findSimilarRecipes(Long id);
 }

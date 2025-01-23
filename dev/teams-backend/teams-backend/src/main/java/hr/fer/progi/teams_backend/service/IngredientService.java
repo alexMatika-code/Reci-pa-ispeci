@@ -18,4 +18,6 @@ public interface IngredientService {
     Ingredient createIngredient(Ingredient ingredient);
 
     List<IngredientDTO> searchIngredientsByName(String namePart);
+
+    List<IngredientDTO> getIngredientsByRecipeId(Long recipeId);
 }

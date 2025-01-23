@@ -4,7 +4,7 @@ import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
-
+import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
 import java.util.List;
 
 public interface PersonService {
@@ -15,9 +15,9 @@ public interface PersonService {
 
     void deletePerson(Long id);
 
-    Person updatePerson(Long id, Person person);
-
     Person createPerson(Person person);
+
+    void updatePerson(String about);
 
     void addFavoriteIngredient(Long personId, Long ingredientId);
 
@@ -25,9 +25,21 @@ public interface PersonService {
 
     PersonDTO findByEmail(String email);
 
+    PersonDTO findByUsername(String username);
+
     public Person getPerson(Long id);
 
-    PersonProfileDTO getPersonProfileByUsername(String username);
+    PersonProfileDTO getPersonProfileByUsername(String username,boolean isOwner);
 
     public PersonAuthInfoDTO GetAuthUserInfo(Long id);
+
+    void addFavoriteIngredients(Long personId, List<Long> ingredientIds);
+
+    void setFavoriteIngredients(Long personId, List<Long> ingredientIds);
+
+    List<PersonInfoDTO> listAllPersonInfo();
+
+    void demotePerson(Long personId);
+
+    void promotePerson(Long personId);
 }

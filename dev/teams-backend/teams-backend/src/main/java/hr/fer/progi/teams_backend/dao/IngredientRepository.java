@@ -13,4 +13,8 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     @Query("SELECT i FROM Ingredient i WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :namePart, '%'))")
     List<Ingredient> findByNameContainingIgnoreCase(@Param("namePart") String namePart);
+
+    boolean existsByNameIgnoreCase(String name);
+
+    List<Ingredient> findByRecipesRecipeId(Long recipeId);
 }

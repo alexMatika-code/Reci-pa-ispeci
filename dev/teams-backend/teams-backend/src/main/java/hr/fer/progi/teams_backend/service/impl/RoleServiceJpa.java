@@ -1,10 +1,8 @@
 package hr.fer.progi.teams_backend.service.impl;
 
 import hr.fer.progi.teams_backend.dao.RoleRepository;
-import hr.fer.progi.teams_backend.domain.Person;
 import hr.fer.progi.teams_backend.domain.Role;
 import hr.fer.progi.teams_backend.domain.dto.RoleDTO;
-import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
 import hr.fer.progi.teams_backend.domain.mapper.RoleMapper;
 import hr.fer.progi.teams_backend.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

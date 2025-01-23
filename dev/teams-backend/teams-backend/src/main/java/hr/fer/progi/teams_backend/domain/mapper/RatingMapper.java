@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class RatingMapper {
     public static RatingDTO toDTO(Rating rating) {
         RatingDTO dto = new RatingDTO();
+        dto.setPersonName(rating.getPerson().getUsername());
         dto.setRatingId(rating.getRatingId());
         dto.setGrade(rating.getGrade());
         dto.setComment(rating.getComment());

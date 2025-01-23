@@ -1,12 +1,16 @@
 package hr.fer.progi.teams_backend.service.impl;
 
+import hr.fer.progi.teams_backend.constants.Roles;
 import hr.fer.progi.teams_backend.dao.IngredientRepository;
 import hr.fer.progi.teams_backend.dao.PersonRepository;
 import hr.fer.progi.teams_backend.dao.RecipeRepository;
+import hr.fer.progi.teams_backend.dao.RoleRepository;
 import hr.fer.progi.teams_backend.domain.Ingredient;
 import hr.fer.progi.teams_backend.domain.Person;
+import hr.fer.progi.teams_backend.domain.Role;
 import hr.fer.progi.teams_backend.domain.dto.PersonAuthInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonDTO;
+import hr.fer.progi.teams_backend.domain.dto.PersonInfoDTO;
 import hr.fer.progi.teams_backend.domain.dto.PersonProfileDTO;
 import hr.fer.progi.teams_backend.domain.mapper.PersonMapper;
 import hr.fer.progi.teams_backend.service.PersonService;
@@ -14,9 +18,13 @@ import hr.fer.progi.teams_backend.service.RatingService;
 import hr.fer.progi.teams_backend.service.RecipeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +42,9 @@ public class PersonServiceJpa implements PersonService {
 
     @Autowired
     private IngredientRepository ingredientRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public List<PersonDTO> listAll() {
@@ -65,31 +76,32 @@ public class PersonServiceJpa implements PersonService {
     }
 
     @Override
-    public Person updatePerson(Long id, Person person) {
-        Assert.notNull(person, "Person object must be given");
+    public PersonDTO findByUsername(String username) {
+        Person person = personRepository.findByUsername(username).orElse(null);
+        return person != null ? PersonMapper.toDTO(person) : null;
 
-        Person updatePerson = personRepository.findById(id).orElse(null);
-        Assert.notNull(updatePerson, "Person by the ID of " + id + " does not exist");
-
-        updatePerson.setFirstName(person.getFirstName());
-        updatePerson.setLastName(person.getLastName());
-        updatePerson.setEmail(person.getEmail());
-        updatePerson.setAbout(person.getAbout());
-        updatePerson.setUsername(person.getUsername());
-        updatePerson.setPassword(person.getPassword());
-
-        updatePerson.setRole(person.getRole());
-        updatePerson.setRatings(person.getRatings());
-        updatePerson.setChefRecipes(person.getChefRecipes());
-        updatePerson.setUserRecipes(person.getUserRecipes());
-
-        return personRepository.save(updatePerson);
     }
 
     @Override
     public Person createPerson(Person person) {
         Assert.notNull(person, "Person object must be given");
         return personRepository.save(person);
+    }
+
+    @Override
+    public void updatePerson(String about) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((OAuth2User) authentication.getPrincipal()).getAttribute("email");
+
+        personRepository.findByEmail(email).ifPresentOrElse(
+                person -> {
+                    person.setAbout(about);
+                    personRepository.save(person);
+                },
+                () -> {
+                    throw new RuntimeException("User not found: " + email);
+                }
+        );
     }
 
     @Override
@@ -106,6 +118,27 @@ public class PersonServiceJpa implements PersonService {
 
     @Override
     @Transactional
+    public void addFavoriteIngredients(Long personId, List<Long> ingredientIds) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found with id: " + personId));
+
+        List<Ingredient> ingredients = ingredientRepository.findAllById(ingredientIds);
+        if (ingredients.size() != ingredientIds.size()) {
+            throw new RuntimeException("Some ingredients were not found with the provided IDs");
+        }
+
+        for (Ingredient ingredient : ingredients) {
+            if (person.getFavoriteIngredients().contains(ingredient)) {
+                throw new IllegalArgumentException("Ingredient already added to favorites: " + ingredient.getName());
+            }
+        }
+
+        person.getFavoriteIngredients().addAll(ingredients);
+        personRepository.save(person);
+    }
+
+    @Override
+    @Transactional
     public void removeFavoriteIngredient(Long personId, Long ingredientId) {
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new RuntimeException("Person not found with id: " + personId));
@@ -117,8 +150,24 @@ public class PersonServiceJpa implements PersonService {
     }
 
     @Override
-    public PersonProfileDTO getPersonProfileByUsername(String username) {
-        // Retrieve the person by username
+    @Transactional
+    public void setFavoriteIngredients(Long personId, List<Long> ingredientIds) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found with id: " + personId));
+
+        List<Ingredient> ingredients = ingredientRepository.findAllById(ingredientIds);
+        if (ingredients.size() != ingredientIds.size()) {
+            throw new RuntimeException("Some ingredients were not found with the provided IDs");
+        }
+
+        person.getFavoriteIngredients().clear();
+        person.getFavoriteIngredients().addAll(ingredients);
+
+        personRepository.save(person);
+    }
+
+    @Override
+    public PersonProfileDTO getPersonProfileByUsername(String username,boolean isOwner) {
         Person person = personRepository.findByUsername(username).orElse(null);
         if (person == null) {
             return null;
@@ -127,8 +176,7 @@ public class PersonServiceJpa implements PersonService {
         Long ratingCount = ratingService.getTotalRatingCountByUserId(person.getPersonId());
         Double averageRating = ratingService.getAverageRatingByUserId(person.getPersonId());
 
-        // Pass the additional data to the mapper
-        return PersonMapper.toPersonProfileDTO(person, recipeCount, ratingCount, averageRating);
+        return PersonMapper.toPersonProfileDTO(person, recipeCount, ratingCount, averageRating,isOwner);
     }
 
     @Override
@@ -136,4 +184,55 @@ public class PersonServiceJpa implements PersonService {
         Person person = personRepository.findById(id).orElse(null);
         return person != null ? PersonMapper.PersonToPersonAuthInfoDTO(person) : null;
     }
+
+    @Override
+    public List<PersonInfoDTO> listAllPersonInfo() {
+        return personRepository.findAll().stream()
+                .map(PersonMapper::toPersonInfoDTO)
+                .sorted(Comparator.comparing(PersonInfoDTO::getRole))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void promotePerson(Long personId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + personId + " does not exist."));
+
+        Roles currentRole = person.getRole().getName();
+
+        if (currentRole.equals(Roles.ADMIN)) {
+            throw new IllegalArgumentException("Cannot promote. User is already ADMIN.");
+        }
+
+        if (currentRole.equals(Roles.USER)) {
+            Role chefRole = roleRepository.findByName(Roles.CHEF);
+            person.setRole(chefRole);
+        } else if (currentRole.equals(Roles.CHEF)) {
+            Role adminRole = roleRepository.findByName(Roles.ADMIN);
+            person.setRole(adminRole);
+        }
+        personRepository.save(person);
+    }
+
+    @Override
+    public void demotePerson(Long personId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + personId + " does not exist."));
+
+        Roles currentRole = person.getRole().getName();
+
+        if (currentRole.equals(Roles.USER)) {
+            throw new IllegalArgumentException("Cannot demote. User is already at the lowest role (USER).");
+        }
+
+        if (currentRole.equals(Roles.ADMIN)) {
+            Role chefRole = roleRepository.findByName(Roles.CHEF);
+            person.setRole(chefRole);
+        } else if (currentRole.equals(Roles.CHEF)) {
+            Role userRole = roleRepository.findByName(Roles.USER);
+            person.setRole(userRole);
+        }
+        personRepository.save(person);
+    }
+
 }

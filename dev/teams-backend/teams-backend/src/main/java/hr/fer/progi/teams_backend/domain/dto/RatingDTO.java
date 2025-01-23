@@ -9,5 +9,6 @@ public class RatingDTO {
     private String comment;
 
     private Long personId;
+    private String personName;
     private Long recipeId;
 }
