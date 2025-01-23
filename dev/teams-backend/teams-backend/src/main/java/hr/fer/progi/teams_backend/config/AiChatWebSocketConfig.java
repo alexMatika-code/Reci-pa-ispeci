@@ -1,6 +1,6 @@
 package hr.fer.progi.teams_backend.config;
 
-import hr.fer.progi.teams_backend.Components.AiChatWebSocketHandler;
+import hr.fer.progi.teams_backend.utils.AiChatWebSocketHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;

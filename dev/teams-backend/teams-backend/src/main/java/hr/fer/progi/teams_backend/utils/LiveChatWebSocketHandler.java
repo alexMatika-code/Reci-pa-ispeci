@@ -1,4 +1,4 @@
-package hr.fer.progi.teams_backend.Components;
+package hr.fer.progi.teams_backend.utils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;

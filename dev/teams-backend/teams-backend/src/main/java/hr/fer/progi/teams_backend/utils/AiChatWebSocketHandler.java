@@ -1,4 +1,4 @@
-package hr.fer.progi.teams_backend.Components;
+package hr.fer.progi.teams_backend.utils;
 
 import hr.fer.progi.teams_backend.service.OpenAiService;
 import org.springframework.web.socket.WebSocketSession;
