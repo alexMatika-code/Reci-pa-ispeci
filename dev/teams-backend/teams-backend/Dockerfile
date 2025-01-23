@@ -10,7 +10,6 @@ COPY src ./src
 
 # Set execution permissions for Maven wrapper and build the application
 RUN chmod +x ./mvnw
-RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Create the final image
 FROM openjdk:17-jdk
