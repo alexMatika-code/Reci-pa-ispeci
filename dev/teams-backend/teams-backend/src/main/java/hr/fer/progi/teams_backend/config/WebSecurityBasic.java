@@ -153,30 +153,11 @@ public class WebSecurityBasic {
     }
 
     private GrantedAuthoritiesMapper authorityMapper() {
-        return (authorities) -> {
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+        final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
 
-            authorities.forEach(authority -> {
-                if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
-                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
-                    String email = (String) userAttributes.get("email");
-                    System.out.println("Email: " + email);
+        authorityMapper.setDefaultAuthority("ADMIN");
 
-                    Person person = personRepository.findByEmail(email).orElse(null);
-
-                    if (person != null) {
-                        String roleName = person.getRole().getName().name();
-                        System.out.println("Role: " + roleName);
-                        mappedAuthorities.add(new SimpleGrantedAuthority(roleName));
-                    } else {
-                        mappedAuthorities.add(new SimpleGrantedAuthority(""));
-                    }
-                }
-            });
-
-            System.out.println("Mapped Authorities: " + mappedAuthorities);
-            return mappedAuthorities;
-        };
+        return authorityMapper;
     }
 
 
