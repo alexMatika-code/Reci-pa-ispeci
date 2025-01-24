@@ -37,10 +37,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.swing.text.html.Option;
 import java.io.Console;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -153,12 +151,42 @@ public class WebSecurityBasic {
     }
 
     private GrantedAuthoritiesMapper authorityMapper() {
-        final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
+        return authorities -> {
+            SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
+            authorityMapper.setDefaultAuthority("USER");
 
-        authorityMapper.setDefaultAuthority("ADMIN");
+            return authorities.stream().map(authority -> {
+                if (authority instanceof OAuth2UserAuthority) {
+                    OAuth2UserAuthority oauth2UserAuthority = (OAuth2UserAuthority) authority;
+                    Map<String, Object> attributes = oauth2UserAuthority.getAttributes();
+                    String email = (String) attributes.get("email");
 
-        return authorityMapper;
+                    if (!personRepository.existsByEmail(email)) {
+                        Person newUser = new Person();
+                        newUser.setEmail(email);
+                        newUser.setFirstName((String) attributes.get("given_name"));
+                        newUser.setLastName((String) attributes.get("family_name"));
+                        newUser.setImage((String) attributes.get("picture"));
+
+                        String username = email.contains("@") ? email.substring(0, email.indexOf("@")) : email;
+                        newUser.setUsername(username);
+
+                        Role role = roleRepository.findByName(Roles.USER);
+                        if (role == null) {
+                            role = new Role();
+                            role.setName(Roles.USER);
+                            roleRepository.save(role);
+                        }
+                        newUser.setRole(role);
+                        personRepository.save(newUser);
+                    }
+                }
+
+                return authorityMapper.mapAuthorities(Collections.singleton(authority));
+            }).flatMap(Collection::stream).collect(Collectors.toSet());
+        };
     }
+
 
 
     @Bean
