@@ -108,7 +108,7 @@ const HomePage = () => {
             {loading || loadingRecommended ? (
                 <Spinner loading={loading}/>
             ) : (
-                <div className={"max-w-92-5 mx-auto home-recipes-container"}>
+                <div className={"max-w-80 mx-auto"}>
 
                     {changeTab ? (
                         <>

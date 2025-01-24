@@ -47,7 +47,7 @@ const ProfilePage = () => {
                     <div className={"w-75 m-auto pt-80"}>
                         <Row className={"d-flex"}>
                             {/* User Info */}
-                            <Container className={"col-md-12 col-lg-5 col-xl-3"}>
+                            <Container className={"col-md-8 col-lg-5 col-xl-3"}>
                                 <ProfileCard user={user} />
                             </Container>
 

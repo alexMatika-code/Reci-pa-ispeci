@@ -122,6 +122,10 @@
     width: 90%;
 }
 
+.max-w-80{
+    max-width: 80% !important;
+}
+
 .max-w-85{
     max-width: 85% !important;
 }

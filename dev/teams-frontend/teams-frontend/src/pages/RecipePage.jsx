@@ -146,13 +146,13 @@ const RecipePage = () => {
                                     className="btn btn-danger"
                                     onClick={handleDeleteClick}
                                 >
-                                    Obriši Recept
+                                    Obriši
                                 </button>
                                 <button
                                     className="btn btn-success"
                                     onClick={handleEditClick}
                                 >
-                                    Uredi Recept
+                                    Uredi
                                 </button>
                             </div>
                         )}
@@ -161,7 +161,7 @@ const RecipePage = () => {
                                 <RecipePageImage recipe={recipe}/>
                                 <RecipeProfileIcon username={recipe.userName} />
 
-                                {recipe.waitingApproval ? (
+                                {recipe.waitingApproval && (currentUser.role === "CHEF" || currentUser.role === "ADMIN") ? (
                                     <>
                                         <Button variant="success" className={"w-100 mt-4"} disabled={disableButtons} onClick={approve}>Prihvati</Button>
                                         <Button variant="danger" className={"w-100 mt-2"} disabled={disableButtons} onClick={reject}>Odbij</Button>
